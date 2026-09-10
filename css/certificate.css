@@ -1,0 +1,136 @@
+/* ============================================================
+   SOGA 11 — Certificate (Light Magic Purple)
+   ============================================================ */
+.cert-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 48px 24px;
+}
+
+.cert-claim {
+  width: 100%;
+  max-width: 560px;
+  padding: 40px;
+  text-align: center;
+}
+.claim-input {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.claim-input input {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Certificate paper */
+.certificate {
+  width: 100%;
+  max-width: 760px;
+  aspect-ratio: 16 / 10;
+  background: #fffdf8;
+  border-radius: 4px;
+  box-shadow: var(--shadow-lg);
+  padding: 12px;
+}
+.cert-border {
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--accent-soft);
+  border-radius: 2px;
+  padding: 8px;
+}
+.cert-inner {
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--accent-soft);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  overflow: hidden;
+}
+.cert-org {
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: var(--accent-strong);
+  margin-bottom: 12px;
+}
+.cert-title {
+  font-size: 1.6rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+.cert-award {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+.cert-name {
+  font-size: 2rem;
+  background: var(--gradient-magic);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 6px 0;
+}
+.cert-reason {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+.cert-event {
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin: 4px 0;
+}
+.cert-theme {
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+.cert-date {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin: 6px 0 12px;
+}
+.cert-sign {
+  display: flex;
+  gap: 80px;
+  margin-top: 8px;
+}
+.cert-sign strong {
+  display: block;
+  font-size: 0.85rem;
+}
+.sign-line {
+  width: 140px;
+  height: 1px;
+  background: var(--text-secondary);
+  margin: 24px auto 6px;
+}
+.cert-verify {
+  margin-top: 12px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.cert-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .cert-name { font-size: 1.5rem; }
+  .cert-title { font-size: 1.2rem; }
+  .cert-sign { gap: 40px; }
+}

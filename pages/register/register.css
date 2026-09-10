@@ -1,0 +1,110 @@
+/* ============================================================
+   SOGA 11 — Register Form (Light Magic Purple)
+   ============================================================ */
+.register-section {
+  padding: 56px 0;
+}
+.register-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px;
+}
+.register-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.form-section {
+  font-size: 1.1rem;
+  margin: 28px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  color: var(--accent-strong);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+.req { color: #e11d48; }
+.opt { color: var(--text-muted); font-weight: 500; }
+
+.error-msg {
+  color: #e11d48;
+  font-size: 0.78rem;
+  margin-top: 4px;
+  display: none;
+}
+.form-group.invalid .error-msg {
+  display: block;
+}
+
+.checkbox label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-weight: 500;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.checkbox input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--accent);
+}
+
+.submit-status {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 12px;
+}
+
+/* Alert */
+/* Success / QR */
+.success-state {
+  text-align: center;
+  padding: 20px 0;
+}
+.success-state h3 {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+}
+.success-state p {
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+.qr-box {
+  display: inline-flex;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 16px;
+}
+.qr-box img, .qr-box canvas {
+  width: 220px;
+  height: 220px;
+}
+.ticket-id {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+.ticket-id strong {
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+.success-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
