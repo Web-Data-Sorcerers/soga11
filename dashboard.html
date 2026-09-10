@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Center — Sorcery Gathering #11</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png" />
+  <link rel="icon" href="assets/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+
+  <!-- SEO -->
+  <meta name="robots" content="noindex" />
+  <meta name="description" content="Command Center — dashboard admin Sorcery Gathering #11" />
+  <meta name="theme-color" content="#7c3aed" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body>
+
+  <!-- ===================== LOGIN ===================== -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card card">
+      <img class="brand-logo" src="assets/logo-web.png" alt="Data Sorcerers" style="margin:0 auto 16px" />
+      <h2>Command Center</h2>
+      <p>Login admin Sorcery Gathering #11</p>
+      <form id="login-form">
+        <div class="form-group">
+          <label>Email Admin</label>
+          <input type="email" id="login-email" required placeholder="admin@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" required placeholder="••••••••" />
+        </div>
+        <p id="login-error" class="alert alert-error hidden">Login gagal. Periksa email/password.</p>
+        <button type="submit" class="btn btn-primary btn-large">Masuk</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== DASHBOARD ===================== -->
+  <div id="dashboard" class="dashboard hidden">
+    <header class="dash-header">
+      <div class="container dash-header-inner">
+        <div class="navbar-brand">
+          <img class="brand-logo" src="assets/logo-web.png" alt="Data Sorcerers" />
+          <span>Command Center</span>
+        </div>
+        <div class="dash-header-actions">
+          <span class="admin-name" id="admin-name"></span>
+          <button id="btn-logout" class="btn btn-secondary">Keluar</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container dash-main">
+      <!-- Stats -->
+      <div class="grid grid-3 stats-grid dash-stats">
+        <div class="stat-card card"><h3 id="stat-total" class="stat-num">0</h3><p>Total Pendaftar</p></div>
+        <div class="stat-card card"><h3 id="stat-present" class="stat-num" style="color:#16a34a">0</h3><p>Hadir</p></div>
+        <div class="stat-card card"><h3 id="stat-conversion" class="stat-num">0%</h3><p>Conversion Rate</p></div>
+      </div>
+
+      <!-- Check-in -->
+      <div class="card dash-panel">
+        <h3>Check-in Peserta</h3>
+        <div class="checkin-row">
+          <input type="text" id="checkin-input" placeholder="Scan QR atau ketik ID (SGN11-XXXXXX)" />
+          <button id="btn-checkin" class="btn btn-primary">Check-in</button>
+          <button id="btn-scan-toggle" class="btn btn-secondary"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Scan QR</button>
+        </div>
+        <div id="scanner-box" class="hidden"></div>
+        <p id="checkin-status" class="submit-status"></p>
+      </div>
+
+      <!-- Participants table -->
+      <div class="card dash-panel">
+        <div class="table-toolbar">
+          <input type="text" id="search-input" placeholder="Cari nama / ID / instansi..." />
+          <select id="filter-status">
+            <option value="all">Semua Status</option>
+            <option value="pending">Pending</option>
+            <option value="hadir">Hadir</option>
+          </select>
+          <button id="btn-export" class="btn btn-secondary"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg> Export CSV</button>
+          <button id="btn-refresh" class="btn btn-ghost">Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table id="participant-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Instansi</th>
+                <th>WhatsApp</th>
+                <th>Status</th>
+                <th>Check-in</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              <tr><td colspan="6" class="text-center">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
