@@ -199,6 +199,16 @@
   padding: 0 24px 20px;
   color: var(--text-secondary);
 }
+.faq-item ul {
+  margin: 0;
+  padding: 0 24px 20px 40px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.faq-item ul li {
+  margin-bottom: 6px;
+}
 
 @media (max-width: 900px) {
   .hero-grid { grid-template-columns: 1fr; }
