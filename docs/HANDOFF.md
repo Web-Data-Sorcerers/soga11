@@ -50,12 +50,16 @@ Versi BARU (bukan fork SOGA 10). SOGA 10 cuma referensi.
 - [x] **Close registration** (toggle admin → register page nampil "ditutup")
 - [x] **Event date** = 25 Okt 2026 (countdown + hero)
 - [x] **Search dashboard** by email/whatsapp
+- [x] **FAQ diperluas** — 6 pertanyaan (diambil dari SOGA 10, diadaptasi ke SOGA 11)
+- [x] **Section "The Legacy"** — 16 kartu event SoGa #1–#9 (embed Instagram + shimmer loading + reveal-on-scroll)
+- [x] **Footer diperkaya** — ekosistem asli, newsletter, legal links, social icon SVG (dari SOGA 10)
 
 ### Visual / Branding
 - [x] Logo Data Sorcerers (dari SOGA 10) → favicon + navbar/footer/dashboard/sertifikat
 - [x] Favicon + meta/OG tags (SEO) di 3 halaman
 - [x] Semua emoji → ikon **SVG inline premium** (Lucide-style, `stroke="currentColor"`)
 - [x] Konsolidasi CSS lintas halaman ke `global.css`
+- [x] **Animasi** — reveal-on-scroll (semua section landing) + shimmer loading (embed Legacy)
 
 ### Keamanan (penting!)
 - [x] RLS: anon **cuma INSERT**, admin (email-scoped) full access
@@ -268,7 +272,7 @@ python3 -m http.server 8091
 ## 12. NEXT STEPS / Roadmap (yang BELUM kelar)
 
 ### Prioritas tinggi (sebelum deploy)
-1. **Isi konten event** — butuh data dari user: speaker (masih "To Be Announced"), agenda final, venue detail, link sosmed footer (masih `#`). `EVENT_DATE` udah diisi (25 Okt 2026).
+1. **Isi konten event** — butuh data dari user: speaker (masih "To Be Announced"), agenda final, venue detail, link sosmed/ekosistem/legal (masih `#`). `EVENT_DATE` ✅, FAQ ✅, Legacy ✅, Footer ✅ (semua dari SOGA 10).
 2. **Deploy** — belum. Ke Vercel/Netlify (static site). Setelah deploy, update `og:image` ke URL absolut (sekarang masih relative `assets/og-image.png`).
 3. ~~Matikan public signup~~ ✅ **DONE (12 Sep 2026)** via Management API `disable_signup=true` (`metnsgficvfvkmmksoua`). Sisa: **Leaked Password Protection** — **butuh Pro Plan** (Free plan ditolak 402). Opsional Free-plan: naikkan `password_min_length` (sekarang 6).
 
