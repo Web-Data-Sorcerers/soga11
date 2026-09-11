@@ -81,6 +81,7 @@ function renderStats() {
 }
 
 function renderCharts() {
+  if (typeof Chart === "undefined") return;
   const hadir = participants.filter((p) => p.status === "hadir").length;
   const pending = participants.length - hadir;
 
