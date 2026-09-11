@@ -1,76 +1,114 @@
-# SOGA 11 — Handoff Document
+# SOGA 11 — Handoff Document (UPDATED)
 
-> **Tujuan dokumen ini:** supaya AI lain (atau developer) bisa lanjut kerja **tanpa kehilangan konteks**.
-> Semua keputusan, kredensial, schema, dan progress ada di sini. Baca dari atas ke bawah.
+> **Tujuan:** biar AI/developer baru bisa lanjut kerja **tanpa kehilangan konteks**.
+> Baca dari atas ke bawah. File pendamping: **`aturan.md`** (rules + log kesalahan) — WAJIB baca juga.
+> Tanggal update terakhir: 11 September 2026.
 
 ---
 
 ## 1. Ringkasan Proyek
 
-**Sorcery Gathering #11 (SOGA 11)** — website event untuk komunitas **Data Sorcerers Indonesia**.
-Ini versi BARU yang dibangun **dari nol** (bukan fork dari SOGA 10). SOGA 10 cuma jadi referensi.
+**Sorcery Gathering #11 (SOGA 11)** — website event komunitas **Data Sorcerers Indonesia**.
+Versi BARU (bukan fork SOGA 10). SOGA 10 cuma referensi.
 
-- **Tema desain:** "Light Magic Purple" — background terang (putih/lavender) + aksen ungu (#7c3aed) + glow halus.
-  *(SOGA 10 = dark purple glassmorphism. SOGA 11 = kebalikannya: LIGHT.)*
+- **Tema desain:** "Light Magic Purple" — background terang (putih/lavender) + aksen ungu `#7c3aed` + glow halus. (Kebalikan SOGA 10 yang dark.)
 - **Backend:** Supabase (PostgreSQL) — BUKAN Google Apps Script.
-  Alasan: SOGA 10 pakai GAS dan **datanya bocor publik** (209 peserta kebuka tanpa auth). Supabase fix ini dengan RLS + auth.
-- **Tech stack:** Vanilla HTML/CSS/JS (tanpa framework, tanpa build tool, tanpa obfuscation).
+- **Tech stack:** Vanilla HTML/CSS/JS (tanpa framework, tanpa build tool).
+- **Tanggal event:** Minggu, **25 Oktober 2026** (jam 09:00 WIB asumsi — bisa diubah).
 
 ---
 
-## 2. Status Pengerjaan (sekarang)
+## 2. Tech Stack (lengkap)
 
-### ✅ Sudah selesai
-| Bagian | Status |
+| Layer | Detail |
 |---|---|
-| Supabase project `soga-11` dibuat | ✅ (region ap-southeast-1, free tier) |
-| Schema `participants` + RLS + RPC | ✅ |
-| Design system (light magic purple) | ✅ |
-| Landing page (hero, stats, agenda, speakers, FAQ) | ✅ |
-| Register + generate QR (Supabase-backed) | ✅ |
-| Dashboard admin (login auth, tabel, scan QR check-in, CSV export) | ✅ |
-| Certificate claim page | ✅ |
+| Frontend | Vanilla HTML/CSS/JS, SPA pakai **hash routing** (`#home`, `#register`, `#find-ticket`). Routing pake `fetch()` |
+| Backend | Supabase (PostgreSQL) + **Auth** (email/password) + **RLS** |
+| Styling | CSS custom properties (`css/variables.css`), **tanpa** Tailwind/framework |
 
-### ⚠️ Belum / perlu diisi (TODO untuk AI berikutnya)
-1. **Isi konten event** — tanggal, tema, speaker, sponsor masih PLACEHOLDER.
-   - `index.html` → `EVENT_DATE` di `js/app.js` (baris `const EVENT_DATE = ...`) masih `2026-12-31` placeholder.
-   - `pages/home/home.html` → speaker masih "Speaker 1/2/3" placeholder.
-   - `pages/home/home.html` → agenda masih placeholder.
-2. **Buat akun admin** (belum ada user admin di Supabase Auth).
-   - Buka Supabase Dashboard → Authentication → Users → **Add user** (email + password).
-   - **Matikan public signup**: Authentication → Providers → Email → **disable "Allow new users to sign up"** (biar cuma admin yang bisa login).
-3. **Gambar/logo** — belum ada logo/avatar/foto (pakai emoji placeholder ✦ 👤).
-4. **Deploy** — belum di-deploy. Bisa deploy ke Vercel/Netlify (static site).
-5. **Favicon & meta tags** (SEO/OG) — belum.
+**Library CDN yang dipakai:**
+| Library | CDN | Dipakai di |
+|---|---|---|
+| `@supabase/supabase-js` v2 (UMD) | jsdelivr | semua halaman |
+| `qrcodejs` 1.0.0 | cdnjs | register + find-ticket (generate QR) |
+| `html5-qrcode` 2.3.8 | jsdelivr | dashboard (scan QR kamera) |
+| `chart.js` (latest) | jsdelivr | dashboard (chart analytics) |
+| `html2canvas` 1.4.1 | cdnjs | certificate (download PNG) |
+| `jspdf` 2.5.1 | cdnjs | certificate (download PDF) |
+| Google Fonts `Plus Jakarta Sans` | fonts.googleapis.com | semua halaman |
 
 ---
 
-## 3. Kredensial Supabase
+## 3. CHECKPOINT — Semua yang SUDAH KELAR ✅
 
-> ⚠️ `anon key` = PUBLIC (aman disimpan di frontend, memang untuk client).
-> `service_role key` = RAHASIA (JANGAN taruh di frontend). Belum diambil, ada di Supabase Dashboard → Settings → API.
+### Fungsional
+- [x] Landing page (hero, stats, agenda, speakers, FAQ, countdown)
+- [x] Register + generate QR (Supabase-backed, `qr_token` = `SGN11-XXXXXX` client-side)
+- [x] Dashboard admin: login (Supabase Auth), stats, **chart** (doughnut + bar), check-in (manual + scan QR), tabel (search/filter), **detail/edit/hapus peserta** (modal), **export CSV**, **toggle buka/tutup pendaftaran**
+- [x] Certificate claim page (lookup by qr_token/WA → PNG/PDF)
+- [x] **Cari Tiket Saya** (recover QR by email/WA)
+- [x] **Close registration** (toggle admin → register page nampil "ditutup")
+- [x] **Event date** = 25 Okt 2026 (countdown + hero)
+- [x] **Search dashboard** by email/whatsapp
 
-| Item | Nilai |
-|---|---|
-| Project ref / ID | `metnsgficvfvkmmksoua` |
-| URL | `https://metnsgficvfvkmmksoua.supabase.co` |
-| Anon key | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ldG5zZ2ZpY3ZmdmttbWtzb3VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNDMxMjksImV4cCI6MjEwNDYxOTEyOX0.mQvJN4az9P5llBqDnDWEQBYMkTODUKqC8_clsTkpjIY` |
-| Region | `ap-southeast-1` (Singapore) |
+### Visual / Branding
+- [x] Logo Data Sorcerers (dari SOGA 10) → favicon + navbar/footer/dashboard/sertifikat
+- [x] Favicon + meta/OG tags (SEO) di 3 halaman
+- [x] Semua emoji → ikon **SVG inline premium** (Lucide-style, `stroke="currentColor"`)
+- [x] Konsolidasi CSS lintas halaman ke `global.css`
 
-Kredensial ini juga sudah di-hardcode di `js/config.js`.
+### Keamanan (penting!)
+- [x] RLS: anon **cuma INSERT**, admin (email-scoped) full access
+- [x] RPC `checkin_participant` + `set_registration_open` = admin-only (guard email + revoke anon)
+- [x] XSS: semua `innerHTML` di dashboard di-escape (`esc()`)
+- [x] `service_role` key TIDAK pernah di frontend
+- [x] Akun admin dibuat (`admin@data-sorcerers.com`)
 
 ---
 
-## 4. Database Schema (PostgreSQL)
+## 4. Struktur File (current)
+
+```
+/home/faiz/soga-11/
+├── index.html              → SPA (navbar + footer + router: #home, #register, #find-ticket)
+├── dashboard.html          → admin (login + stats + chart + check-in + tabel + modal + toggle)
+├── certificate.html        → klaim sertifikat (PNG/PDF)
+├── css/
+│   ├── variables.css       → design tokens (light magic purple)
+│   ├── global.css          → global + shared components (badge, form, alert, btn-large, stats, navbar-brand, .ico, .brand-logo)
+│   ├── dashboard.css       → dashboard + modal + chart + setting-row
+│   └── certificate.css     → sertifikat
+├── js/
+│   ├── config.js           → kredensial Supabase (window.SOGA_CONFIG)
+│   ├── api.js              → client Supabase + semua fungsi API (window.SOGA_API)
+│   ├── app.js              → router + countdown + register + find-ticket + EVENT_DATE
+│   ├── dashboard.js        → auth, data, chart, check-in, modal edit/delete, CSV, toggle reg
+│   └── certificate.js      → klaim + download sertifikat
+├── pages/
+│   ├── home/home.html+css  → landing (hero, agenda, speakers, FAQ)
+│   ├── register/register.html+css → form registrasi + success QR + closed state
+│   ├── find-ticket/find-ticket.html+css → recover QR (NEW)
+│   └── certificate/        → (kosong)
+├── components/
+│   ├── navbar/navbar.css
+│   └── footer/footer.css
+├── assets/                 → logo.png, logo-web.png, favicon.png/.ico, apple-touch-icon.png, og-image.png
+├── docs/HANDOFF.md         → dokumen ini
+└── aturan.md               → RULES + log kesalahan (WAJIB baca)
+```
+
+---
+
+## 5. Database Schema (current)
 
 ### Tabel `public.participants`
 | Kolom | Tipe | Keterangan |
 |---|---|---|
-| `id` | uuid PK | auto (gen_random_uuid) |
-| `qr_token` | text UNIQUE NOT NULL | ID tiket, format `SGN11-XXXXXX` |
+| `id` | uuid PK | auto `gen_random_uuid()` |
+| `qr_token` | text UNIQUE NOT NULL | `SGN11-XXXXXX` |
 | `full_name` | text NOT NULL | |
-| `email` | text NOT NULL | |
-| `whatsapp` | text NOT NULL | |
+| `email` | text NOT NULL | (belum UNIQUE — lihat Next Steps) |
+| `whatsapp` | text NOT NULL | (belum UNIQUE) |
 | `gender` | text NOT NULL | `L` / `P` |
 | `institution` | text NOT NULL | |
 | `job` | text NOT NULL | |
@@ -84,88 +122,131 @@ Kredensial ini juga sudah di-hardcode di `js/config.js`.
 | `question` | text (nullable) | |
 | `status` | text NOT NULL default `'pending'` | `pending` / `hadir` |
 | `checkin_time` | timestamptz (nullable) | |
-| `created_at` | timestamptz default now() | |
+| `created_at` | timestamptz default `now()` | |
 
-### Row Level Security (RLS)
-- **anon (public):** hanya boleh `INSERT` (registrasi). Tidak bisa `SELECT`/`UPDATE`/`DELETE`.
-- **authenticated (admin):** boleh `SELECT`/`UPDATE`/`DELETE`.
+### Tabel `public.settings` (NEW — buat close registration)
+| Kolom | Tipe |
+|---|---|
+| `key` | text PK |
+| `value` | text NOT NULL |
+
+Seed: `registration_open = 'true'`. RLS **enabled tanpa policy** (akses cuma lewat RPC SECURITY DEFINER).
 
 ### RPC Functions
-1. `claim_certificate(p_lookup text)` → balikin `(qr_token, full_name, status)` HANYA untuk peserta yang `status='hadir'`. Dipakai halaman certificate. (SECURITY DEFINER, tapi aman — cuma balikin field terbatas.)
-2. `checkin_participant(p_qr_token text)` → update status jadi `hadir` + set checkin_time. **Hanya authenticated (admin)** — ada guard `auth.role() <> 'authenticated'` di dalamnya.
+| Function | Return | Akses | Keterangan |
+|---|---|---|---|
+| `claim_certificate(p_lookup)` | `(qr_token, full_name, status)` | **public** | HANYA peserta `status='hadir'`. Lookup by qr_token/WA |
+| `find_ticket(p_lookup)` | `(qr_token, full_name)` | **public** | Lookup by email (case-insensitive) / WA. SEMUA status |
+| `is_registration_open()` | `boolean` | **public** | Baca flag `registration_open` |
+| `checkin_participant(p_qr_token)` | `void` | **admin-only** | Set status `hadir` + checkin_time. Guard email + revoke anon |
+| `set_registration_open(p_open)` | `void` | **admin-only** | Toggle flag. Guard email + revoke anon |
+
+> Semua RPC = `SECURITY DEFINER` + `SET search_path TO 'public'`.
+
+### Row Level Security (RLS) — `participants`
+- `public_can_register`: **INSERT**, `check = true` (anon boleh daftar).
+- `admin_select` / `admin_update` / `admin_delete`: `auth.jwt() ->> 'email' = 'admin@data-sorcerers.com'`.
+
+> ⚠️ Email admin di-hardcode di RLS + RPC. Kalau ganti email admin, WAJIB update keduanya.
 
 ---
 
-## 5. Struktur File
+## 6. Kredensial Supabase
 
-```
-/home/faiz/soga-11/
-├── index.html              → landing + register (hash routing: #home, #register)
-├── dashboard.html          → admin (login auth + tabel + scan + CSV export)
-├── certificate.html        → klaim sertifikat (PNG/PDF)
-├── css/
-│   ├── variables.css       → design tokens (light magic purple)
-│   ├── global.css          → global styles + tombol + kartu + grid
-│   ├── dashboard.css       → style dashboard
-│   └── certificate.css     → style sertifikat
-├── js/
-│   ├── config.js           → kredensial Supabase
-│   ├── api.js              → client Supabase + semua fungsi API (window.SOGA_API)
-│   ├── app.js              → router + countdown + logika register & QR
-│   ├── dashboard.js        → logika admin (auth, tabel, check-in, CSV)
-│   └── certificate.js      → logika klaim sertifikat + download
-├── pages/
-│   ├── home/
-│   │   ├── home.html       → konten landing (hero, agenda, speakers, FAQ)
-│   │   └── home.css
-│   └── register/
-│       ├── register.html   → form registrasi
-│       └── register.css
-├── components/
-│   ├── navbar/navbar.css   → style navbar (navbar inline di index.html)
-│   └── footer/footer.css   → style footer (footer inline di index.html)
-└── docs/
-    └── HANDOFF.md          → dokumen ini
-```
+| Item | Nilai |
+|---|---|
+| Project ref / ID | `metnsgficvfvkmmksoua` |
+| URL | `https://metnsgficvfvkmmksoua.supabase.co` |
+| Region | `ap-southeast-1` (Singapore) |
+| Anon key | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ldG5zZ2ZpY3ZmdmttbWtzb3VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNDMxMjksImV4cCI6MjEwNDYxOTEyOX0.mQvJN4az9P5llBqDnDWEQBYMkTODUKqC8_clsTkpjIY` |
+| **Email admin** | `admin@data-sorcerers.com` |
+| **Password admin** | `[REMOVED: managed outside repository]` |
+| service_role key | ❌ BELUM diambil (RAHASIA — jangan taruh frontend) |
+
+Kredensial anon juga di-hardcode di `js/config.js`.
 
 ---
 
-## 6. Arsitektur & Alur Data
+## 7. Arsitektur & Alur Data
 
 ```
 User (browser)
-  → index.html (SPA hash routing: #home / #register)
+  → index.html (SPA hash routing: #home / #register / #find-ticket)
   → [register] isi form → generate qr_token "SGN11-XXXXXX" (client-side)
-      → INSERT ke Supabase (table participants) via anon key
+      → INSERT ke participants via anon key (TANPA .select()!)
       → generate QR (qrcodejs) → tampilkan tiket
-  → [dashboard] login admin (Supabase Auth: email+password)
-      → SELECT participants (RLS: authenticated only)
+  → [find-ticket] input email/WA → RPC find_ticket → tampilkan ulang QR
+  → [dashboard] login admin (Supabase Auth)
+      → SELECT participants (RLS: email admin)
       → check-in: scan QR / input ID → RPC checkin_participant
+      → detail/edit/hapus (modal) → update/delete via RLS
       → export CSV
+      → toggle pendaftaran → RPC set_registration_open
   → [certificate] input ID/HP → RPC claim_certificate
       → render sertifikat → download PNG (html2canvas) / PDF (jspdf)
 ```
 
-### Alur QR Code (penting)
-1. QR **digenerate di browser** (library `qrcodejs`) — isinya string `SGN11-XXXXXX`.
-2. Saat event, admin scan QR → dapet `SGN11-XXXXXX` → RPC `checkin_participant` → status jadi `hadir`.
-3. Peserta klaim sertifikat pakai `SGN11-XXXXXX` (atau HP) → RPC `claim_certificate`.
-
-### Library CDN yang dipakai
-| Library | CDN | Dipakai di |
-|---|---|---|
-| `@supabase/supabase-js` v2 (UMD) | jsdelivr | semua halaman |
-| `qrcodejs` 1.0.0 | cdnjs | register (generate QR) |
-| `html5-qrcode` 2.3.8 | jsdelivr | dashboard (scan QR kamera) |
-| `html2canvas` 1.4.1 | cdnjs | certificate (download PNG) |
-| `jspdf` 2.5.1 | cdnjs | certificate (download PDF) |
-| Google Fonts `Plus Jakarta Sans` | fonts.googleapis.com | semua halaman |
+**Alur QR (penting):** QR digenerate di **browser** (isinya string `SGN11-XXXXXX`). Admin scan → dapet token → check-in. Peserta recover via find_ticket / klaim sertifikat via token atau WA.
 
 ---
 
-## 7. Cara Menjalankan
+## 8. Model Keamanan (jangan dilanggar!)
 
-Proyek ini **static site** (vanilla), tapi pakai `fetch` buat routing → **harus lewat server lokal**, bukan `file://`.
+- ❌ Jangan expose `service_role` key di frontend.
+- ❌ Jangan bikin policy SELECT buat `anon` (itu penyebab SOGA 10 bocor).
+- ✅ anon cuma boleh INSERT peserta.
+- ✅ Semua data peserta cuma dibaca admin (email-scoped).
+- ✅ `claim_certificate` / `find_ticket` cuma balikin field terbatas (nama + token).
+- ✅ Semua `innerHTML` pakai `esc()` (XSS-safe).
+- ✅ Matikan public signup (belum! → lihat Next Steps).
+
+---
+
+## 9. Git History (checkpoints)
+
+```
+08b4372 chore: bump cache version to v2
+996de6e feat: find my ticket (recover QR by email/WA)
+2f924d7 feat: close registration toggle
+3a921a4 feat: dashboard search by email/whatsapp
+0f2a20e feat: set event date to 25 Oct 2026
+7ec2a19 docs: record checkin_participant EXECUTE revocation
+50eebaa fix: guard renderCharts against Chart.js load failure
+74b1c41 feat: add chart analytics (conversion + arrival time)
+38c787d chore: cache-bust local assets with ?v=1
+f5e2bdf fix: register - drop .select() on anon insert
+da78cca feat: participant detail modal + edit/delete actions
+43f03a6 docs: add aturan.md (project rules + error log)
+e27d105 feat: countdown fallback and check-in status icons
+14366a7 refactor: consolidate shared CSS into global.css and style icons
+674856c feat: branding - favicon, SEO/OG meta, logo, and SVG icons
+932c794 assets: add Data Sorcerers logo, favicon, and og-image
+b627b95 feat: initial SOGA 11 project scaffold
+ceec867 chore: add .gitignore
+```
+
+Branch: `master`. **Komit per-fitur** (user prefer commit terpisah tiap fitur/file).
+
+---
+
+## 10. Referensi: SOGA 10 (repo lama)
+
+Lokasi: `/home/faiz/clone/sorcery-gathering/` (jangan di-edit, cuma referensi).
+
+**Yang DIAMBIL dari SOGA 10:**
+- Logo mark: `assets/images/logo_mark V2 (1).png` → udah di-copy ke SOGA 11.
+- Konsep: struktur form registrasi (5 bagian), QR tiket, dashboard admin ("Command Center").
+
+**Yang DIBUANG dari SOGA 10:**
+- GAS backend (data bocor publik), obfuscation (JS di-obfuscate), dark theme, PIN client-side.
+
+**Catatan SOGA 10:** dashboard admin-nya ("Command Center") punya fitur kaya (5 tab: overview + chart gauge, scanner, database, broadcast center WA, settings). SOGA 11 baru punya sebagian (chart ✅, check-in ✅, database ✅). Yang belum: **broadcast center** + **rundown/speaker readiness** (lihat Next Steps).
+
+---
+
+## 11. Cara Menjalankan
+
+Static site, tapi pakai `fetch` untuk routing → **harus lewat server lokal** (bukan `file://`).
 
 ```bash
 cd /home/faiz/soga-11
@@ -173,37 +254,40 @@ python3 -m http.server 8091
 # buka http://localhost:8091/
 ```
 
-Halaman:
-- `http://localhost:8091/` → landing + register (klik "Register Now" → #register)
+- `http://localhost:8091/` → landing + register + find-ticket
+- `http://localhost:8091/#register` → registrasi
+- `http://localhost:8091/#find-ticket` → recover QR
 - `http://localhost:8091/dashboard.html` → admin
 - `http://localhost:8091/certificate.html` → klaim sertifikat
 
----
-
-## 8. Keputusan Penting yang Sudah Diambil
-
-1. **Backend = Supabase** (bukan GAS). Karena SOGA 10 (GAS) datanya bocor publik.
-2. **Stack = Vanilla** (bukan React/Next). Karena event site simpel + tanpa build + gampang deploy.
-3. **Desain = Light magic purple** (bukan dark). User minta "magic purple tapi white/light".
-4. **QR = client-side** (qrcodejs), isinya `SGN11-XXXXXX` (bukan URL).
-5. **Admin auth = Supabase Auth** (email+password), bukan PIN client-side.
-6. **Data aman = RLS**: anon cuma INSERT, admin (authenticated) full access.
+> ⚠️ **Cache-busting:** local asset pakai `?v=2`. Tiap edit JS/CSS, bump versinya (atau hard refresh `Ctrl+Shift+R`).
 
 ---
 
-## 9. Referensi: SOGA 10 (repo lama)
+## 12. NEXT STEPS / Roadmap (yang BELUM kelar)
 
-Lokasi: `/home/faiz/clone/sorcery-gathering` (jangan di-edit, cuma referensi).
+### Prioritas tinggi (sebelum deploy)
+1. **Isi konten event** — butuh data dari user: speaker (masih "To Be Announced"), agenda final, venue detail, link sosmed footer (masih `#`). `EVENT_DATE` udah diisi (25 Okt 2026).
+2. **Deploy** — belum. Ke Vercel/Netlify (static site). Setelah deploy, update `og:image` ke URL absolut (sekarang masih relative `assets/og-image.png`).
+3. **Matikan public signup** (manual, 10 detik di Dashboard): `Auth → Providers → Email → "Allow new users to sign up" OFF`. + **aktifkan Leaked Password Protection** (`Auth → Password Security`).
 
-Hal yang diambil dari SOGA 10: struktur form registrasi (5 bagian), konsep QR tiket, konsep dashboard admin.
-Hal yang DIBUANG dari SOGA 10: GAS backend, obfuscation, dark theme, PIN client-side.
+### Fitur (deferred / butuh keputusan)
+4. **Double registration prevention** — email/WA belum UNIQUE. User minta di-defer, plan nanti.
+5. **Broadcast center** (kirim WA massal) — butuh provider WA API (Fonnte/WATI/Twilio) + Supabase Edge Function. Paling kompleks.
+6. **Rundown + Speaker Readiness** — frontend-only, butuh data speaker/agenda.
+7. **Email/WA konfirmasi otomatis** setelah daftar — butuh service email/WA.
+
+### Minor (opsional)
+8. RLS `auth_rls_initplan` micro-opt (wrap `auth.jwt()` di `(select ...)`) — negligible di skala ini.
+9. `og-image.png` belum diverifikasi visual (model nggak bisa lihat gambar).
 
 ---
 
-## 10. Catatan Keamanan (biar nggak ngulangin kesalahan SOGA 10)
+## 13. RULES → baca `aturan.md`
 
-- ❌ Jangan pernah expose `service_role key` di frontend.
-- ❌ Jangan bikin policy SELECT buat `anon` (itu yang bikin SOGA 10 bocor).
-- ✅ Semua data peserta cuma bisa dibaca admin (authenticated).
-- ✅ `claim_certificate` cuma balikin nama + status (bukan email/HP).
-- ✅ Matikan public signup di Supabase Auth (biar cuma admin yang bisa login).
+`aturan.md` berisi:
+- Supabase project yang dipakai = `soga-11` (`metnsgficvfvkmmksoua`). **JANGAN sentuh project `jelajah`.**
+- Log kesalahan (query pg_policy, generated columns auth.users, bug register RLS).
+- Keamanan & admin (email admin di-hardcode, RPC revoke).
+
+**Aturan umum:** tiap ada kesalahan baru → TAMBAH ke `aturan.md`.
