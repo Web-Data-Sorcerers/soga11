@@ -58,3 +58,4 @@
 - **RLS di-hardened:** policy `admin_select/update/delete` sekarang cek `auth.jwt() ->> 'email' = 'admin@data-sorcerers.com'` (BUKAN cuma `authenticated`). Jadi walaupun public signup masih NYALA, user random nggak bisa baca data.
 - **Tetap disarankan:** matikan public signup di Dashboard (Auth → Providers → Email → "Allow new users to sign up" OFF) sebagai lapisan ekstra.
 - Kalau email admin diganti → WAJIB update RLS policy + RPC `checkin_participant` juga.
+- RPC `checkin_participant`: EXECUTE sudah di-`revoke` dari `public`/`anon` → hanya `authenticated` + `service_role` yang bisa panggil. (`claim_certificate` TETAP public, by design — cuma balikin nama/status peserta yang sudah hadir.)
