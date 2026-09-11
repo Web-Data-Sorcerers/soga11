@@ -52,11 +52,14 @@ function initNavbar() {
 // Home: countdown
 // ============================================================
 function initReveal() {
-  const cards = document.querySelectorAll(".legacy-card");
-  if (!cards.length) return;
+  const targets = document.querySelectorAll(
+    ".hero-copy, .hero-visual, .section-header, .stat-card, .timeline-item, .speaker-card, .legacy-card, .faq-item"
+  );
+  targets.forEach((t) => t.classList.add("reveal"));
+  if (!targets.length) return;
 
   if (!("IntersectionObserver" in window)) {
-    cards.forEach((c) => c.classList.add("revealed"));
+    targets.forEach((t) => t.classList.add("revealed"));
     return;
   }
 
@@ -71,7 +74,7 @@ function initReveal() {
     },
     { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
   );
-  cards.forEach((c) => io.observe(c));
+  targets.forEach((t) => io.observe(t));
 }
 
 function initHome() {
