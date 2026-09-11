@@ -3,6 +3,8 @@
 // ============================================================
 let participants = [];
 let scanner = null;
+let conversionChart = null;
+let arrivalChart = null;
 
 const ICON_CHECK = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
 const ICON_X = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
@@ -62,6 +64,7 @@ async function loadParticipants() {
     participants = await window.SOGA_API.getParticipants();
     renderStats();
     renderTable();
+    renderCharts();
   } catch (e) {
     document.getElementById("table-body").innerHTML =
       `<tr><td colspan="7" class="text-center">Gagal memuat data.</td></tr>`;
@@ -75,6 +78,52 @@ function renderStats() {
   document.getElementById("stat-total").textContent = total;
   document.getElementById("stat-present").textContent = present;
   document.getElementById("stat-conversion").textContent = conversion + "%";
+}
+
+function renderCharts() {
+  const hadir = participants.filter((p) => p.status === "hadir").length;
+  const pending = participants.length - hadir;
+
+  const convCanvas = document.getElementById("chart-conversion");
+  if (convCanvas) {
+    if (conversionChart) conversionChart.destroy();
+    conversionChart = new Chart(convCanvas, {
+      type: "doughnut",
+      data: {
+        labels: ["Hadir", "Belum Hadir"],
+        datasets: [{ data: [hadir, pending], backgroundColor: ["#16a34a", "#c084fc"], borderWidth: 0 }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "68%",
+        plugins: { legend: { position: "bottom" } },
+      },
+    });
+  }
+
+  const hourCounts = new Array(24).fill(0);
+  participants.forEach((p) => {
+    if (p.checkin_time) hourCounts[new Date(p.checkin_time).getHours()]++;
+  });
+
+  const arrCanvas = document.getElementById("chart-arrival");
+  if (arrCanvas) {
+    if (arrivalChart) arrivalChart.destroy();
+    arrivalChart = new Chart(arrCanvas, {
+      type: "bar",
+      data: {
+        labels: hourCounts.map((_, i) => String(i).padStart(2, "0") + ":00"),
+        datasets: [{ label: "Check-in", data: hourCounts, backgroundColor: "#7c3aed", borderRadius: 4 }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+      },
+    });
+  }
 }
 
 function renderTable(filter = "all", query = "") {

@@ -24,6 +24,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -69,6 +70,18 @@
         <div class="stat-card card"><h3 id="stat-total" class="stat-num">0</h3><p>Total Pendaftar</p></div>
         <div class="stat-card card"><h3 id="stat-present" class="stat-num" style="color:#16a34a">0</h3><p>Hadir</p></div>
         <div class="stat-card card"><h3 id="stat-conversion" class="stat-num">0%</h3><p>Conversion Rate</p></div>
+      </div>
+
+      <!-- Charts -->
+      <div class="grid grid-2 dash-charts">
+        <div class="card dash-panel">
+          <h3>Konversi Kehadiran</h3>
+          <div class="chart-box"><canvas id="chart-conversion"></canvas></div>
+        </div>
+        <div class="card dash-panel">
+          <h3>Waktu Kedatangan (per jam)</h3>
+          <div class="chart-box"><canvas id="chart-arrival"></canvas></div>
+        </div>
       </div>
 
       <!-- Check-in -->

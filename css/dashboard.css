@@ -65,6 +65,11 @@
   -webkit-text-fill-color: #16a34a;
   color: #16a34a;
 }
+.dash-charts { margin-bottom: 0; }
+.chart-box {
+  position: relative;
+  height: 260px;
+}
 
 .dash-panel {
   padding: 24px;
