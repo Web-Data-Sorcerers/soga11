@@ -22,6 +22,9 @@
   gap: 10px;
   margin-bottom: 16px;
 }
+.footer .brand-logo {
+  height: 64px;
+}
 
 .footer-desc {
   color: var(--text-secondary);

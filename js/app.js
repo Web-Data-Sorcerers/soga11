@@ -15,18 +15,34 @@ const routes = {
   "find-ticket": "pages/find-ticket/find-ticket.html",
 };
 
+const ANCHORS = new Set(["agenda", "speakers", "legacy", "faq"]);
+
 async function route() {
   const hash = location.hash.replace("#", "") || "home";
-  const target = routes[hash] || routes.home;
-  const app = document.getElementById("app");
 
+  if (ANCHORS.has(hash)) {
+    if (!document.getElementById(hash)) {
+      await loadPage(routes.home, "home");
+    }
+    const el = document.getElementById(hash);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+    else window.scrollTo(0, 0);
+    return;
+  }
+
+  const target = routes[hash] || routes.home;
+  await loadPage(target, hash);
+  window.scrollTo(0, 0);
+}
+
+async function loadPage(target, hash) {
+  const app = document.getElementById("app");
   try {
     const res = await fetch(target);
     app.innerHTML = await res.text();
     if (hash === "register") initRegister();
     else if (hash === "find-ticket") initFindTicket();
     else initHome();
-    window.scrollTo(0, 0);
   } catch (e) {
     app.innerHTML = `<div class="container" style="padding:60px 0"><p>Gagal memuat halaman. Pastikan dijalankan lewat server lokal (bukan file://).</p></div>`;
   }
