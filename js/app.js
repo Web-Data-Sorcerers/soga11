@@ -51,7 +51,31 @@ function initNavbar() {
 // ============================================================
 // Home: countdown
 // ============================================================
+function initReveal() {
+  const cards = document.querySelectorAll(".legacy-card");
+  if (!cards.length) return;
+
+  if (!("IntersectionObserver" in window)) {
+    cards.forEach((c) => c.classList.add("revealed"));
+    return;
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("revealed");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+  );
+  cards.forEach((c) => io.observe(c));
+}
+
 function initHome() {
+  initReveal();
   const cd = document.getElementById("countdown");
   if (!cd) return;
 
