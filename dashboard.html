@@ -105,15 +105,30 @@
                 <th>WhatsApp</th>
                 <th>Status</th>
                 <th>Check-in</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody id="table-body">
-              <tr><td colspan="6" class="text-center">Memuat data...</td></tr>
+              <tr><td colspan="7" class="text-center">Memuat data...</td></tr>
             </tbody>
           </table>
         </div>
       </div>
     </main>
+  </div>
+
+  <!-- Participant detail/edit modal -->
+  <div id="participant-modal" class="modal-overlay hidden">
+    <div class="modal-card card">
+      <div class="modal-header">
+        <h3 id="modal-title">Detail Peserta</h3>
+        <button id="btn-modal-close" class="modal-close" aria-label="Tutup">
+          <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-footer" id="modal-footer"></div>
+    </div>
   </div>
 
   <script src="js/config.js"></script>

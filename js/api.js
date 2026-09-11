@@ -72,6 +72,25 @@
     if (error) throw error;
   }
 
+  async function updateParticipant(id, updates) {
+    const { data, error } = await supabase
+      .from("participants")
+      .update(updates)
+      .eq("id", id)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  }
+
+  async function deleteParticipant(id) {
+    const { error } = await supabase
+      .from("participants")
+      .delete()
+      .eq("id", id);
+    if (error) throw error;
+  }
+
   // Expose API
   window.SOGA_API = {
     supabase,
@@ -82,5 +101,7 @@
     getCurrentAdmin,
     getParticipants,
     checkInParticipant,
+    updateParticipant,
+    deleteParticipant,
   };
 })();
