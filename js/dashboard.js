@@ -138,7 +138,9 @@ function renderTable(filter = "all", query = "") {
       (p) =>
         p.full_name?.toLowerCase().includes(q) ||
         p.qr_token?.toLowerCase().includes(q) ||
-        p.institution?.toLowerCase().includes(q)
+        p.institution?.toLowerCase().includes(q) ||
+        p.email?.toLowerCase().includes(q) ||
+        p.whatsapp?.toLowerCase().includes(q)
     );
   }
 
