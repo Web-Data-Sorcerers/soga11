@@ -4,7 +4,7 @@
 // ============================================================
 
 // --- Konfigurasi event (ganti di sini) ---
-const EVENT_DATE = ""; // TODO: isi tanggal SOGA 11, format "YYYY-MM-DDTHH:mm:ss+07:00" (WIB)
+const EVENT_DATE = "2026-10-25T09:00:00+07:00"; // Minggu, 25 Oktober 2026
 
 // ============================================================
 // Router
@@ -58,6 +58,16 @@ function initHome() {
     if (status) status.textContent = "Tanggal segera diumumkan";
     cd.style.display = "none";
     return;
+  }
+
+  const dateEl = document.getElementById("event-date");
+  if (dateEl) {
+    dateEl.textContent = new Date(EVENT_DATE).toLocaleDateString("id-ID", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
   }
 
   const target = new Date(EVENT_DATE).getTime();
