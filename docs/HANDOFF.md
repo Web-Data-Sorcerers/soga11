@@ -2,7 +2,7 @@
 
 > **Tujuan:** biar AI/developer baru bisa lanjut kerja **tanpa kehilangan konteks**.
 > Baca dari atas ke bawah. File pendamping: **`aturan.md`** (rules + log kesalahan) — WAJIB baca juga.
-> Tanggal update terakhir: 11 September 2026.
+> Tanggal update terakhir: 12 September 2026.
 
 ---
 
@@ -198,7 +198,8 @@ User (browser)
 - ✅ Semua data peserta cuma dibaca admin (email-scoped).
 - ✅ `claim_certificate` / `find_ticket` cuma balikin field terbatas (nama + token).
 - ✅ Semua `innerHTML` pakai `esc()` (XSS-safe).
-- ✅ Matikan public signup (belum! → lihat Next Steps).
+- ✅ **Public signup DIMATIKAN** (12 Sep 2026, Management API `disable_signup=true`); signup anon → `422 signup_disabled`, login admin normal.
+- ⚠️ Leaked Password Protection **belum** (Pro Plan only, Free plan 402) → lihat Next Steps.
 
 ---
 
@@ -269,7 +270,7 @@ python3 -m http.server 8091
 ### Prioritas tinggi (sebelum deploy)
 1. **Isi konten event** — butuh data dari user: speaker (masih "To Be Announced"), agenda final, venue detail, link sosmed footer (masih `#`). `EVENT_DATE` udah diisi (25 Okt 2026).
 2. **Deploy** — belum. Ke Vercel/Netlify (static site). Setelah deploy, update `og:image` ke URL absolut (sekarang masih relative `assets/og-image.png`).
-3. **Matikan public signup** (manual, 10 detik di Dashboard): `Auth → Providers → Email → "Allow new users to sign up" OFF`. + **aktifkan Leaked Password Protection** (`Auth → Password Security`).
+3. ~~Matikan public signup~~ ✅ **DONE (12 Sep 2026)** via Management API `disable_signup=true` (`metnsgficvfvkmmksoua`). Sisa: **Leaked Password Protection** — **butuh Pro Plan** (Free plan ditolak 402). Opsional Free-plan: naikkan `password_min_length` (sekarang 6).
 
 ### Fitur (deferred / butuh keputusan)
 4. **Double registration prevention** — email/WA belum UNIQUE. User minta di-defer, plan nanti.

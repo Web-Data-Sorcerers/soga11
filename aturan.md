@@ -51,6 +51,11 @@
 - **Penyebab:** `.select()` (RETURNING) butuh policy SELECT, tapi role `anon` TIDAK punya policy SELECT (by design cuma INSERT via `public_can_register`). Error: `new row violates row-level security policy for table "participants"`.
 - **Solusi:** JANGAN pakai `.select()` pada INSERT untuk role anon. Cukup `.insert([data])` tanpa RETURNING. (Register nggak butuh return value — qr_token digenerate client-side.)
 
+### 2026-09-12 — PATCH Management API 402 (HIBP Pro-only) bikin SEMUA field ikut gagal
+- **Kesalahan:** PATCH config Auth dengan `{"disable_signup":true,"password_hibp_enabled":true}` → HTTP **402**, pesan `"Configuring leaked password protection via HaveIBeenPwned.org is available on Pro Plans and up."` Akibatnya `disable_signup` IKUT gagal (PATCH bersifat atomic).
+- **Solusi:** JANGAN gabung `password_hibp_enabled` dengan field lain — kirim `disable_signup` sendiri. Di Free plan, HIBP memang tidak bisa diaktifkan lewat API; cukup andalkan `disable_signup=true` + RLS admin-only.
+- **Verifikasi sukses:** `disable_signup=true` → signup anon balik `422 signup_disabled`; login admin tetap `200`.
+
 ---
 
 ## 3. Keamanan & Admin
@@ -58,6 +63,8 @@
 - **Email admin:** `admin@data-sorcerers.com` — SUDAH di-hardcode di RLS policy + RPC `checkin_participant`.
 - **Password admin:** diberikan langsung ke user. **JANGAN commit ke repo / tulis di file.**
 - **RLS di-hardened:** policy `admin_select/update/delete` sekarang cek `auth.jwt() ->> 'email' = 'admin@data-sorcerers.com'` (BUKAN cuma `authenticated`). Jadi walaupun public signup masih NYALA, user random nggak bisa baca data.
-- **Tetap disarankan:** matikan public signup di Dashboard (Auth → Providers → Email → "Allow new users to sign up" OFF) sebagai lapisan ekstra.
+- ✅ **Public signup DIMATIKAN** (12 Sep 2026) via Management API: `PATCH https://api.supabase.com/v1/projects/metnsgficvfvkmmksoua/config/auth` body `{"disable_signup":true}`. Terverifikasi: signup via anon key balik `422 signup_disabled`; login admin normal.
+- ⚠️ **Leaked Password Protection (`password_hibp_enabled`) = Pro Plan only** (Free plan → HTTP 402). Belum aktif; alternatif yang tersedia: `password_min_length` dinaikkan.
+- 🔑 **Management API**: pakai Personal Access Token (`sbp_...`) HANYA lewat env shell, JANGAN tulis/commit ke repo. Revoke setelah dipakai.
 - Kalau email admin diganti → WAJIB update RLS policy + RPC `checkin_participant` juga.
 - RPC `checkin_participant`: EXECUTE sudah di-`revoke` dari `public`/`anon` → hanya `authenticated` + `service_role` yang bisa panggil. (`claim_certificate` TETAP public, by design — cuma balikin nama/status peserta yang sudah hadir.)
