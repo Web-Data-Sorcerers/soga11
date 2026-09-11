@@ -13,6 +13,17 @@
   text-align: center;
   margin-bottom: 32px;
 }
+.register-closed {
+  text-align: center;
+  padding: 24px 16px;
+}
+.register-closed h3 {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+.register-closed p {
+  color: var(--text-secondary);
+}
 
 .form-section {
   font-size: 1.1rem;

@@ -5,6 +5,7 @@ let participants = [];
 let scanner = null;
 let conversionChart = null;
 let arrivalChart = null;
+let registrationOpen = true;
 
 const ICON_CHECK = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
 const ICON_X = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
@@ -35,6 +36,7 @@ function showDashboard(user) {
   document.getElementById("dashboard").classList.remove("hidden");
   document.getElementById("admin-name").textContent = user.email;
   loadParticipants();
+  loadRegistrationStatus();
 }
 
 document.getElementById("login-form").addEventListener("submit", async (e) => {
@@ -431,6 +433,41 @@ document.getElementById("btn-export").addEventListener("click", () => {
   a.download = "soga11_peserta.csv";
   a.click();
   URL.revokeObjectURL(a.href);
+});
+
+// ============================================================
+// Registration toggle
+// ============================================================
+async function loadRegistrationStatus() {
+  try {
+    registrationOpen = await window.SOGA_API.isRegistrationOpen();
+  } catch (e) {
+    registrationOpen = true;
+  }
+  renderRegistrationToggle();
+}
+
+function renderRegistrationToggle() {
+  const txt = document.getElementById("reg-status-text");
+  const btn = document.getElementById("btn-toggle-registration");
+  if (!txt || !btn) return;
+  txt.textContent = registrationOpen ? "Pendaftaran terbuka" : "Pendaftaran ditutup";
+  btn.textContent = registrationOpen ? "Tutup Pendaftaran" : "Buka Pendaftaran";
+  btn.className = registrationOpen ? "btn btn-secondary" : "btn btn-primary";
+}
+
+document.getElementById("btn-toggle-registration").addEventListener("click", async () => {
+  const btn = document.getElementById("btn-toggle-registration");
+  btn.disabled = true;
+  try {
+    await window.SOGA_API.setRegistrationOpen(!registrationOpen);
+    registrationOpen = !registrationOpen;
+    renderRegistrationToggle();
+  } catch (e) {
+    alert("Gagal mengubah status: " + (e.message || "terjadi kesalahan"));
+  } finally {
+    btn.disabled = false;
+  }
 });
 
 // ============================================================

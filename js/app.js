@@ -106,9 +106,21 @@ function generateToken() {
   return "SGN11-" + code;
 }
 
-function initRegister() {
+async function initRegister() {
   const form = document.getElementById("register-form");
   if (!form) return;
+
+  let open = true;
+  try {
+    open = await window.SOGA_API.isRegistrationOpen();
+  } catch (e) {
+    open = true;
+  }
+  if (!open) {
+    form.classList.add("hidden");
+    document.getElementById("register-closed").classList.remove("hidden");
+    return;
+  }
 
   const fields = [
     "f-name", "f-email", "f-whatsapp", "f-gender",

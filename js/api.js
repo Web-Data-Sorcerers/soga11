@@ -33,6 +33,20 @@
     return data && data.length ? data[0] : null;
   }
 
+  async function isRegistrationOpen() {
+    const { data, error } = await supabase.rpc("is_registration_open");
+    if (error) throw error;
+    return data === true;
+  }
+
+  async function findTicket(lookup) {
+    const { data, error } = await supabase.rpc("find_ticket", {
+      p_lookup: lookup,
+    });
+    if (error) throw error;
+    return data && data.length ? data[0] : null;
+  }
+
   // ============ Admin (butuh login) ============
 
   async function signInAdmin(email, password) {
@@ -88,11 +102,19 @@
     if (error) throw error;
   }
 
+  async function setRegistrationOpen(open) {
+    const { error } = await supabase.rpc("set_registration_open", {
+      p_open: open,
+    });
+    if (error) throw error;
+  }
+
   // Expose API
   window.SOGA_API = {
     supabase,
     registerParticipant,
     claimCertificate,
+    findTicket,
     signInAdmin,
     signOutAdmin,
     getCurrentAdmin,
@@ -100,5 +122,7 @@
     checkInParticipant,
     updateParticipant,
     deleteParticipant,
+    isRegistrationOpen,
+    setRegistrationOpen,
   };
 })();
