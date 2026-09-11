@@ -60,6 +60,8 @@ Versi BARU (bukan fork SOGA 10). SOGA 10 cuma referensi.
 - [x] Semua emoji → ikon **SVG inline premium** (Lucide-style, `stroke="currentColor"`)
 - [x] Konsolidasi CSS lintas halaman ke `global.css`
 - [x] **Animasi** — reveal-on-scroll (semua section landing) + shimmer loading (embed Legacy)
+- [x] **Navbar** — link section discroll bener (anchor navigation, `scroll-padding-top: 80px`)
+- [x] **Logo diperbesar** — navbar 52px / footer 64px (referensi SOGA 10), `logo-web.png` di-trim
 
 ### Keamanan (penting!)
 - [x] RLS: anon **cuma INSERT**, admin (email-scoped) full access
@@ -210,6 +212,24 @@ User (browser)
 ## 9. Git History (checkpoints)
 
 ```
+a863a2e chore: bump cache version to v9
+cfc23a2 fix: navbar anchor navigation + enlarge brand logo (navbar 52px / footer 64px)
+4399715 docs: update HANDOFF checkpoint (FAQ, Legacy, footer, animations)
+1088aa3 chore: bump cache version to v8
+32be321 feat: enrich footer (SOGA 10 content adapted: ecosystem, newsletter, legal, social SVG)
+1f8fc7e chore: bump cache version to v7
+53f7197 feat: apply reveal-on-scroll animation to all home sections
+e19ad88 chore: bump cache version to v6
+c3e9b23 feat: reveal-on-scroll animation for legacy cards
+186c500 chore: bump cache version to v5
+14b2d4c feat: shimmer loading animation for legacy Instagram embeds
+db7c663 chore: bump cache version to v4
+af4565c feat: add The Legacy section (past SOGA editions + Instagram embeds)
+39f2b08 chore: bump cache version to v3
+51b47cb feat: expand FAQ content (adapted from SOGA 10)
+7cadf0a docs: record public signup disabled + HIBP Pro-plan limit
+127249b docs: document Supabase MCP access token location
+d4a0c1a docs: rewrite HANDOFF.md with full current state (checkpoint, schema, next steps)
 08b4372 chore: bump cache version to v2
 996de6e feat: find my ticket (recover QR by email/WA)
 2f924d7 feat: close registration toggle
@@ -241,6 +261,7 @@ Lokasi: `/home/faiz/clone/sorcery-gathering/` (jangan di-edit, cuma referensi).
 **Yang DIAMBIL dari SOGA 10:**
 - Logo mark: `assets/images/logo_mark V2 (1).png` → udah di-copy ke SOGA 11.
 - Konsep: struktur form registrasi (5 bagian), QR tiket, dashboard admin ("Command Center").
+- **Konten**: FAQ (6 pertanyaan), section "The Legacy" (16 kartu event + embed Instagram), footer (ekosistem asli, newsletter, legal links, social).
 
 **Yang DIBUANG dari SOGA 10:**
 - GAS backend (data bocor publik), obfuscation (JS di-obfuscate), dark theme, PIN client-side.
@@ -265,7 +286,7 @@ python3 -m http.server 8091
 - `http://localhost:8091/dashboard.html` → admin
 - `http://localhost:8091/certificate.html` → klaim sertifikat
 
-> ⚠️ **Cache-busting:** local asset pakai `?v=2`. Tiap edit JS/CSS, bump versinya (atau hard refresh `Ctrl+Shift+R`).
+> ⚠️ **Cache-busting:** local asset pakai `?v=9` (versi sekarang). Tiap edit JS/CSS, bump versinya (atau hard refresh `Ctrl+Shift+R`).
 
 ---
 
