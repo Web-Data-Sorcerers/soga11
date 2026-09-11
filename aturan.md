@@ -44,6 +44,11 @@
   - `auth.identities.email` → auto-generated dari `identity_data->>'email'`.
   Kolom `auth.users` yang AMAN di-insert manual: `instance_id, id, aud, role, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at, confirmation_token, recovery_token, email_change, email_change_token_new, email_change_token_current, email_change_confirm_status, is_super_admin, is_sso_user, is_anonymous`.
 
+### 2026-09-11 — Registrasi gagal: "new row violates row-level security policy"
+- **Kesalahan:** `registerParticipant` di `js/api.js` pakai `.insert([data]).select().single()` → jadi `INSERT ... RETURNING *`.
+- **Penyebab:** `.select()` (RETURNING) butuh policy SELECT, tapi role `anon` TIDAK punya policy SELECT (by design cuma INSERT via `public_can_register`). Error: `new row violates row-level security policy for table "participants"`.
+- **Solusi:** JANGAN pakai `.select()` pada INSERT untuk role anon. Cukup `.insert([data])` tanpa RETURNING. (Register nggak butuh return value — qr_token digenerate client-side.)
+
 ---
 
 ## 3. Keamanan & Admin

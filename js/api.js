@@ -14,13 +14,10 @@
    * @returns {Promise<object>} - hasil insert (data atau error)
    */
   async function registerParticipant(data) {
-    const { data: row, error } = await supabase
+    const { error } = await supabase
       .from("participants")
-      .insert([data])
-      .select()
-      .single();
+      .insert([data]);
     if (error) throw error;
-    return row;
   }
 
   /**
