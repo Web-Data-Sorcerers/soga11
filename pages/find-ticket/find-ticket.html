@@ -1,0 +1,28 @@
+<!-- ===================== FIND TICKET ===================== -->
+<section class="section">
+  <div class="container">
+    <div class="find-wrapper card">
+      <div class="register-header">
+        <h2 class="section-title">Cari <span class="text-gradient">Tiket Saya</span></h2>
+        <p class="section-subtitle">Masukkan email atau nomor WhatsApp yang kamu pakai saat registrasi.</p>
+      </div>
+
+      <div class="claim-input">
+        <input type="text" id="find-input" placeholder="email / 08xxxxxxxxxx" />
+        <button id="btn-find" class="btn btn-primary">Cari</button>
+      </div>
+      <p id="find-error" class="alert alert-error hidden">Data tidak ditemukan. Periksa kembali email / nomor WhatsApp kamu.</p>
+
+      <div id="find-result" class="success-state hidden">
+        <h3>Halo, <span id="find-name"></span>!</h3>
+        <p>Ini QR Code tiket kamu. Simpan & tunjukkan saat check-in di lokasi.</p>
+        <div id="find-qr" class="qr-box"></div>
+        <div class="ticket-id">ID: <strong id="find-ticket-id"></strong></div>
+        <div class="success-actions">
+          <button id="btn-find-download" class="btn btn-secondary">Download QR (PNG)</button>
+          <a href="#home" class="btn btn-ghost">Selesai</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

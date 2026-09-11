@@ -12,6 +12,7 @@ const EVENT_DATE = "2026-10-25T09:00:00+07:00"; // Minggu, 25 Oktober 2026
 const routes = {
   home: "pages/home/home.html",
   register: "pages/register/register.html",
+  "find-ticket": "pages/find-ticket/find-ticket.html",
 };
 
 async function route() {
@@ -23,6 +24,7 @@ async function route() {
     const res = await fetch(target);
     app.innerHTML = await res.text();
     if (hash === "register") initRegister();
+    else if (hash === "find-ticket") initFindTicket();
     else initHome();
     window.scrollTo(0, 0);
   } catch (e) {
@@ -223,6 +225,64 @@ function showSuccess(qrToken) {
     const a = document.createElement("a");
     a.href = url;
     a.download = qrToken + ".png";
+    a.click();
+  });
+}
+
+// ============================================================
+// Find Ticket: recover QR by email / WhatsApp
+// ============================================================
+function initFindTicket() {
+  const input = document.getElementById("find-input");
+  const btn = document.getElementById("btn-find");
+  const err = document.getElementById("find-error");
+  const result = document.getElementById("find-result");
+  if (!input || !btn) return;
+
+  async function doFind() {
+    const lookup = input.value.trim();
+    if (!lookup) return;
+    err.classList.add("hidden");
+    result.classList.add("hidden");
+    btn.disabled = true;
+    try {
+      const data = await window.SOGA_API.findTicket(lookup);
+      if (!data) {
+        err.classList.remove("hidden");
+        return;
+      }
+      document.getElementById("find-name").textContent = data.full_name;
+      document.getElementById("find-ticket-id").textContent = data.qr_token;
+      const qrBox = document.getElementById("find-qr");
+      qrBox.innerHTML = "";
+      new QRCode(qrBox, {
+        text: data.qr_token,
+        width: 220,
+        height: 220,
+        colorDark: "#2a1a3d",
+        colorLight: "#ffffff",
+      });
+      result.classList.remove("hidden");
+    } catch (e) {
+      err.classList.remove("hidden");
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  btn.addEventListener("click", doFind);
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") doFind();
+  });
+
+  document.getElementById("btn-find-download").addEventListener("click", () => {
+    const qrBox = document.getElementById("find-qr");
+    const canvas = qrBox.querySelector("canvas") || qrBox.querySelector("img");
+    if (!canvas) return;
+    const url = canvas.toDataURL ? canvas.toDataURL("image/png") : canvas.src;
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = document.getElementById("find-ticket-id").textContent + ".png";
     a.click();
   });
 }

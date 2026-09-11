@@ -1,0 +1,18 @@
+/* ============================================================
+   SOGA 11 — Find Ticket (Light Magic Purple)
+   ============================================================ */
+.find-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px;
+}
+.claim-input {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.claim-input input {
+  flex: 1;
+  min-width: 200px;
+}
