@@ -15,6 +15,8 @@
 - ⚠️ **JANGAN pernah sentuh project `jelajah`** (`vzohtezrdhselrommvcm`).
 - Semua operasi database (SQL, migration, auth) HANYA ke project **`soga-11`** = `metnsgficvfvkmmksoua`.
 - URL: `https://metnsgficvfvkmmksoua.supabase.co`
+- **Akses via MCP** `supabase-jelajah` (nama MCP misleading — token-nya **account-wide**, nyakup `soga-11` + `jelajah`).
+- Token `SUPABASE_ACCESS_TOKEN` ada di **`~/.config/opencode/opencode.json`** (config GLOBAL opencode, BUKAN di repo). Jangan copy token ke file repo.
 
 ---
 
