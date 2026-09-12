@@ -296,6 +296,98 @@ function generateToken() {
   return "SGN11-" + code;
 }
 
+function renderTicketQr(container, ticketId) {
+  if (!container || !ticketId) {
+    throw new Error("QR container and ticket ID are required.");
+  }
+
+  const qrSize = window.matchMedia("(max-width: 479px)").matches ? 192 : 216;
+  container.replaceChildren();
+  container.dataset.qrPayload = ticketId;
+  container.setAttribute(
+    "aria-label",
+    `QR tiket ${ticketId}. Ticket ID yang sama tersedia sebagai teks di bawah QR.`
+  );
+
+  new QRCode(container, {
+    text: ticketId,
+    width: qrSize,
+    height: qrSize,
+    colorDark: "#21152f",
+    colorLight: "#ffffff",
+  });
+
+  return container.querySelector("canvas") || container.querySelector("img");
+}
+
+function renderParticipantCredential(target, participant) {
+  const template = document.getElementById("participant-credential-template");
+  const fullName = participant?.fullName?.trim();
+  const ticketId = participant?.ticketId?.trim();
+  if (!target || !template || !ticketId) {
+    throw new Error("Credential target, template, and ticket ID are required.");
+  }
+
+  const fragment = template.content.cloneNode(true);
+  const credential = fragment.querySelector("[data-credential-root]");
+  const name = fragment.querySelector("[data-credential-name]");
+  const ticket = fragment.querySelector("[data-credential-ticket]");
+  const date = fragment.querySelector("[data-credential-date]");
+  const location = fragment.querySelector("[data-credential-location]");
+  const status = fragment.querySelector("[data-credential-status]");
+  const qr = fragment.querySelector("[data-credential-qr]");
+
+  name.textContent = fullName || "Nama peserta tidak tersedia";
+  ticket.textContent = ticketId;
+  date.textContent = participant.date || "25 OCT 2026";
+  location.textContent = participant.location || "Yogyakarta";
+  status.textContent = participant.status || "Registration Recorded";
+  credential.setAttribute(
+    "aria-label",
+    `Participant Credential SOGA 11 untuk ${name.textContent}, Ticket ID ${ticketId}`
+  );
+
+  target.classList.remove("is-ready");
+  target.replaceChildren(fragment);
+  target.dataset.credentialRenderer = "participant-v1";
+  renderTicketQr(qr, ticketId);
+
+  requestAnimationFrame(() => target.classList.add("is-ready"));
+  return credential;
+}
+
+function getCredentialQrSource(target) {
+  return target?.querySelector("[data-credential-qr] canvas")
+    || target?.querySelector("[data-credential-qr] img");
+}
+
+async function downloadTicketQr(target, ticketId) {
+  const source = getCredentialQrSource(target);
+  if (!source || !ticketId) return false;
+
+  if (source instanceof HTMLImageElement && !source.complete) {
+    await source.decode();
+  }
+
+  const sourceWidth = source.width || source.naturalWidth;
+  const sourceHeight = source.height || source.naturalHeight;
+  const quietZone = 24;
+  const exportCanvas = document.createElement("canvas");
+  exportCanvas.width = sourceWidth + quietZone * 2;
+  exportCanvas.height = sourceHeight + quietZone * 2;
+
+  const context = exportCanvas.getContext("2d");
+  context.fillStyle = "#ffffff";
+  context.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+  context.drawImage(source, quietZone, quietZone, sourceWidth, sourceHeight);
+
+  const link = document.createElement("a");
+  link.href = exportCanvas.toDataURL("image/png");
+  link.download = `${ticketId}.png`;
+  link.click();
+  return true;
+}
+
 async function initRegister() {
   const form = document.getElementById("register-form");
   if (!form) return;
@@ -421,9 +513,10 @@ async function initRegister() {
       question: document.getElementById("f-question").value.trim() || null,
     };
 
+    let registrationSaved = false;
     try {
       await window.SOGA_API.registerParticipant(data);
-      showSuccess(qrToken);
+      registrationSaved = true;
     } catch (err) {
       submitStatus.classList.add("is-error");
       submitStatus.textContent = "Pendaftaran belum tersimpan karena gangguan sementara. Data yang kamu isi tetap tersedia; silakan coba lagi.";
@@ -433,6 +526,10 @@ async function initRegister() {
       submitButton.removeAttribute("aria-busy");
       form.removeAttribute("aria-busy");
       submitLabel.textContent = "Daftar Sekarang";
+    }
+
+    if (registrationSaved) {
+      showSuccess({ fullName: data.full_name, ticketId: qrToken });
     }
   });
 
@@ -450,89 +547,150 @@ async function initRegister() {
   await checkRegistrationStatus();
 }
 
-function showSuccess(qrToken) {
-  document.getElementById("register-form").classList.add("hidden");
-  document.getElementById("register-success").classList.remove("hidden");
-  document.getElementById("ticket-id").textContent = qrToken;
+function showSuccess(participant) {
+  const form = document.getElementById("register-form");
+  const success = document.getElementById("register-success");
+  const credentialMount = document.getElementById("registration-credential");
+  const downloadButton = document.getElementById("btn-download");
+  if (!form || !success || !credentialMount || !downloadButton) return;
 
-  // Generate QR (encode token)
-  const qrBox = document.getElementById("qr-code");
-  qrBox.innerHTML = "";
-  new QRCode(qrBox, {
-    text: qrToken,
-    width: 220,
-    height: 220,
-    colorDark: "#2a1a3d",
-    colorLight: "#ffffff",
-  });
+  renderParticipantCredential(credentialMount, participant);
+  form.classList.add("hidden");
+  success.classList.remove("hidden");
+  document.getElementById("register-success-title")?.focus();
 
-  // Download QR sebagai PNG
-  document.getElementById("btn-download").addEventListener("click", () => {
-    const canvas = qrBox.querySelector("canvas") || qrBox.querySelector("img");
-    if (!canvas) return;
-    const url = canvas.toDataURL ? canvas.toDataURL("image/png") : canvas.src;
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = qrToken + ".png";
-    a.click();
-  });
+  downloadButton.onclick = () => {
+    downloadTicketQr(credentialMount, participant.ticketId);
+  };
 }
 
 // ============================================================
 // Find Ticket: recover QR by email / WhatsApp
 // ============================================================
 function initFindTicket() {
+  const form = document.getElementById("find-ticket-form");
   const input = document.getElementById("find-input");
   const btn = document.getElementById("btn-find");
-  const err = document.getElementById("find-error");
+  const submitLabel = document.getElementById("find-submit-label");
+  const inputError = document.getElementById("find-input-error");
+  const liveStatus = document.getElementById("find-status");
+  const initial = document.getElementById("find-initial");
+  const loading = document.getElementById("find-loading");
+  const notFound = document.getElementById("find-not-found");
+  const networkError = document.getElementById("find-network-error");
   const result = document.getElementById("find-result");
-  if (!input || !btn) return;
+  const credentialMount = document.getElementById("find-credential");
+  const editButton = document.getElementById("btn-find-edit");
+  const retryButton = document.getElementById("btn-find-network-retry");
+  const downloadButton = document.getElementById("btn-find-download");
+  if (!form || !input || !btn || !credentialMount) return;
+
+  const states = { initial, loading, notFound, networkError, result };
+  let isSearching = false;
+  let foundTicketId = "";
+
+  function showFindState(activeState) {
+    Object.values(states).forEach((state) => {
+      state?.classList.toggle("hidden", state !== activeState);
+    });
+  }
+
+  function clearInputError() {
+    input.removeAttribute("aria-invalid");
+    inputError?.classList.add("hidden");
+  }
+
+  function showInputError() {
+    input.setAttribute("aria-invalid", "true");
+    inputError?.classList.remove("hidden");
+    liveStatus.textContent = "Data pencarian belum diisi.";
+    input.focus();
+  }
 
   async function doFind() {
+    if (isSearching) return;
     const lookup = input.value.trim();
-    if (!lookup) return;
-    err.classList.add("hidden");
-    result.classList.add("hidden");
+    if (!lookup) {
+      showInputError();
+      return;
+    }
+
+    clearInputError();
+    foundTicketId = "";
+    credentialMount.classList.remove("is-ready");
+    credentialMount.replaceChildren();
+    isSearching = true;
     btn.disabled = true;
+    btn.setAttribute("aria-busy", "true");
+    form.setAttribute("aria-busy", "true");
+    input.readOnly = true;
+    submitLabel.textContent = "Mencari Tiket…";
+    liveStatus.textContent = "Mencari tiket…";
+    showFindState(loading);
+
     try {
       const data = await window.SOGA_API.findTicket(lookup);
       if (!data) {
-        err.classList.remove("hidden");
+        foundTicketId = "";
+        liveStatus.textContent = "Tiket tidak ditemukan.";
+        showFindState(notFound);
+        document.getElementById("find-not-found-title")?.focus();
         return;
       }
-      document.getElementById("find-name").textContent = data.full_name;
-      document.getElementById("find-ticket-id").textContent = data.qr_token;
-      const qrBox = document.getElementById("find-qr");
-      qrBox.innerHTML = "";
-      new QRCode(qrBox, {
-        text: data.qr_token,
-        width: 220,
-        height: 220,
-        colorDark: "#2a1a3d",
-        colorLight: "#ffffff",
+
+      foundTicketId = data.qr_token;
+      renderParticipantCredential(credentialMount, {
+        fullName: data.full_name,
+        ticketId: data.qr_token,
       });
-      result.classList.remove("hidden");
+      liveStatus.textContent = "Credential ditemukan.";
+      showFindState(result);
+      document.getElementById("find-result-title")?.focus();
     } catch (e) {
-      err.classList.remove("hidden");
+      foundTicketId = "";
+      liveStatus.textContent = "Tiket belum dapat dicari karena kendala sistem.";
+      showFindState(networkError);
+      document.getElementById("find-network-error-title")?.focus();
     } finally {
+      isSearching = false;
       btn.disabled = false;
+      btn.removeAttribute("aria-busy");
+      form.removeAttribute("aria-busy");
+      input.readOnly = false;
+      submitLabel.textContent = "Cari Tiket";
     }
   }
 
-  btn.addEventListener("click", doFind);
-  input.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") doFind();
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    doFind();
   });
 
-  document.getElementById("btn-find-download").addEventListener("click", () => {
-    const qrBox = document.getElementById("find-qr");
-    const canvas = qrBox.querySelector("canvas") || qrBox.querySelector("img");
-    if (!canvas) return;
-    const url = canvas.toDataURL ? canvas.toDataURL("image/png") : canvas.src;
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = document.getElementById("find-ticket-id").textContent + ".png";
-    a.click();
+  input.addEventListener("input", () => {
+    clearInputError();
+    liveStatus.textContent = "";
+    const hasResolvedState = [notFound, networkError, result].some(
+      (state) => state && !state.classList.contains("hidden")
+    );
+    if (!isSearching && hasResolvedState) {
+      foundTicketId = "";
+      credentialMount.classList.remove("is-ready");
+      credentialMount.replaceChildren();
+      showFindState(initial);
+    }
+  });
+
+  editButton?.addEventListener("click", () => {
+    showFindState(initial);
+    liveStatus.textContent = "Periksa kembali data pencarian.";
+    input.focus();
+    input.select();
+  });
+
+  retryButton?.addEventListener("click", doFind);
+
+  downloadButton?.addEventListener("click", () => {
+    downloadTicketQr(credentialMount, foundTicketId);
   });
 }
 

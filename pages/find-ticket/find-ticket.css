@@ -1,18 +1,445 @@
 /* ============================================================
-   SOGA 11 — Find Ticket (Light Magic Purple)
+   SOGA 11 — Find My Ticket / Sorcery Editorial Utility Surface
    ============================================================ */
-.find-wrapper {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 40px;
+.find-ticket-section {
+  min-height: calc(100vh - 78px);
+  padding: var(--space-8) 0 var(--space-11);
+  background: var(--bg-page);
 }
-.claim-input {
+
+.find-ticket-shell {
+  display: grid;
+  max-width: var(--container-wide);
+  gap: var(--space-7);
+}
+
+.find-ticket-lookup,
+.find-ticket-workspace {
+  min-width: 0;
+}
+
+.find-ticket-lookup {
+  align-self: start;
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--purple-300);
+  border-radius: var(--radius-lg);
+  background: var(--purple-050);
+}
+
+.find-ticket-kicker {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+  color: var(--purple-800);
+  font-family: var(--font-mono);
+  font-size: var(--type-micro-size);
+  font-weight: 700;
+  letter-spacing: var(--type-micro-tracking);
+  text-transform: uppercase;
 }
-.claim-input input {
-  flex: 1;
-  min-width: 200px;
+
+.find-ticket-kicker > span:last-child {
+  width: 72px;
+  height: 1px;
+  background: var(--primary);
+}
+
+.find-ticket-header h1 {
+  max-width: 600px;
+  color: var(--text-primary);
+  font-size: clamp(2.25rem, 7vw, 4.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.find-ticket-header > p {
+  max-width: 580px;
+  margin-top: var(--space-5);
+  color: var(--text-secondary);
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-leading);
+}
+
+.find-ticket-form {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+  padding-top: var(--space-7);
+  border-top: 1px solid rgba(91, 43, 191, 0.28);
+}
+
+.find-ticket-form .form-group {
+  margin: 0;
+}
+
+.find-ticket-form label {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--text-primary);
+  font-size: var(--type-small-size);
+  font-weight: 700;
+}
+
+.find-ticket-form input {
+  min-height: 52px;
+  background: var(--bg-surface);
+}
+
+.find-ticket-form input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.find-input-error {
+  margin-top: var(--space-2);
+  color: var(--danger);
+  font-size: var(--type-small-size);
+  font-weight: 600;
+  line-height: var(--type-small-leading);
+}
+
+.find-ticket-submit {
+  width: 100%;
+  min-height: 52px;
+  justify-content: space-between;
+}
+
+.find-ticket-submit > span:last-child {
+  font-size: 1.15em;
+}
+
+.find-ticket-live-status {
+  min-height: 1.5em;
+  color: var(--text-muted);
+  font-size: var(--type-small-size);
+}
+
+.find-ticket-event-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(91, 43, 191, 0.28);
+}
+
+.find-ticket-event-meta > div {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.find-ticket-event-meta dt,
+.find-ticket-state-label {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--type-micro-size);
+  font-weight: 600;
+  letter-spacing: var(--type-micro-tracking);
+  text-transform: uppercase;
+}
+
+.find-ticket-event-meta dd {
+  color: var(--text-primary);
+  font-size: var(--type-small-size);
+  font-weight: 700;
+}
+
+.find-ticket-workspace {
+  display: grid;
+  align-items: center;
+  min-height: 480px;
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+}
+
+.find-ticket-state {
+  width: 100%;
+}
+
+.find-ticket-state-initial {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.credential-outline {
+  position: relative;
+  isolation: isolate;
+  min-height: 220px;
+  overflow: hidden;
+  padding: var(--space-5);
+  border: 1px dashed var(--purple-300);
+  border-radius: var(--radius-lg);
+  color: var(--purple-800);
+  font-family: var(--font-mono);
+  font-size: var(--type-micro-size);
+  font-weight: 700;
+  letter-spacing: var(--type-micro-tracking);
+  text-transform: uppercase;
+}
+
+.credential-outline > span:nth-child(2) {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  color: var(--primary);
+}
+
+.credential-outline i,
+.credential-outline b {
+  position: absolute;
+  border: 1px solid var(--purple-300);
+  border-radius: var(--radius-pill);
+}
+
+.credential-outline i {
+  top: 42%;
+  left: 50%;
+  width: 92px;
+  height: 92px;
+  transform: translate(-50%, -50%);
+}
+
+.credential-outline b {
+  top: calc(42% - 29px);
+  left: calc(50% - 29px);
+  width: 58px;
+  height: 58px;
+  border-style: dashed;
+}
+
+.credential-outline::before,
+.credential-outline::after {
+  position: absolute;
+  top: 42%;
+  width: calc(50% - 72px);
+  height: 1px;
+  background: var(--purple-300);
+  content: "";
+}
+
+.credential-outline::before {
+  left: var(--space-5);
+}
+
+.credential-outline::after {
+  right: var(--space-5);
+}
+
+.credential-outline em {
+  position: absolute;
+  right: -0.08em;
+  bottom: -0.2em;
+  z-index: -1;
+  color: rgba(91, 43, 191, 0.055);
+  font-size: clamp(8rem, 30vw, 13rem);
+  font-style: normal;
+  line-height: 0.8;
+  letter-spacing: -0.12em;
+}
+
+.find-ticket-state h2,
+.find-ticket-result-header h2 {
+  margin-top: var(--space-2);
+  color: var(--text-primary);
+  font-size: var(--type-h3-size);
+  line-height: var(--type-h3-leading);
+  letter-spacing: var(--type-h3-tracking);
+}
+
+.find-ticket-state h2[tabindex="-1"]:focus,
+.find-ticket-result-header h2[tabindex="-1"]:focus {
+  padding-left: var(--space-3);
+  border-left: 3px solid var(--primary);
+  outline: none;
+  box-shadow: none;
+}
+
+.find-ticket-state-error h2[tabindex="-1"]:focus {
+  border-left-color: var(--danger);
+}
+
+.find-ticket-state p,
+.find-ticket-result-header p {
+  max-width: 520px;
+  margin-top: var(--space-3);
+  color: var(--text-secondary);
+}
+
+.find-ticket-state-loading,
+.find-ticket-state-message {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: flex-start;
+  padding: var(--space-7);
+  border: 1px solid var(--purple-300);
+  border-radius: var(--radius-md);
+  background: var(--purple-050);
+}
+
+.find-ticket-state-message .btn {
+  margin-top: var(--space-5);
+}
+
+.find-ticket-state-code,
+.find-ticket-loading-mark {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid var(--purple-300);
+  border-radius: var(--radius-pill);
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.find-ticket-loading-mark::before {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  content: "";
+  animation: find-ticket-pulse 900ms ease-in-out infinite alternate;
+}
+
+.find-ticket-state-error {
+  border-color: rgba(180, 35, 24, 0.32);
+  background: var(--danger-soft);
+}
+
+.find-ticket-state-error .find-ticket-state-code {
+  border-color: rgba(180, 35, 24, 0.36);
+  color: var(--danger);
+}
+
+.find-ticket-result-header {
+  max-width: 520px;
+  margin: 0 auto var(--space-6);
+}
+
+.find-ticket-credential-mount {
+  --credential-surround: var(--bg-surface);
+}
+
+.find-ticket-result-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  max-width: 520px;
+  margin: var(--space-5) auto 0;
+}
+
+@keyframes find-ticket-pulse {
+  from {
+    opacity: 0.38;
+    transform: scale(0.72);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .find-ticket-section {
+    padding-top: var(--space-9);
+  }
+
+  .find-ticket-lookup,
+  .find-ticket-workspace {
+    padding: var(--space-8);
+  }
+
+  .find-ticket-state-initial {
+    grid-template-columns: minmax(220px, 0.9fr) minmax(260px, 1fr);
+    align-items: center;
+  }
+
+  .credential-outline {
+    min-height: 280px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .find-ticket-shell {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: stretch;
+    gap: var(--space-8);
+  }
+
+  .find-ticket-lookup {
+    position: sticky;
+    top: 100px;
+  }
+
+  .find-ticket-workspace {
+    min-height: 680px;
+  }
+
+  .find-ticket-state-initial {
+    grid-template-columns: 1fr;
+  }
+
+  .credential-outline {
+    min-height: 320px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .find-ticket-shell {
+    gap: var(--space-9);
+  }
+
+  .find-ticket-lookup,
+  .find-ticket-workspace {
+    padding: var(--space-9);
+  }
+}
+
+@media (max-width: 479px) {
+  .find-ticket-section {
+    padding-top: var(--space-6);
+  }
+
+  .find-ticket-lookup,
+  .find-ticket-workspace {
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+  }
+
+  .find-ticket-event-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .find-ticket-workspace {
+    min-height: 420px;
+  }
+
+  .credential-outline {
+    min-height: 190px;
+  }
+
+  .find-ticket-state-loading,
+  .find-ticket-state-message {
+    grid-template-columns: 1fr;
+    padding: var(--space-5);
+  }
+
+  .find-ticket-result-actions {
+    flex-direction: column;
+  }
+
+  .find-ticket-result-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .find-ticket-loading-mark::before {
+    animation: none;
+  }
 }

@@ -504,6 +504,371 @@ input[type="radio"] {
   box-shadow: none;
 }
 
+/* ============================================================
+   Shared Digital Participant Credential
+   Used intentionally by Registration Success and Find My Ticket.
+   ============================================================ */
+.credential-mount {
+  --credential-surround: var(--bg-surface);
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.participant-credential {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  overflow: hidden;
+  padding: var(--space-7);
+  border: 1px solid var(--purple-800);
+  border-radius: var(--radius-lg);
+  background: var(--purple-950);
+  color: var(--text-on-dark);
+}
+
+.participant-credential::before,
+.participant-credential::after {
+  position: absolute;
+  top: 31%;
+  z-index: calc(var(--z-content) + 1);
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--purple-800);
+  border-radius: var(--radius-pill);
+  background: var(--credential-surround);
+  content: "";
+}
+
+.participant-credential::before {
+  left: -13px;
+}
+
+.participant-credential::after {
+  right: -13px;
+}
+
+.participant-credential-geometry {
+  position: absolute;
+  inset: 0 0 auto auto;
+  z-index: var(--z-decoration);
+  width: min(88%, 460px);
+  fill: rgba(196, 181, 253, 0.72);
+  stroke: rgba(196, 181, 253, 0.2);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.participant-credential-geometry path {
+  fill: none;
+}
+
+.participant-credential-geometry .credential-node-primary {
+  fill: var(--purple-500);
+}
+
+.participant-credential-geometry .credential-node-gold {
+  fill: var(--ds-gold);
+}
+
+.participant-credential-edition {
+  position: absolute;
+  right: -0.08em;
+  bottom: -0.18em;
+  z-index: var(--z-decoration);
+  color: rgba(250, 248, 245, 0.035);
+  font-family: var(--font-mono);
+  font-size: clamp(10rem, 29vw, 16rem);
+  font-weight: 700;
+  letter-spacing: -0.12em;
+  line-height: 0.8;
+  pointer-events: none;
+  user-select: none;
+}
+
+.participant-credential-brand,
+.participant-credential-heading,
+.participant-credential-identity,
+.participant-credential-qr-zone,
+.participant-credential-ticket,
+.participant-credential-meta,
+.participant-credential-status {
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.participant-credential-brand {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.participant-credential-brand-name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.participant-credential-brand-name img {
+  width: auto;
+  height: 38px;
+  object-fit: contain;
+}
+
+.participant-credential-brand-name strong {
+  color: var(--text-on-dark);
+  font-size: var(--type-small-size);
+}
+
+.participant-credential-brand > span:last-child {
+  max-width: 104px;
+  color: var(--purple-300);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.65;
+  text-align: right;
+}
+
+.participant-credential-heading {
+  display: grid;
+  grid-template-columns: auto minmax(32px, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-7);
+}
+
+.participant-credential-heading > span:first-child,
+.participant-credential-heading p,
+.participant-credential-identity > span,
+.participant-credential-ticket > span,
+.participant-credential-meta dt,
+.participant-credential-status strong {
+  font-family: var(--font-mono);
+  font-size: var(--type-micro-size);
+  font-weight: 600;
+  letter-spacing: var(--type-micro-tracking);
+  text-transform: uppercase;
+}
+
+.participant-credential-heading > span:first-child {
+  color: var(--purple-300);
+}
+
+.participant-credential-heading > span:nth-child(2) {
+  height: 1px;
+  background: rgba(237, 233, 254, 0.34);
+}
+
+.participant-credential-heading p {
+  grid-column: 1 / -1;
+  margin-top: var(--space-2);
+  color: var(--text-on-dark);
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+.participant-credential-identity {
+  margin-top: var(--space-7);
+  padding-top: var(--space-7);
+  border-top: 1px dashed rgba(237, 233, 254, 0.34);
+  text-align: center;
+}
+
+.participant-credential-identity > span {
+  color: var(--purple-300);
+}
+
+.participant-credential-identity h3 {
+  max-width: 100%;
+  margin-top: var(--space-2);
+  overflow-wrap: anywhere;
+  color: var(--text-on-dark);
+  font-size: clamp(1.45rem, 5vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.participant-credential-identity p {
+  margin-top: var(--space-1);
+  color: rgba(250, 248, 245, 0.62);
+  font-size: var(--type-small-size);
+}
+
+.participant-credential-qr-zone {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+
+.participant-credential-qr {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.participant-credential-qr canvas,
+.participant-credential-qr img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  image-rendering: crisp-edges;
+}
+
+.participant-credential-ticket {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+.participant-credential-ticket > span {
+  color: var(--purple-300);
+}
+
+.participant-credential-ticket strong {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  padding: 10px var(--space-5);
+  border: 1px solid rgba(237, 233, 254, 0.5);
+  border-radius: var(--radius-pill);
+  color: var(--text-on-dark);
+  font-family: var(--font-mono);
+  font-size: var(--type-body-lg-size);
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+
+.participant-credential-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(237, 233, 254, 0.22);
+}
+
+.participant-credential-meta > div + div {
+  padding-left: var(--space-4);
+  border-left: 1px solid rgba(237, 233, 254, 0.22);
+}
+
+.participant-credential-meta dt {
+  color: var(--purple-300);
+}
+
+.participant-credential-meta dd {
+  margin-top: var(--space-2);
+  color: var(--text-on-dark);
+  font-family: var(--font-mono);
+  font-size: var(--type-small-size);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.participant-credential-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding: var(--space-4);
+  border: 1px solid rgba(237, 233, 254, 0.3);
+  border-radius: var(--radius-sm);
+  background: rgba(237, 233, 254, 0.04);
+}
+
+.participant-credential-status svg {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: var(--ds-gold);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.participant-credential-status > span {
+  display: grid;
+  gap: 2px;
+}
+
+.participant-credential-status strong {
+  color: var(--text-on-dark);
+}
+
+.participant-credential-status small {
+  color: rgba(250, 248, 245, 0.62);
+  font-size: var(--type-small-size);
+}
+
+.credential-mount.is-ready .participant-credential {
+  animation: credential-enter var(--duration-normal) var(--ease-standard) both;
+}
+
+@keyframes credential-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 479px) {
+  .participant-credential {
+    padding: var(--space-6) var(--space-5);
+    border-radius: var(--radius-md);
+  }
+
+  .participant-credential::before,
+  .participant-credential::after {
+    width: 20px;
+    height: 20px;
+  }
+
+  .participant-credential::before {
+    left: -11px;
+  }
+
+  .participant-credential::after {
+    right: -11px;
+  }
+
+  .participant-credential-brand > span:last-child {
+    display: none;
+  }
+
+  .participant-credential-heading,
+  .participant-credential-identity {
+    margin-top: var(--space-6);
+  }
+
+  .participant-credential-identity {
+    padding-top: var(--space-6);
+  }
+
+  .participant-credential-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .participant-credential-meta > div + div {
+    padding: var(--space-3) 0 0;
+    border-top: 1px solid rgba(237, 233, 254, 0.18);
+    border-left: 0;
+  }
+}
+
 /* Layout compatibility. New layout tokens are available but not enforced. */
 .container {
   width: 100%;

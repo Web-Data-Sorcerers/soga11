@@ -1,25 +1,114 @@
 <!-- ===================== FIND TICKET ===================== -->
-<section class="section">
-  <div class="container">
-    <div class="find-wrapper card">
-      <div class="register-header">
-        <h2 class="section-title">Cari <span class="text-gradient">Tiket Saya</span></h2>
-        <p class="section-subtitle">Masukkan email atau nomor WhatsApp yang kamu pakai saat registrasi.</p>
+<section class="find-ticket-section" aria-labelledby="find-ticket-title">
+  <div class="container find-ticket-shell">
+    <div class="find-ticket-lookup">
+      <header class="find-ticket-header">
+        <div class="find-ticket-kicker">
+          <span>SOGA / 011</span>
+          <span aria-hidden="true"></span>
+        </div>
+        <h1 id="find-ticket-title">Temukan Credential Kamu.</h1>
+        <p>
+          Masukkan email atau nomor WhatsApp yang digunakan saat pendaftaran
+          Sorcery Gathering #11.
+        </p>
+      </header>
+
+      <form id="find-ticket-form" class="find-ticket-form" novalidate>
+        <div class="form-group">
+          <label for="find-input">Email atau Nomor WhatsApp</label>
+          <input
+            type="text"
+            id="find-input"
+            name="participant-lookup"
+            placeholder="email@contoh.com / 08xxxxxxxxxx"
+            aria-describedby="find-input-help find-input-error"
+          />
+          <p id="find-input-help" class="field-help">
+            Gunakan data yang sama seperti saat pendaftaran.
+          </p>
+          <p id="find-input-error" class="find-input-error hidden">
+            Masukkan email atau nomor WhatsApp terlebih dahulu.
+          </p>
+        </div>
+
+        <button type="submit" id="btn-find" class="btn btn-primary find-ticket-submit">
+          <span id="find-submit-label">Cari Tiket</span>
+          <span aria-hidden="true">→</span>
+        </button>
+        <p id="find-status" class="find-ticket-live-status" aria-live="polite"></p>
+      </form>
+
+      <dl class="find-ticket-event-meta">
+        <div>
+          <dt>Tanggal</dt>
+          <dd><time datetime="2026-10-25">25 Oktober 2026</time></dd>
+        </div>
+        <div>
+          <dt>Lokasi</dt>
+          <dd>Yogyakarta</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="find-ticket-workspace">
+      <div id="find-initial" class="find-ticket-state find-ticket-state-initial">
+        <div class="credential-outline" aria-hidden="true">
+          <span>DATA SORCERERS</span>
+          <span>SOGA / 011</span>
+          <i></i>
+          <b></b>
+          <em>011</em>
+        </div>
+        <div>
+          <span class="find-ticket-state-label">Find Your Credential</span>
+          <h2>Siapkan data pendaftaranmu.</h2>
+          <p>Credential peserta hanya akan ditampilkan setelah data ditemukan.</p>
+        </div>
       </div>
 
-      <div class="claim-input">
-        <input type="text" id="find-input" placeholder="email / 08xxxxxxxxxx" />
-        <button id="btn-find" class="btn btn-primary">Cari</button>
+      <div id="find-loading" class="find-ticket-state find-ticket-state-loading hidden" role="status">
+        <span class="find-ticket-loading-mark" aria-hidden="true"></span>
+        <div>
+          <span class="find-ticket-state-label">Credential / Searching</span>
+          <h2>Mencari tiket…</h2>
+          <p>Sistem sedang memeriksa data pendaftaranmu.</p>
+        </div>
       </div>
-      <p id="find-error" class="alert alert-error hidden">Data tidak ditemukan. Periksa kembali email / nomor WhatsApp kamu.</p>
 
-      <div id="find-result" class="success-state hidden">
-        <h3>Halo, <span id="find-name"></span>!</h3>
-        <p>Ini QR Code tiket kamu. Simpan & tunjukkan saat check-in di lokasi.</p>
-        <div id="find-qr" class="qr-box"></div>
-        <div class="ticket-id">ID: <strong id="find-ticket-id"></strong></div>
-        <div class="success-actions">
-          <button id="btn-find-download" class="btn btn-secondary">Download QR (PNG)</button>
+      <div id="find-not-found" class="find-ticket-state find-ticket-state-message hidden">
+        <span class="find-ticket-state-code" aria-hidden="true">?</span>
+        <div>
+          <span class="find-ticket-state-label">Credential / Not Found</span>
+          <h2 id="find-not-found-title" tabindex="-1">Tiket tidak ditemukan.</h2>
+          <p>Pastikan email atau nomor WhatsApp sesuai dengan data saat pendaftaran.</p>
+          <button type="button" id="btn-find-edit" class="btn btn-secondary">Periksa Data</button>
+        </div>
+      </div>
+
+      <div id="find-network-error" class="find-ticket-state find-ticket-state-message find-ticket-state-error hidden">
+        <span class="find-ticket-state-code" aria-hidden="true">!</span>
+        <div>
+          <span class="find-ticket-state-label">Credential / Unavailable</span>
+          <h2 id="find-network-error-title" tabindex="-1">Tiket belum dapat dicari.</h2>
+          <p>Terjadi kendala saat menghubungi sistem. Silakan coba kembali.</p>
+          <button type="button" id="btn-find-network-retry" class="btn btn-secondary">Coba Lagi</button>
+        </div>
+      </div>
+
+      <div id="find-result" class="find-ticket-result hidden">
+        <header class="find-ticket-result-header">
+          <span class="find-ticket-state-label">Credential / Found</span>
+          <h2 id="find-result-title" tabindex="-1">Credential ditemukan.</h2>
+          <p>Simpan Ticket ID dan tunjukkan QR ini saat check-in.</p>
+        </header>
+
+        <div id="find-credential" class="credential-mount find-ticket-credential-mount"></div>
+
+        <div class="find-ticket-result-actions">
+          <button type="button" id="btn-find-download" class="btn btn-secondary" aria-label="Unduh QR tiket SOGA 11">
+            Download QR (PNG)
+          </button>
           <a href="#home" class="btn btn-ghost">Selesai</a>
         </div>
       </div>

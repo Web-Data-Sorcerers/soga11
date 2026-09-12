@@ -30,12 +30,12 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/variables.css?v=10" />
-  <link rel="stylesheet" href="css/global.css?v=10" />
+  <link rel="stylesheet" href="css/global.css?v=11" />
   <link rel="stylesheet" href="components/navbar/navbar.css?v=10" />
   <link rel="stylesheet" href="components/footer/footer.css?v=10" />
   <link rel="stylesheet" href="pages/home/home.css?v=11" />
-  <link rel="stylesheet" href="pages/register/register.css?v=10" />
-  <link rel="stylesheet" href="pages/find-ticket/find-ticket.css?v=9" />
+  <link rel="stylesheet" href="pages/register/register.css?v=11" />
+  <link rel="stylesheet" href="pages/find-ticket/find-ticket.css?v=10" />
 
   <!-- Libraries (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -127,6 +127,80 @@
   <!-- ===================== MAIN CONTENT (router) ===================== -->
   <main id="app"></main>
 
+  <!-- Shared participant credential: cloned by registration success and Find My Ticket. -->
+  <template id="participant-credential-template">
+    <article class="participant-credential" data-credential-root>
+      <svg class="participant-credential-geometry" viewBox="0 0 520 760" role="presentation" aria-hidden="true" focusable="false">
+        <path d="M26 152 102 92 176 142 266 58 358 120 492 44M102 92l42 188 118 58 96-218 82 226M144 280 70 440l156 92 214-186M226 532l-48 174M358 120l-92-62" />
+        <circle cx="26" cy="152" r="3" />
+        <circle cx="102" cy="92" r="5" />
+        <circle cx="176" cy="142" r="3" />
+        <circle cx="266" cy="58" r="4" />
+        <circle cx="358" cy="120" r="6" class="credential-node-primary" />
+        <circle cx="492" cy="44" r="3" />
+        <circle cx="144" cy="280" r="4" />
+        <circle cx="262" cy="338" r="3" />
+        <circle cx="440" cy="346" r="5" />
+        <circle cx="70" cy="440" r="3" />
+        <circle cx="226" cy="532" r="4" class="credential-node-gold" />
+        <circle cx="178" cy="706" r="3" />
+      </svg>
+
+      <span class="participant-credential-edition" aria-hidden="true">011</span>
+
+      <header class="participant-credential-brand">
+        <span class="participant-credential-brand-name">
+          <img src="assets/logo-web.png" alt="" />
+          <strong>Data Sorcerers</strong>
+        </span>
+        <span>DATA / PEOPLE / IMPACT</span>
+      </header>
+
+      <div class="participant-credential-heading">
+        <span>SOGA / 011</span>
+        <span aria-hidden="true"></span>
+        <p>Participant Credential</p>
+      </div>
+
+      <div class="participant-credential-identity">
+        <span>Participant</span>
+        <h3 data-credential-name></h3>
+        <p>Sorcery Gathering #11</p>
+      </div>
+
+      <div class="participant-credential-qr-zone">
+        <div class="participant-credential-qr" data-credential-qr role="img"></div>
+      </div>
+
+      <div class="participant-credential-ticket">
+        <span>Ticket ID</span>
+        <strong class="tabular-nums" data-credential-ticket></strong>
+      </div>
+
+      <dl class="participant-credential-meta">
+        <div>
+          <dt>Date</dt>
+          <dd data-credential-date>25 OCT 2026</dd>
+        </div>
+        <div>
+          <dt>Location</dt>
+          <dd data-credential-location>Yogyakarta</dd>
+        </div>
+      </dl>
+
+      <footer class="participant-credential-status">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="9" />
+          <path d="m8.5 12 2.2 2.2 4.8-5" />
+        </svg>
+        <span>
+          <strong data-credential-status>Registration Recorded</strong>
+          <small>Data pendaftaran tercatat.</small>
+        </span>
+      </footer>
+    </article>
+  </template>
+
   <!-- ===================== PUBLIC FOOTER ===================== -->
   <footer class="footer">
     <span class="footer-watermark" aria-hidden="true">011</span>
@@ -211,6 +285,6 @@
   <!-- ===================== SCRIPTS ===================== -->
   <script src="js/config.js?v=9"></script>
   <script src="js/api.js?v=9"></script>
-  <script src="js/app.js?v=12"></script>
+  <script src="js/app.js?v=13"></script>
 </body>
 </html>

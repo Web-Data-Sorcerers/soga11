@@ -303,17 +303,21 @@
         </footer>
       </form>
 
-      <!-- Success state — visual credential is intentionally deferred to Phase 5. -->
-      <div id="register-success" class="success-state hidden" role="status" aria-live="polite">
-        <h3>Registrasi Berhasil!</h3>
-        <p>Ini QR Code tiket kamu. Simpan &amp; tunjukkan saat check-in di lokasi.</p>
-        <div id="qr-code" class="qr-box"></div>
-        <div class="ticket-id">ID: <strong id="ticket-id" class="tabular-nums">SGN11-XXXXXX</strong></div>
-        <div class="success-actions">
-          <button id="btn-download" class="btn btn-secondary">Download QR (PNG)</button>
+      <!-- Success state — credential markup is cloned from the shared public template. -->
+      <div id="register-success" class="registration-success hidden" role="status" aria-live="polite">
+        <header class="registration-success-header">
+          <span>Registration / Success</span>
+          <h3 id="register-success-title" tabindex="-1">Pendaftaran berhasil.</h3>
+          <p>Simpan credential dan Ticket ID ini. Tunjukkan QR pada saat check-in.</p>
+        </header>
+
+        <div id="registration-credential" class="credential-mount registration-credential-mount"></div>
+
+        <div class="registration-success-actions">
+          <button id="btn-download" class="btn btn-secondary" aria-label="Unduh QR tiket SOGA 11">Download QR (PNG)</button>
           <a href="#home" class="btn btn-ghost">Selesai</a>
         </div>
-        <p class="success-recovery">Kehilangan QR? Cari lagi nanti di <a href="#find-ticket">Cari Tiket</a>.</p>
+        <p class="registration-success-recovery">Kehilangan QR? Cari lagi nanti di <a href="#find-ticket">Cari Tiket</a>.</p>
       </div>
     </div>
   </div>
