@@ -72,6 +72,7 @@ const claimStates = {
 function setClaimPending(isPending) {
   claimPending = isPending;
   claimButton.disabled = isPending;
+  claimInput.readOnly = isPending;
   claimButton.setAttribute("aria-busy", String(isPending));
   claimForm.setAttribute("aria-busy", String(isPending));
   claimState.setAttribute("aria-busy", String(isPending));
@@ -264,7 +265,7 @@ async function captureCertificateCanvas() {
   await waitForCertificateAssets();
 
   return window.html2canvas(certificateNode, {
-    scale: 2,
+    scale: 3,
     width: CERTIFICATE_WIDTH,
     height: CERTIFICATE_HEIGHT,
     windowWidth: CERTIFICATE_WIDTH,
