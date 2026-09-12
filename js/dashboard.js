@@ -5,7 +5,9 @@ let participants = [];
 let scanner = null;
 let conversionChart = null;
 let arrivalChart = null;
-let registrationOpen = true;
+let registrationOpen = null;
+let registrationStatusLoading = false;
+let registrationToggleBusy = false;
 
 const ICON_CHECK = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
 const ICON_X = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
@@ -601,7 +603,7 @@ async function doCheckin(token) {
   } catch (e) {
     renderCheckinStatus(
       "error",
-      "Check-in belum dapat diproses. Periksa Ticket ID atau coba kembali."
+      "Check-in tidak dapat diproses. Periksa Ticket ID atau status peserta, lalu coba kembali."
     );
   }
 }
@@ -649,21 +651,32 @@ function stopScanner() {
 // ============================================================
 // Export CSV (bisa dibuka di Excel)
 // ============================================================
-document.getElementById("btn-export").addEventListener("click", () => {
-  const headers = [
-    "qr_token", "full_name", "email", "whatsapp", "gender",
-    "institution", "job", "linkedin", "github", "level",
-    "focus", "tools", "source", "expectation", "question",
-    "status", "checkin_time", "created_at",
-  ];
-  const rows = participants.map((p) =>
-    headers.map((h) => {
-      const v = p[h] ?? "";
-      const s = typeof v === "string" ? v : JSON.stringify(v);
-      return '"' + s.replace(/"/g, '""') + '"';
-    }).join(",")
+const CSV_HEADERS = [
+  "qr_token", "full_name", "email", "whatsapp", "gender",
+  "institution", "job", "linkedin", "github", "level",
+  "focus", "tools", "source", "expectation", "question",
+  "status", "checkin_time", "created_at",
+];
+
+function sanitizeSpreadsheetCell(value) {
+  const raw = typeof value === "string" ? value : JSON.stringify(value);
+  const text = raw ?? "";
+  return /^[=+\-@]/.test(text) ? `'${text}` : text;
+}
+
+function quoteCsvCell(value) {
+  return `"${sanitizeSpreadsheetCell(value).replace(/"/g, '""')}"`;
+}
+
+function buildParticipantsCsv(data = participants) {
+  const rows = data.map((participant) =>
+    CSV_HEADERS.map((header) => quoteCsvCell(participant[header] ?? "")).join(",")
   );
-  const csv = [headers.join(","), ...rows].join("\n");
+  return [CSV_HEADERS.join(","), ...rows].join("\n");
+}
+
+document.getElementById("btn-export").addEventListener("click", () => {
+  const csv = buildParticipantsCsv();
   const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
@@ -676,12 +689,21 @@ document.getElementById("btn-export").addEventListener("click", () => {
 // Registration toggle
 // ============================================================
 async function loadRegistrationStatus() {
-  try {
-    registrationOpen = await window.SOGA_API.isRegistrationOpen();
-  } catch (e) {
-    registrationOpen = true;
-  }
+  if (registrationStatusLoading) return;
+  registrationStatusLoading = true;
+  registrationOpen = null;
   renderRegistrationToggle();
+
+  try {
+    const nextStatus = await window.SOGA_API.isRegistrationOpen();
+    if (typeof nextStatus !== "boolean") throw new Error("Invalid registration status");
+    registrationOpen = nextStatus;
+  } catch (e) {
+    registrationOpen = null;
+  } finally {
+    registrationStatusLoading = false;
+    renderRegistrationToggle();
+  }
 }
 
 function renderRegistrationToggle() {
@@ -689,30 +711,68 @@ function renderRegistrationToggle() {
   const btn = document.getElementById("btn-toggle-registration");
   const badge = document.getElementById("reg-status-badge");
   if (!txt || !btn || !badge) return;
+
+  if (registrationStatusLoading) {
+    txt.textContent = "Memuat status pendaftaran...";
+    badge.textContent = "Loading";
+    badge.dataset.state = "loading";
+    btn.textContent = "Memuat Status...";
+    btn.className = "btn btn-secondary admin-registration-action";
+    btn.disabled = true;
+    btn.setAttribute("aria-busy", "true");
+    btn.setAttribute("aria-label", "Memuat status pendaftaran");
+    return;
+  }
+
+  if (typeof registrationOpen !== "boolean") {
+    txt.textContent = "Status pendaftaran belum dapat dimuat.";
+    badge.textContent = "Unavailable";
+    badge.dataset.state = "error";
+    btn.textContent = "Coba Lagi";
+    btn.className = "btn btn-secondary admin-registration-action";
+    btn.disabled = false;
+    btn.removeAttribute("aria-busy");
+    btn.setAttribute("aria-label", "Coba muat ulang status pendaftaran");
+    return;
+  }
+
   txt.textContent = registrationOpen ? "Pendaftaran terbuka" : "Pendaftaran ditutup";
   badge.textContent = registrationOpen ? "Open" : "Closed";
   badge.dataset.state = registrationOpen ? "open" : "closed";
-  btn.textContent = registrationOpen ? "Tutup Pendaftaran" : "Buka Pendaftaran";
+  btn.textContent = registrationToggleBusy
+    ? "Menyimpan..."
+    : registrationOpen ? "Tutup Pendaftaran" : "Buka Pendaftaran";
   btn.className = registrationOpen
     ? "btn btn-secondary admin-registration-action is-close"
     : "btn btn-primary admin-registration-action";
+  btn.disabled = registrationToggleBusy;
+  if (registrationToggleBusy) btn.setAttribute("aria-busy", "true");
+  else btn.removeAttribute("aria-busy");
   btn.setAttribute(
     "aria-label",
-    registrationOpen ? "Tutup pendaftaran peserta" : "Buka pendaftaran peserta"
+    registrationToggleBusy
+      ? "Menyimpan status pendaftaran"
+      : registrationOpen ? "Tutup pendaftaran peserta" : "Buka pendaftaran peserta"
   );
 }
 
 document.getElementById("btn-toggle-registration").addEventListener("click", async () => {
-  const btn = document.getElementById("btn-toggle-registration");
-  btn.disabled = true;
+  if (registrationStatusLoading || registrationToggleBusy) return;
+  if (typeof registrationOpen !== "boolean") {
+    await loadRegistrationStatus();
+    return;
+  }
+
+  registrationToggleBusy = true;
+  renderRegistrationToggle();
   try {
     await window.SOGA_API.setRegistrationOpen(!registrationOpen);
     registrationOpen = !registrationOpen;
-    renderRegistrationToggle();
   } catch (e) {
     alert("Gagal mengubah status: " + (e.message || "terjadi kesalahan"));
   } finally {
-    btn.disabled = false;
+    registrationToggleBusy = false;
+    renderRegistrationToggle();
   }
 });
 
