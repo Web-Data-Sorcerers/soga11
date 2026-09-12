@@ -6,6 +6,7 @@
 // --- Konfigurasi event (ganti di sini) ---
 const EVENT_DATE = "2026-10-25T09:00:00+07:00"; // Minggu, 25 Oktober 2026
 let homeCountdownTimer = null;
+let routeRequestId = 0;
 
 // ============================================================
 // Router
@@ -19,11 +20,13 @@ const routes = {
 const ANCHORS = new Set(["agenda", "speakers", "legacy", "faq"]);
 
 async function route() {
+  const requestId = ++routeRequestId;
   const hash = location.hash.replace("#", "") || "home";
 
   if (ANCHORS.has(hash)) {
     if (!document.getElementById(hash)) {
-      await loadPage(routes.home, "home");
+      const loaded = await loadPage(routes.home, "home", requestId);
+      if (!loaded || requestId !== routeRequestId) return;
     }
     const el = document.getElementById(hash);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -32,21 +35,27 @@ async function route() {
   }
 
   const target = routes[hash] || routes.home;
-  await loadPage(target, hash);
+  const loaded = await loadPage(target, hash, requestId);
+  if (!loaded || requestId !== routeRequestId) return;
   window.scrollTo(0, 0);
 }
 
-async function loadPage(target, hash) {
+async function loadPage(target, hash, requestId) {
   const app = document.getElementById("app");
   if (target !== routes.home) stopHomeCountdown();
   try {
     const res = await fetch(target);
-    app.innerHTML = await res.text();
+    const markup = await res.text();
+    if (requestId !== routeRequestId) return false;
+    app.innerHTML = markup;
     if (hash === "register") initRegister();
     else if (hash === "find-ticket") initFindTicket();
     else initHome();
+    return true;
   } catch (e) {
+    if (requestId !== routeRequestId) return false;
     app.innerHTML = `<div class="container" style="padding:60px 0"><p>Gagal memuat halaman. Pastikan dijalankan lewat server lokal (bukan file://).</p></div>`;
+    return false;
   }
 }
 
@@ -56,6 +65,7 @@ window.addEventListener("hashchange", route);
 // Public navigation
 // ============================================================
 function initNavbar() {
+  const skipLink = document.querySelector(".skip-link");
   const burger = document.getElementById("hamburger");
   const menu = document.getElementById("mobile-menu");
   const closeButton = document.getElementById("mobile-menu-close");
@@ -74,6 +84,14 @@ function initNavbar() {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let menuOpen = false;
   let closeTimer = null;
+
+  skipLink?.addEventListener("click", (event) => {
+    const app = document.getElementById("app");
+    if (!app) return;
+    event.preventDefault();
+    app.focus({ preventScroll: true });
+    app.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth" });
+  });
 
   function getFocusableItems() {
     return [...menu.querySelectorAll(focusableSelector)].filter(

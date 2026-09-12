@@ -30,7 +30,7 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/variables.css?v=10" />
-  <link rel="stylesheet" href="css/global.css?v=11" />
+  <link rel="stylesheet" href="css/global.css?v=12" />
   <link rel="stylesheet" href="components/navbar/navbar.css?v=10" />
   <link rel="stylesheet" href="components/footer/footer.css?v=10" />
   <link rel="stylesheet" href="pages/home/home.css?v=11" />
@@ -42,6 +42,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
+
+  <a class="skip-link" href="#app">Lewati ke konten utama</a>
 
   <!-- ===================== PUBLIC NAVIGATION ===================== -->
   <header class="navbar" id="site-header">
@@ -125,7 +127,7 @@
   </header>
 
   <!-- ===================== MAIN CONTENT (router) ===================== -->
-  <main id="app"></main>
+  <main id="app" tabindex="-1"></main>
 
   <!-- Shared participant credential: cloned by registration success and Find My Ticket. -->
   <template id="participant-credential-template">
@@ -285,6 +287,6 @@
   <!-- ===================== SCRIPTS ===================== -->
   <script src="js/config.js?v=9"></script>
   <script src="js/api.js?v=9"></script>
-  <script src="js/app.js?v=13"></script>
+  <script src="js/app.js?v=14"></script>
 </body>
 </html>
