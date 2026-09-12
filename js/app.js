@@ -51,17 +51,128 @@ async function loadPage(target, hash) {
 window.addEventListener("hashchange", route);
 
 // ============================================================
-// Navbar (hamburger)
+// Public navigation
 // ============================================================
 function initNavbar() {
   const burger = document.getElementById("hamburger");
   const menu = document.getElementById("mobile-menu");
-  if (burger && menu) {
-    burger.addEventListener("click", () => menu.classList.toggle("open"));
-    menu.querySelectorAll("a").forEach((a) =>
-      a.addEventListener("click", () => menu.classList.remove("open"))
+  const closeButton = document.getElementById("mobile-menu-close");
+  const header = document.getElementById("site-header");
+  if (!burger || !menu || !closeButton || !header) return;
+
+  const focusableSelector = [
+    "a[href]",
+    "button:not([disabled])",
+    "input:not([disabled])",
+    "select:not([disabled])",
+    "textarea:not([disabled])",
+    "[tabindex]:not([tabindex='-1'])",
+  ].join(",");
+  const desktopNavigation = window.matchMedia("(min-width: 1024px)");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let menuOpen = false;
+  let closeTimer = null;
+
+  function getFocusableItems() {
+    return [...menu.querySelectorAll(focusableSelector)].filter(
+      (element) => !element.hidden && element.getClientRects().length
     );
   }
+
+  function updateActiveNavigation() {
+    const requestedHash = location.hash.replace("#", "") || "home";
+    const isKnownHash = Boolean(routes[requestedHash]) || ANCHORS.has(requestedHash);
+    const activeHash = isKnownHash ? requestedHash : "home";
+
+    document.querySelectorAll("[data-nav-link]").forEach((link) => {
+      const linkHash = link.getAttribute("href")?.replace("#", "");
+      const active = linkHash === activeHash;
+      link.classList.toggle("is-active", active);
+      if (active) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
+  }
+
+  function openMenu() {
+    if (menuOpen || desktopNavigation.matches) return;
+    clearTimeout(closeTimer);
+    menuOpen = true;
+    menu.hidden = false;
+    menu.inert = false;
+    menu.setAttribute("aria-hidden", "false");
+    burger.setAttribute("aria-expanded", "true");
+    burger.setAttribute("aria-label", "Tutup menu navigasi");
+    document.body.classList.add("mobile-menu-open");
+
+    requestAnimationFrame(() => {
+      menu.classList.add("is-open");
+      closeButton.focus();
+    });
+  }
+
+  function closeMenu({ restoreFocus = true } = {}) {
+    if (!menuOpen) return;
+    menuOpen = false;
+    menu.classList.remove("is-open");
+    menu.inert = true;
+    menu.setAttribute("aria-hidden", "true");
+    burger.setAttribute("aria-expanded", "false");
+    burger.setAttribute("aria-label", "Buka menu navigasi");
+    document.body.classList.remove("mobile-menu-open");
+
+    if (restoreFocus && !desktopNavigation.matches) burger.focus();
+    closeTimer = window.setTimeout(() => {
+      if (!menuOpen) menu.hidden = true;
+    }, reducedMotion.matches ? 0 : 280);
+  }
+
+  burger.addEventListener("click", () => {
+    if (menuOpen) closeMenu();
+    else openMenu();
+  });
+  closeButton.addEventListener("click", () => closeMenu());
+
+  menu.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeMenu();
+      return;
+    }
+    if (event.key !== "Tab") return;
+
+    const focusableItems = getFocusableItems();
+    if (!focusableItems.length) return;
+    const first = focusableItems[0];
+    const last = focusableItems[focusableItems.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  menu.querySelectorAll("a[href]").forEach((link) => {
+    link.addEventListener("click", () => closeMenu());
+  });
+
+  window.addEventListener("hashchange", () => {
+    updateActiveNavigation();
+    closeMenu();
+  });
+  window.addEventListener("scroll", () => {
+    header.classList.toggle("is-scrolled", window.scrollY > 16);
+  }, { passive: true });
+
+  const handleDesktopChange = (event) => {
+    if (event.matches) closeMenu({ restoreFocus: false });
+  };
+  desktopNavigation.addEventListener("change", handleDesktopChange);
+
+  updateActiveNavigation();
+  header.classList.toggle("is-scrolled", window.scrollY > 16);
 }
 
 // ============================================================
