@@ -1,50 +1,217 @@
 /* ============================================================
-   SOGA 11 — Design Tokens
-   Tema: "Light Magic Purple"
-   Background terang + aksen ungu magic (glow + gradient halus)
+   SOGA 11 — Sorcery Editorial System
+   Token architecture: primitive -> semantic -> component
    ============================================================ */
 :root {
-  /* Background */
-  --bg-primary: #faf8ff;          /* main background — lavender sangat terang */
-  --bg-secondary: #f4efff;        /* section background */
-  --bg-card: #ffffff;             /* card background */
-  --bg-glass: rgba(255, 255, 255, 0.72); /* glassmorphism (light) */
+  /* Primitive: brand and editorial color system */
+  --ds-blue: #284e83;
+  --ds-gold: #d9ba91;
 
-  /* Text */
-  --text-primary: #2a1a3d;        /* teks utama — ungu gelap */
-  --text-secondary: #6b5b7d;      /* teks sekunder */
-  --text-muted: #9a8bab;          /* teks redup */
-  --text-on-accent: #ffffff;      /* teks di atas aksen ungu */
+  --purple-950: #21152f;
+  --purple-900: #29173d;
+  --purple-800: #3a2157;
+  --purple-700: #5b2bbf;
+  --purple-600: #7c3aed;
+  --purple-500: #8b5cf6;
+  --purple-300: #c4b5fd;
+  --purple-100: #ede9fe;
+  --purple-050: #f5f1ff;
 
-  /* Accent (magic purple) */
-  --accent: #7c3aed;              /* ungu utama */
-  --accent-strong: #6d28d9;       /* ungu pekat */
-  --accent-soft: #c084fc;         /* ungu muda */
-  --accent-tint: #ede9fe;         /* tint ungu sangat terang */
-  --accent-glow: rgba(124, 58, 237, 0.16); /* glow halus */
+  --paper: #faf8f5;
+  --surface: #ffffff;
+  --ink: #21152f;
+  --ink-soft: #433852;
+  --text-muted: #746b80;
+  --border: #ddd7e5;
+  --border-strong: #c7bdd2;
 
-  /* Gradient (magic) */
-  --gradient-magic: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%);
-  --gradient-magic-soft: linear-gradient(135deg, rgba(124,58,237,0.10) 0%, rgba(192,132,252,0.16) 100%);
+  /* Primitive: semantic status colors */
+  --success: #15803d;
+  --success-soft: #e8f7ed;
+  --warning: #b45309;
+  --warning-soft: #fff4e5;
+  --danger: #b42318;
+  --danger-hover: #912018;
+  --danger-active: #7a1b14;
+  --danger-soft: #fdecec;
+  --info: #6d28d9;
 
-  /* Gold accent (aksen magic) */
-  --gold: #d4a017;
+  /* Primitive: spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --space-9: 64px;
+  --space-10: 80px;
+  --space-11: 96px;
+  --space-12: 128px;
+  --space-13: 160px;
 
-  /* Border & Shadow */
-  --border: rgba(124, 58, 237, 0.14);
-  --border-strong: rgba(124, 58, 237, 0.30);
-  --shadow-sm: 0 2px 10px rgba(124, 58, 237, 0.06);
-  --shadow-md: 0 8px 30px rgba(124, 58, 237, 0.10);
-  --shadow-lg: 0 16px 48px rgba(124, 58, 237, 0.14);
+  /* Primitive: layout */
+  --container-wide: 1280px;
+  --container-main: 1200px;
+  --container-reading: 760px;
+  --gutter-mobile: 20px;
+  --gutter-tablet: 32px;
+  --gutter-desktop: 48px;
+  --gutter-wide: 64px;
+  --page-gutter: var(--gutter-mobile);
 
-  /* Radius */
-  --radius-sm: 10px;
-  --radius: 16px;
-  --radius-lg: 24px;
+  /* Documented breakpoint values. Media queries use literal values. */
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1280px;
 
-  /* Transition */
-  --transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* Primitive: shape and elevation */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+  --shadow-1: 0 8px 24px rgba(33, 21, 47, 0.06);
+  --shadow-2: 0 14px 36px rgba(33, 21, 47, 0.1);
 
-  /* Font */
-  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Primitive: typography */
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  --type-mega-size: clamp(5.5rem, 15vw, 15rem);
+  --type-mega-leading: 0.78;
+  --type-mega-tracking: -0.07em;
+  --type-mega-weight: 700;
+
+  --type-hero-size: clamp(2.5rem, 5.2vw, 4.875rem);
+  --type-hero-leading: 0.95;
+  --type-hero-tracking: -0.045em;
+  --type-hero-weight: 700;
+
+  --type-section-xl-size: clamp(2.25rem, 4vw, 3.5rem);
+  --type-section-xl-leading: 1;
+  --type-section-xl-tracking: -0.035em;
+  --type-section-xl-weight: 700;
+
+  --type-h2-size: clamp(2rem, 3.2vw, 2.75rem);
+  --type-h2-leading: 1.05;
+  --type-h2-tracking: -0.03em;
+  --type-h2-weight: 700;
+
+  --type-h3-size: clamp(1.5rem, 2vw, 1.75rem);
+  --type-h3-leading: 1.15;
+  --type-h3-tracking: -0.02em;
+  --type-h3-weight: 700;
+
+  --type-h4-size: clamp(1.125rem, 1.5vw, 1.25rem);
+  --type-h4-leading: 1.25;
+  --type-h4-tracking: -0.01em;
+  --type-h4-weight: 600;
+
+  --type-body-lg-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --type-body-lg-leading: 1.65;
+  --type-body-size: clamp(0.9375rem, 0.9125rem + 0.125vw, 1rem);
+  --type-body-leading: 1.6;
+  --type-small-size: clamp(0.8125rem, 0.7875rem + 0.125vw, 0.875rem);
+  --type-small-leading: 1.5;
+  --type-label-size: clamp(0.6875rem, 0.6625rem + 0.125vw, 0.75rem);
+  --type-label-leading: 1.35;
+  --type-label-tracking: 0.12em;
+  --type-micro-size: 0.6875rem;
+  --type-micro-leading: 1.35;
+  --type-micro-tracking: 0.14em;
+  --type-data-xl-size: clamp(3rem, 5vw, 5.5rem);
+  --type-data-xl-leading: 0.9;
+  --type-data-xl-tracking: -0.05em;
+
+  /* Primitive: motion */
+  --ease-standard: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-emphasis: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 180ms;
+  --duration-normal: 240ms;
+  --duration-reveal: 420ms;
+
+  /* Optional only: approved CTA/credential surfaces in later phases */
+  --gradient-cta: linear-gradient(90deg, #7c3aed 0%, #8b5cf6 100%);
+  --gradient-cta-hover: linear-gradient(90deg, #6d28d9 0%, #7c3aed 100%);
+
+  /* Semantic aliases */
+  --bg-page: var(--paper);
+  --bg-surface: var(--surface);
+  --bg-soft: var(--purple-050);
+  --bg-dark: var(--purple-950);
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink-soft);
+  --text-on-dark: var(--paper);
+  --border-default: var(--border);
+  --primary: var(--purple-600);
+  --primary-hover: #6d28d9;
+  --primary-active: #5b21b6;
+  --focus-ring: rgba(124, 58, 237, 0.18);
+  --danger-ring: rgba(180, 35, 24, 0.18);
+
+  /* Component foundation */
+  --control-height: 48px;
+  --control-touch-target: 44px;
+  --button-radius: var(--radius-md);
+  --button-padding-block: var(--space-3);
+  --button-padding-inline: var(--space-5);
+  --input-radius: var(--radius-sm);
+  --input-padding-block: var(--space-3);
+  --input-padding-inline: var(--space-4);
+
+  /* Z-index */
+  --z-base: 0;
+  --z-decoration: 1;
+  --z-content: 10;
+  --z-sticky: 100;
+  --z-dropdown: 300;
+  --z-overlay: 500;
+  --z-modal: 700;
+  --z-toast: 900;
+
+  /* Compatibility aliases: remove only after dependent page phases */
+  --bg-primary: var(--bg-page);
+  --bg-secondary: var(--bg-soft);
+  --bg-card: var(--bg-surface);
+  --bg-glass: rgba(255, 255, 255, 0.86);
+  --text-on-accent: var(--surface);
+  --accent: var(--primary);
+  --accent-strong: var(--primary-hover);
+  --accent-soft: var(--purple-300);
+  --accent-tint: var(--purple-100);
+  --accent-glow: var(--focus-ring);
+  --gold: var(--ds-gold);
+  --gradient-magic: var(--gradient-cta);
+  --gradient-magic-soft: var(--purple-050);
+  --radius: var(--radius-md);
+  --shadow-sm: none;
+  --shadow-md: var(--shadow-1);
+  --shadow-lg: var(--shadow-2);
+  --transition: color var(--duration-fast) ease,
+    background-color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-normal) var(--ease-standard),
+    transform var(--duration-normal) var(--ease-standard),
+    opacity var(--duration-fast) ease;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-gutter: var(--gutter-tablet);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-gutter: var(--gutter-desktop);
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --page-gutter: var(--gutter-wide);
+  }
 }
