@@ -7,12 +7,12 @@ let conversionChart = null;
 let arrivalChart = null;
 let registrationOpen = true;
 
-const ICON_CHECK = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
-const ICON_X = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
-const ICON_WARNING = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>';
-const ICON_EYE = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
-const ICON_PENCIL = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>';
-const ICON_TRASH = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>';
+const ICON_CHECK = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
+const ICON_X = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
+const ICON_WARNING = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>';
+const ICON_EYE = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+const ICON_PENCIL = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>';
+const ICON_TRASH = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>';
 
 const esc = (s) =>
   String(s ?? "").replace(
@@ -135,7 +135,7 @@ async function loadParticipants() {
     renderCharts();
   } catch (e) {
     document.getElementById("table-body").innerHTML =
-      `<tr><td colspan="7" class="text-center">Gagal memuat data.</td></tr>`;
+      `<tr class="registry-empty-row"><td colspan="7" data-cell="empty" class="text-center">Gagal memuat data.</td></tr>`;
   }
 }
 
@@ -232,24 +232,24 @@ function renderTable(filter = "all", query = "") {
   }
 
   if (!list.length) {
-    body.innerHTML = `<tr><td colspan="7" class="text-center">Tidak ada data.</td></tr>`;
+    body.innerHTML = `<tr class="registry-empty-row"><td colspan="7" data-cell="empty" class="text-center">Tidak ada data.</td></tr>`;
     return;
   }
 
   body.innerHTML = list
     .map(
       (p) => `
-      <tr>
-        <td>${esc(p.qr_token)}</td>
-        <td><strong>${esc(p.full_name)}</strong></td>
-        <td>${esc(p.institution)}</td>
-        <td>${esc(p.whatsapp)}</td>
-        <td><span class="badge ${p.status === "hadir" ? "badge-hadir" : "badge-pending"}">${esc(p.status)}</span></td>
-        <td>${p.checkin_time ? new Date(p.checkin_time).toLocaleTimeString("id-ID") : "-"}</td>
-        <td class="row-actions">
-          <button class="act-btn" data-action="view" data-id="${esc(p.id)}" title="Detail" aria-label="Lihat detail ${esc(p.full_name)}">${ICON_EYE}</button>
-          <button class="act-btn" data-action="edit" data-id="${esc(p.id)}" title="Edit" aria-label="Edit ${esc(p.full_name)}">${ICON_PENCIL}</button>
-          <button class="act-btn act-btn-danger" data-action="delete" data-id="${esc(p.id)}" title="Hapus" aria-label="Hapus ${esc(p.full_name)}">${ICON_TRASH}</button>
+      <tr class="participant-record">
+        <td data-label="Ticket ID" data-cell="ticket">${esc(p.qr_token)}</td>
+        <td data-label="Nama" data-cell="name"><strong>${esc(p.full_name)}</strong></td>
+        <td data-label="Instansi" data-cell="institution">${esc(p.institution)}</td>
+        <td data-label="WhatsApp" data-cell="whatsapp">${esc(p.whatsapp)}</td>
+        <td data-label="Status" data-cell="status"><span class="badge ${p.status === "hadir" ? "badge-hadir" : "badge-pending"}">${esc(p.status)}</span></td>
+        <td data-label="Check-in" data-cell="checkin">${p.checkin_time ? new Date(p.checkin_time).toLocaleTimeString("id-ID") : "-"}</td>
+        <td class="row-actions" data-label="Aksi" data-cell="actions">
+          <button type="button" class="act-btn" data-action="view" data-id="${esc(p.id)}" title="Detail" aria-label="Lihat detail ${esc(p.full_name)}">${ICON_EYE}<span class="act-label">Lihat</span></button>
+          <button type="button" class="act-btn" data-action="edit" data-id="${esc(p.id)}" title="Edit" aria-label="Edit ${esc(p.full_name)}">${ICON_PENCIL}<span class="act-label">Edit</span></button>
+          <button type="button" class="act-btn act-btn-danger" data-action="delete" data-id="${esc(p.id)}" title="Hapus" aria-label="Hapus ${esc(p.full_name)}">${ICON_TRASH}<span class="act-label">Hapus</span></button>
         </td>
       </tr>`
     )
@@ -299,6 +299,21 @@ const SELECT_OPTIONS = {
 };
 
 const TEXTAREA_FIELDS = new Set(["expectation", "question"]);
+const participantModal = document.getElementById("participant-modal");
+const participantModalCard = participantModal.querySelector(".modal-card");
+const modalDescription = document.getElementById("modal-description");
+const modalStatus = document.getElementById("modal-status");
+const dashboardRoot = document.getElementById("dashboard");
+const MODAL_FOCUSABLE = [
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  "[href]",
+  '[tabindex]:not([tabindex="-1"])',
+].join(",");
+let modalReturnFocus = null;
+let modalBusy = false;
 
 function findParticipant(id) {
   return participants.find((p) => p.id === id);
@@ -309,39 +324,115 @@ document.getElementById("table-body").addEventListener("click", (e) => {
   if (!btn) return;
   const p = findParticipant(btn.dataset.id);
   if (!p) return;
+  modalReturnFocus = btn;
   if (btn.dataset.action === "view") openModal("view", p);
   else if (btn.dataset.action === "edit") openModal("edit", p);
-  else if (btn.dataset.action === "delete") confirmDelete(p);
+  else if (btn.dataset.action === "delete") openModal("delete", p);
 });
 
 function openModal(mode, p) {
   const title = document.getElementById("modal-title");
   const body = document.getElementById("modal-body");
   const footer = document.getElementById("modal-footer");
+  let initialFocusSelector = "#btn-modal-close";
+
+  modalBusy = false;
+  participantModal.removeAttribute("aria-busy");
+  participantModal.dataset.mode = mode;
+  document.getElementById("btn-modal-close").disabled = false;
+  setModalStatus("", "");
 
   if (mode === "view") {
     title.textContent = "Detail Peserta";
+    modalDescription.textContent = `Data pendaftaran ${p.full_name}.`;
     body.innerHTML = renderDetail(p);
     footer.innerHTML = `
-      <button class="btn btn-secondary" id="modal-edit-btn">Edit</button>
-      <button class="btn btn-ghost" id="modal-close-btn">Tutup</button>`;
+      <button type="button" class="btn btn-secondary" id="modal-edit-btn">Edit Peserta</button>
+      <button type="button" class="btn btn-ghost" id="modal-close-btn">Tutup</button>`;
     document.getElementById("modal-edit-btn").addEventListener("click", () => openModal("edit", p));
     document.getElementById("modal-close-btn").addEventListener("click", closeModal);
-  } else {
+  } else if (mode === "edit") {
     title.textContent = "Edit Peserta";
+    modalDescription.textContent = `Perbarui data yang diizinkan untuk ${p.full_name}.`;
     body.innerHTML = renderEditForm(p);
     footer.innerHTML = `
-      <button class="btn btn-ghost" id="modal-cancel-btn">Batal</button>
-      <button class="btn btn-primary" id="modal-save-btn">Simpan</button>`;
+      <button type="button" class="btn btn-ghost" id="modal-cancel-btn">Batal</button>
+      <button type="button" class="btn btn-primary" id="modal-save-btn">Simpan Perubahan</button>`;
     document.getElementById("modal-cancel-btn").addEventListener("click", () => openModal("view", p));
     document.getElementById("modal-save-btn").addEventListener("click", () => saveEdit(p));
+    initialFocusSelector = "[data-field]";
+  } else {
+    title.textContent = "Hapus Peserta?";
+    modalDescription.textContent = "Konfirmasi tindakan penghapusan data peserta.";
+    body.innerHTML = `
+      <div class="delete-confirmation">
+        <span class="delete-confirmation-label">Delete / Participant</span>
+        <strong>${esc(p.full_name)}</strong>
+        <code>${esc(p.qr_token)}</code>
+        <p>Tindakan ini akan menghapus data peserta dari sistem dan tidak dapat dibatalkan.</p>
+      </div>`;
+    footer.innerHTML = `
+      <button type="button" class="btn btn-ghost" id="modal-delete-cancel-btn">Batal</button>
+      <button type="button" class="btn btn-danger" id="modal-delete-confirm-btn">Hapus Peserta</button>`;
+    document.getElementById("modal-delete-cancel-btn").addEventListener("click", closeModal);
+    document.getElementById("modal-delete-confirm-btn").addEventListener("click", () => deleteParticipant(p));
+    initialFocusSelector = "#modal-delete-cancel-btn";
   }
 
-  document.getElementById("participant-modal").classList.remove("hidden");
+  dashboardRoot.inert = true;
+  dashboardRoot.setAttribute("aria-hidden", "true");
+  document.body.classList.add("modal-open");
+  participantModal.classList.remove("hidden");
+  requestAnimationFrame(() => {
+    const initialFocus = participantModal.querySelector(initialFocusSelector) || participantModalCard;
+    initialFocus.focus();
+  });
 }
 
-function closeModal() {
-  document.getElementById("participant-modal").classList.add("hidden");
+function closeModal(options = {}) {
+  if (modalBusy) return;
+  const { restoreFocus = true } = options;
+  participantModal.classList.add("hidden");
+  participantModal.removeAttribute("data-mode");
+  participantModal.removeAttribute("aria-busy");
+  dashboardRoot.inert = false;
+  dashboardRoot.removeAttribute("aria-hidden");
+  document.body.classList.remove("modal-open");
+
+  if (restoreFocus) {
+    const target = modalReturnFocus?.isConnected
+      ? modalReturnFocus
+      : document.getElementById("search-input");
+    target?.focus();
+  }
+  modalReturnFocus = null;
+}
+
+function setModalStatus(state, message) {
+  modalStatus.textContent = message;
+  if (state) modalStatus.dataset.state = state;
+  else modalStatus.removeAttribute("data-state");
+}
+
+function setModalBusy(busy, busyLabel) {
+  modalBusy = busy;
+  const closeButton = document.getElementById("btn-modal-close");
+  const actionButton = document.getElementById("modal-save-btn") ||
+    document.getElementById("modal-delete-confirm-btn");
+  const secondaryButtons = participantModal.querySelectorAll(".modal-footer button:not(#modal-save-btn):not(#modal-delete-confirm-btn)");
+
+  closeButton.disabled = busy;
+  secondaryButtons.forEach((button) => { button.disabled = busy; });
+  if (actionButton) {
+    if (!actionButton.dataset.idleLabel) actionButton.dataset.idleLabel = actionButton.textContent;
+    actionButton.disabled = busy;
+    actionButton.textContent = busy ? busyLabel : actionButton.dataset.idleLabel;
+    if (busy) actionButton.setAttribute("aria-busy", "true");
+    else actionButton.removeAttribute("aria-busy");
+  }
+
+  if (busy) participantModal.setAttribute("aria-busy", "true");
+  else participantModal.removeAttribute("aria-busy");
 }
 
 function formatValue(f, v) {
@@ -355,9 +446,13 @@ function formatValue(f, v) {
 function renderDetail(p) {
   const rows = DETAIL_FIELDS.map((f) => {
     const full = f === "expectation" || f === "question";
+    const value = formatValue(f, p[f]);
+    const valueMarkup = f === "status"
+      ? `<span class="badge ${p.status === "hadir" ? "badge-hadir" : "badge-pending"}">${esc(value)}</span>`
+      : `<span class="d-value ${f === "qr_token" ? "detail-ticket-id" : ""}">${esc(value)}</span>`;
     return `<div class="detail-item ${full ? "detail-full" : ""}">
       <span class="d-label">${esc(FIELD_LABELS[f] || f)}</span>
-      <span class="d-value">${esc(formatValue(f, p[f]))}</span>
+      ${valueMarkup}
     </div>`;
   }).join("");
   return `<div class="detail-grid">${rows}</div>`;
@@ -381,12 +476,13 @@ function renderEditForm(p) {
     } else {
       input = `<input type="text" id="edit-${f}" data-field="${f}" value="${esc(val)}" />`;
     }
-    return `<div class="form-group ${full ? "detail-full" : ""}"><label>${esc(label)}</label>${input}</div>`;
+    return `<div class="form-group ${full ? "detail-full" : ""}"><label for="edit-${f}">${esc(label)}</label>${input}</div>`;
   }).join("");
   return `<div class="form-row">${controls}</div>`;
 }
 
 async function saveEdit(p) {
+  if (modalBusy) return;
   const updates = {};
   EDITABLE_FIELDS.forEach((f) => {
     const el = document.querySelector(`[data-field="${f}"]`);
@@ -399,29 +495,70 @@ async function saveEdit(p) {
     updates.checkin_time = null;
   }
 
-  const saveBtn = document.getElementById("modal-save-btn");
-  saveBtn.disabled = true;
+  setModalStatus("loading", "Menyimpan perubahan peserta...");
+  setModalBusy(true, "Menyimpan...");
   try {
     await window.SOGA_API.updateParticipant(p.id, updates);
-    closeModal();
+    setModalBusy(false);
+    closeModal({ restoreFocus: false });
     await loadParticipants();
+    document.getElementById("search-input").focus();
   } catch (e) {
-    alert("Gagal menyimpan: " + (e.message || "terjadi kesalahan"));
-    saveBtn.disabled = false;
+    setModalBusy(false);
+    setModalStatus("error", "Perubahan belum dapat disimpan. Periksa data dan coba kembali.");
+    modalStatus.focus();
   }
 }
 
-function confirmDelete(p) {
-  const ok = confirm(`Hapus peserta "${p.full_name}" (${p.qr_token})? Tindakan ini tidak bisa dibatalkan.`);
-  if (!ok) return;
-  window.SOGA_API.deleteParticipant(p.id)
-    .then(() => loadParticipants())
-    .catch((e) => alert("Gagal menghapus: " + (e.message || "terjadi kesalahan")));
+async function deleteParticipant(p) {
+  if (modalBusy) return;
+  setModalStatus("loading", "Menghapus data peserta...");
+  setModalBusy(true, "Menghapus...");
+  try {
+    await window.SOGA_API.deleteParticipant(p.id);
+    setModalBusy(false);
+    closeModal({ restoreFocus: false });
+    await loadParticipants();
+    document.getElementById("search-input").focus();
+  } catch (e) {
+    setModalBusy(false);
+    setModalStatus("error", "Data peserta belum dapat dihapus. Silakan coba kembali.");
+    modalStatus.focus();
+  }
 }
 
 document.getElementById("btn-modal-close").addEventListener("click", closeModal);
-document.getElementById("participant-modal").addEventListener("click", (e) => {
+participantModal.addEventListener("click", (e) => {
   if (e.target === e.currentTarget) closeModal();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (participantModal.classList.contains("hidden")) return;
+
+  if (e.key === "Escape") {
+    e.preventDefault();
+    closeModal();
+    return;
+  }
+
+  if (e.key !== "Tab") return;
+  const focusable = [...participantModal.querySelectorAll(MODAL_FOCUSABLE)]
+    .filter((element) => element.getClientRects().length > 0);
+  if (!focusable.length) {
+    e.preventDefault();
+    participantModalCard.focus();
+    return;
+  }
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
 });
 
 document.getElementById("search-input").addEventListener("input", (e) => {
