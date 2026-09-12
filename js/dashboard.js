@@ -9,6 +9,7 @@ let registrationOpen = true;
 
 const ICON_CHECK = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
 const ICON_X = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
+const ICON_WARNING = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>';
 const ICON_EYE = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
 const ICON_PENCIL = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>';
 const ICON_TRASH = '<svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>';
@@ -151,6 +152,14 @@ function renderCharts() {
   if (typeof Chart === "undefined") return;
   const hadir = participants.filter((p) => p.status === "hadir").length;
   const pending = participants.length - hadir;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const sharedChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: reducedMotion ? false : { duration: 240 },
+    color: "#746b80",
+    font: { family: '"Plus Jakarta Sans", system-ui, sans-serif' },
+  };
 
   const convCanvas = document.getElementById("chart-conversion");
   if (convCanvas) {
@@ -159,13 +168,17 @@ function renderCharts() {
       type: "doughnut",
       data: {
         labels: ["Hadir", "Belum Hadir"],
-        datasets: [{ data: [hadir, pending], backgroundColor: ["#16a34a", "#c084fc"], borderWidth: 0 }],
+        datasets: [{ data: [hadir, pending], backgroundColor: ["#15803d", "#ddd7e5"], borderWidth: 0 }],
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...sharedChartOptions,
         cutout: "68%",
-        plugins: { legend: { position: "bottom" } },
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: { boxWidth: 10, boxHeight: 10, padding: 16, usePointStyle: true },
+          },
+        },
       },
     });
   }
@@ -185,10 +198,17 @@ function renderCharts() {
         datasets: [{ label: "Check-in", data: hourCounts, backgroundColor: "#7c3aed", borderRadius: 4 }],
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        ...sharedChartOptions,
         plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+        scales: {
+          x: { grid: { display: false }, ticks: { maxTicksLimit: 8, color: "#746b80" } },
+          y: {
+            beginAtZero: true,
+            border: { display: false },
+            grid: { color: "rgba(199, 189, 210, 0.38)" },
+            ticks: { precision: 0, color: "#746b80" },
+          },
+        },
       },
     });
   }
@@ -415,25 +435,37 @@ document.getElementById("btn-refresh").addEventListener("click", loadParticipant
 // ============================================================
 // Check-in
 // ============================================================
-async function doCheckin(token) {
+function renderCheckinStatus(state, message) {
   const status = document.getElementById("checkin-status");
+  const icons = {
+    success: ICON_CHECK,
+    warning: ICON_WARNING,
+    invalid: ICON_X,
+    error: ICON_X,
+  };
+
+  status.innerHTML = icons[state] || "";
+  status.appendChild(document.createTextNode(message));
+  status.className = "submit-status";
+  status.dataset.state = state;
+}
+
+async function doCheckin(token) {
   token = token.trim().toUpperCase();
   if (!token.startsWith("SGN11-")) {
-    status.textContent = "Format ID salah. Contoh: SGN11-ABC123";
-    status.className = "submit-status";
+    renderCheckinStatus("invalid", "Format Ticket ID belum sesuai. Contoh: SGN11-ABC123.");
     return;
   }
   try {
     await window.SOGA_API.checkInParticipant(token);
-    status.innerHTML = ICON_CHECK;
-    status.appendChild(document.createTextNode(" " + token + " berhasil check-in!"));
-    status.className = "submit-status ok";
+    renderCheckinStatus("success", `${token} berhasil diverifikasi dan check-in.`);
     document.getElementById("checkin-input").value = "";
     await loadParticipants();
   } catch (e) {
-    status.innerHTML = ICON_X;
-    status.appendChild(document.createTextNode(" " + (e.message || "gagal check-in (mungkin sudah hadir / ID tidak ditemukan)")));
-    status.className = "submit-status err";
+    renderCheckinStatus(
+      "error",
+      "Check-in belum dapat diproses. Periksa Ticket ID atau coba kembali."
+    );
   }
 }
 
@@ -458,7 +490,10 @@ document.getElementById("btn-scan-toggle").addEventListener("click", () => {
           doCheckin(text);
           stopScanner();
         }
-      ).catch((e) => (document.getElementById("checkin-status").textContent = "Kamera tidak tersedia"));
+      ).catch(() => renderCheckinStatus(
+        "error",
+        "Kamera tidak tersedia. Gunakan input Ticket ID manual."
+      ));
     }
   } else {
     stopScanner();
@@ -515,10 +550,19 @@ async function loadRegistrationStatus() {
 function renderRegistrationToggle() {
   const txt = document.getElementById("reg-status-text");
   const btn = document.getElementById("btn-toggle-registration");
-  if (!txt || !btn) return;
+  const badge = document.getElementById("reg-status-badge");
+  if (!txt || !btn || !badge) return;
   txt.textContent = registrationOpen ? "Pendaftaran terbuka" : "Pendaftaran ditutup";
+  badge.textContent = registrationOpen ? "Open" : "Closed";
+  badge.dataset.state = registrationOpen ? "open" : "closed";
   btn.textContent = registrationOpen ? "Tutup Pendaftaran" : "Buka Pendaftaran";
-  btn.className = registrationOpen ? "btn btn-secondary" : "btn btn-primary";
+  btn.className = registrationOpen
+    ? "btn btn-secondary admin-registration-action is-close"
+    : "btn btn-primary admin-registration-action";
+  btn.setAttribute(
+    "aria-label",
+    registrationOpen ? "Tutup pendaftaran peserta" : "Buka pendaftaran peserta"
+  );
 }
 
 document.getElementById("btn-toggle-registration").addEventListener("click", async () => {

@@ -20,7 +20,7 @@
 
   <link rel="stylesheet" href="css/variables.css?v=10" />
   <link rel="stylesheet" href="css/global.css?v=11" />
-  <link rel="stylesheet" href="css/dashboard.css?v=10" />
+  <link rel="stylesheet" href="css/dashboard.css?v=11" />
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -141,72 +141,112 @@
     </header>
 
     <main class="container dash-main" id="dash-main" tabindex="-1">
-      <!-- Stats -->
-      <div class="grid grid-3 stats-grid dash-stats">
-        <div class="stat-card card"><h3 id="stat-total" class="stat-num">0</h3><p>Total Pendaftar</p></div>
-        <div class="stat-card card"><h3 id="stat-present" class="stat-num" style="color:#16a34a">0</h3><p>Hadir</p></div>
-        <div class="stat-card card"><h3 id="stat-conversion" class="stat-num">0%</h3><p>Conversion Rate</p></div>
-      </div>
+      <h1 class="sr-only">Command Center Operations</h1>
 
-      <!-- Charts -->
-      <div class="grid grid-2 dash-charts">
-        <div class="card dash-panel">
-          <h3>Konversi Kehadiran</h3>
-          <div class="chart-box"><canvas id="chart-conversion"></canvas></div>
-        </div>
-        <div class="card dash-panel">
-          <h3>Waktu Kedatangan (per jam)</h3>
-          <div class="chart-box"><canvas id="chart-arrival"></canvas></div>
-        </div>
-      </div>
-
-      <!-- Check-in -->
-      <div class="card dash-panel">
-        <h3>Check-in Peserta</h3>
-        <div class="checkin-row">
-          <input type="text" id="checkin-input" placeholder="Scan QR atau ketik ID (SGN11-XXXXXX)" />
-          <button id="btn-checkin" class="btn btn-primary">Check-in</button>
-          <button id="btn-scan-toggle" class="btn btn-secondary"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Scan QR</button>
-        </div>
-        <div id="scanner-box" class="hidden"></div>
-        <p id="checkin-status" class="submit-status"></p>
-      </div>
-
-      <!-- Pengaturan -->
-      <div class="card dash-panel">
-        <h3>Pengaturan Event</h3>
-        <div class="setting-row">
+      <!-- Check-in: first in source order for mobile operational priority. -->
+      <section class="card admin-module admin-checkin" aria-labelledby="checkin-title">
+        <header class="admin-module-header">
           <div>
-            <strong>Status Pendaftaran</strong>
-            <p id="reg-status-text">Memuat...</p>
+            <span class="admin-module-index">02 / Check-in</span>
+            <h2 id="checkin-title">Check-in Station</h2>
           </div>
-          <button id="btn-toggle-registration" class="btn btn-secondary">...</button>
-        </div>
-      </div>
+          <span class="admin-module-kicker">Primary operation</span>
+        </header>
 
-      <!-- Participants table -->
-      <div class="card dash-panel">
-        <div class="table-toolbar">
-          <input type="text" id="search-input" placeholder="Cari nama / ID / instansi..." />
-          <select id="filter-status">
-            <option value="all">Semua Status</option>
-            <option value="pending">Pending</option>
-            <option value="hadir">Hadir</option>
-          </select>
-          <button id="btn-export" class="btn btn-secondary"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg> Export CSV</button>
-          <button id="btn-refresh" class="btn btn-ghost">Refresh</button>
+        <div class="checkin-workspace">
+          <div class="checkin-manual">
+            <label for="checkin-input">Ticket ID</label>
+            <p id="checkin-helper">Masukkan ID peserta atau gunakan kamera untuk memindai QR.</p>
+            <div class="checkin-row">
+              <input type="text" id="checkin-input" placeholder="SGN11-XXXXXX" aria-describedby="checkin-helper checkin-status" autocomplete="off" />
+              <button id="btn-checkin" class="btn btn-primary" type="button">Check-in</button>
+              <button id="btn-scan-toggle" class="btn btn-secondary" type="button"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Scan QR</button>
+            </div>
+          </div>
+          <div id="scanner-box" class="scanner-box hidden" aria-label="Pemindai QR peserta"></div>
+          <p id="checkin-status" class="submit-status" role="status" aria-live="polite" aria-atomic="true"></p>
         </div>
-        <div class="table-wrap">
+      </section>
+
+      <!-- Registration status -->
+      <section class="card admin-module admin-registration" aria-labelledby="registration-title">
+        <header class="admin-module-header">
+          <div>
+            <span class="admin-module-index">04 / Registration</span>
+            <h2 id="registration-title">Registration Status</h2>
+          </div>
+        </header>
+        <div class="setting-row">
+          <div class="registration-state-copy">
+            <span id="reg-status-badge" class="registration-status-badge" data-state="loading" aria-hidden="true">LOADING</span>
+            <p id="reg-status-text" aria-live="polite">Memuat status pendaftaran...</p>
+          </div>
+          <button id="btn-toggle-registration" class="btn btn-secondary" type="button">...</button>
+        </div>
+      </section>
+
+      <!-- Summary -->
+      <section class="admin-module admin-summary" aria-labelledby="summary-title">
+        <header class="admin-module-header">
+          <div>
+            <span class="admin-module-index">01 / Summary</span>
+            <h2 id="summary-title">Event Overview</h2>
+          </div>
+          <span class="admin-module-kicker">Live participant data</span>
+        </header>
+        <div class="metric-rail">
+          <article class="metric-item">
+            <span>Total Pendaftar</span>
+            <strong id="stat-total" class="stat-num">0</strong>
+          </article>
+          <article class="metric-item metric-item-success">
+            <span>Hadir</span>
+            <strong id="stat-present" class="stat-num">0</strong>
+          </article>
+          <article class="metric-item">
+            <span>Attendance Rate</span>
+            <strong id="stat-conversion" class="stat-num">0%</strong>
+          </article>
+        </div>
+      </section>
+
+      <!-- Participant registry -->
+      <section class="card admin-module admin-registry" aria-labelledby="registry-title">
+        <header class="admin-module-header">
+          <div>
+            <span class="admin-module-index">05 / Participants</span>
+            <h2 id="registry-title">Participant Registry</h2>
+          </div>
+          <span class="admin-module-kicker">Search, review, export</span>
+        </header>
+        <div class="table-toolbar" role="group" aria-label="Kontrol daftar peserta">
+          <div class="registry-search-control">
+            <label class="sr-only" for="search-input">Cari peserta</label>
+            <input type="search" id="search-input" placeholder="Cari nama / ID / instansi..." autocomplete="off" />
+          </div>
+          <div class="registry-filter-control">
+            <label class="sr-only" for="filter-status">Filter status kehadiran</label>
+            <select id="filter-status">
+              <option value="all">Semua Status</option>
+              <option value="pending">Pending</option>
+              <option value="hadir">Hadir</option>
+            </select>
+          </div>
+          <button id="btn-export" class="btn btn-secondary" type="button"><svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg> Export CSV</button>
+          <button id="btn-refresh" class="btn btn-ghost" type="button">Refresh</button>
+        </div>
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Daftar peserta, dapat digulir horizontal">
           <table id="participant-table">
+            <caption class="sr-only">Daftar peserta Sorcery Gathering 11</caption>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Nama</th>
-                <th>Instansi</th>
-                <th>WhatsApp</th>
-                <th>Status</th>
-                <th>Check-in</th>
-                <th>Aksi</th>
+                <th scope="col">ID</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Instansi</th>
+                <th scope="col">WhatsApp</th>
+                <th scope="col">Status</th>
+                <th scope="col">Check-in</th>
+                <th scope="col">Aksi</th>
               </tr>
             </thead>
             <tbody id="table-body">
@@ -214,7 +254,34 @@
             </tbody>
           </table>
         </div>
-      </div>
+      </section>
+
+      <!-- Analytics: last in source order for mobile priority. -->
+      <section class="admin-module admin-analytics" aria-labelledby="analytics-title">
+        <header class="admin-module-header">
+          <div>
+            <span class="admin-module-index">03 / Analytics</span>
+            <h2 id="analytics-title">Attendance Analytics</h2>
+          </div>
+          <span class="admin-module-kicker">Read-only overview</span>
+        </header>
+        <div class="dash-charts">
+          <article class="card analytic-panel">
+            <div class="analytic-panel-heading">
+              <span>Attendance / Status</span>
+              <h3>Konversi Kehadiran</h3>
+            </div>
+            <div class="chart-box"><canvas id="chart-conversion" role="img" aria-label="Diagram perbandingan peserta hadir dan belum hadir">Diagram konversi kehadiran peserta.</canvas></div>
+          </article>
+          <article class="card analytic-panel">
+            <div class="analytic-panel-heading">
+              <span>Check-in / Time</span>
+              <h3>Waktu Kedatangan per Jam</h3>
+            </div>
+            <div class="chart-box"><canvas id="chart-arrival" role="img" aria-label="Diagram jumlah check-in peserta per jam">Diagram waktu kedatangan peserta per jam.</canvas></div>
+          </article>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -234,6 +301,6 @@
 
   <script src="js/config.js?v=9"></script>
   <script src="js/api.js?v=9"></script>
-  <script src="js/dashboard.js?v=10"></script>
+  <script src="js/dashboard.js?v=11"></script>
 </body>
 </html>
