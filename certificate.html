@@ -27,25 +27,135 @@
 
   <link rel="stylesheet" href="css/variables.css?v=9" />
   <link rel="stylesheet" href="css/global.css?v=9" />
-  <link rel="stylesheet" href="css/certificate.css?v=9" />
+  <link rel="stylesheet" href="css/certificate.css?v=10" />
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body>
-  <main class="container cert-page">
-    <div class="cert-claim card">
-      <span class="hero-badge"><svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg> Sorcery Gathering #11</span>
-      <h2 class="section-title">Klaim <span class="text-gradient">Sertifikat</span></h2>
-      <p class="section-subtitle">Masukkan ID (SGN11-XXX) atau nomor WhatsApp terdaftar.</p>
+<body class="certificate-page">
+  <main class="cert-page">
+    <section id="cert-claim-shell" class="cert-claim" aria-labelledby="claim-page-title">
+      <aside class="cert-context" aria-label="Informasi acara">
+        <div class="cert-context__brand">
+          <img src="assets/logo-web.png" alt="" aria-hidden="true" />
+          <div>
+            <strong>DATA SORCERERS</strong>
+            <span>INDONESIA</span>
+          </div>
+        </div>
 
-      <div class="claim-input">
-        <input type="text" id="claim-input" placeholder="SGN11-XXXXXX / 08xxxxxxxxxx" />
-        <button id="btn-claim" class="btn btn-primary">Cari</button>
+        <div class="cert-context__body">
+          <p class="cert-kicker">SOGA / 011</p>
+          <p class="cert-context__title" aria-hidden="true">CERTIFICATE<br />VERIFICATION</p>
+          <p class="cert-context__copy">
+            Sertifikat partisipasi tersedia untuk peserta yang kehadirannya telah terverifikasi.
+          </p>
+        </div>
+
+        <dl class="cert-context__meta">
+          <div>
+            <dt>EVENT</dt>
+            <dd>Sorcery Gathering #11</dd>
+          </div>
+          <div>
+            <dt>DATE / LOCATION</dt>
+            <dd>25 Oktober 2026<br />Yogyakarta</dd>
+          </div>
+        </dl>
+
+        <svg class="cert-context__geometry" viewBox="0 0 440 300" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M30 250 118 190 204 224 292 116 402 48" />
+            <path d="M118 190 166 92 292 116 340 202" />
+            <path d="M204 224 340 202 402 48" />
+          </g>
+          <g fill="currentColor">
+            <circle cx="30" cy="250" r="3" />
+            <circle cx="118" cy="190" r="4" />
+            <circle cx="166" cy="92" r="3" />
+            <circle cx="204" cy="224" r="3" />
+            <circle cx="292" cy="116" r="5" />
+            <circle cx="340" cy="202" r="3" />
+            <circle class="cert-context__gold-node" cx="402" cy="48" r="5" />
+          </g>
+        </svg>
+        <span class="cert-context__edition" aria-hidden="true">011</span>
+      </aside>
+
+      <div class="cert-verification">
+        <div class="cert-verification__intro">
+          <p class="cert-kicker">CERTIFICATE / CLAIM</p>
+          <h1 id="claim-page-title">Temukan sertifikat partisipasimu.</h1>
+          <p>
+            Masukkan Ticket ID atau nomor WhatsApp yang digunakan saat pendaftaran.
+          </p>
+        </div>
+
+        <form id="certificate-claim-form" class="claim-form" novalidate>
+          <div class="claim-field">
+            <label for="claim-input">Ticket ID atau Nomor WhatsApp</label>
+            <input
+              type="text"
+              id="claim-input"
+              name="certificate-lookup"
+              placeholder="SGN11-XXXXXX / 08xxxxxxxxxx"
+              autocomplete="off"
+              aria-describedby="claim-input-help claim-error"
+            />
+            <p id="claim-input-help" class="claim-help">
+              Gunakan salah satu data yang tercatat pada pendaftaran.
+            </p>
+          </div>
+          <button id="btn-claim" class="btn btn-primary" type="submit">
+            <span data-claim-button-label>VERIFIKASI SEKARANG</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </form>
+
+        <section
+          id="claim-state"
+          class="claim-state"
+          data-state="initial"
+          aria-live="polite"
+          aria-atomic="true"
+          aria-busy="false"
+          aria-labelledby="claim-state-title"
+        >
+          <div class="claim-state__document" aria-hidden="true">
+            <span>DS / SOGA 011</span>
+            <i></i><i></i><i></i>
+            <b>✓</b>
+          </div>
+          <div class="claim-state__content">
+            <p id="claim-state-label" class="claim-state__label">VERIFICATION / READY</p>
+            <h2 id="claim-state-title" tabindex="-1">Siapkan data pendaftaranmu.</h2>
+            <p id="claim-error">
+              Hasil verifikasi akan ditampilkan di sini tanpa mengubah data peserta.
+            </p>
+
+            <div id="claim-verified-details" class="claim-verified" hidden>
+              <p>PARTICIPANT</p>
+              <strong id="claim-result-name"></strong>
+              <span>VERIFICATION ID</span>
+              <code id="claim-result-token"></code>
+            </div>
+
+            <div class="claim-state__actions">
+              <button id="btn-view-certificate" class="btn btn-primary" type="button" hidden>
+                LIHAT SERTIFIKAT <span aria-hidden="true">→</span>
+              </button>
+              <button id="btn-retry-claim" class="btn btn-secondary" type="button" hidden>
+                COBA LAGI
+              </button>
+              <button id="btn-reset-claim" class="btn btn-ghost" type="button" hidden>
+                CARI DATA LAIN
+              </button>
+            </div>
+          </div>
+        </section>
       </div>
-      <p id="claim-error" class="alert alert-error hidden">Data tidak ditemukan, atau kamu belum check-in.</p>
-    </div>
+    </section>
 
     <!-- Sertifikat -->
     <div id="cert-area" class="hidden">
@@ -82,6 +192,6 @@
 
   <script src="js/config.js?v=9"></script>
   <script src="js/api.js?v=9"></script>
-  <script src="js/certificate.js?v=9"></script>
+  <script src="js/certificate.js?v=10"></script>
 </body>
 </html>
