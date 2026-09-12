@@ -5,6 +5,7 @@
 
 // --- Konfigurasi event (ganti di sini) ---
 const EVENT_DATE = "2026-10-25T09:00:00+07:00"; // Minggu, 25 Oktober 2026
+let homeCountdownTimer = null;
 
 // ============================================================
 // Router
@@ -37,6 +38,7 @@ async function route() {
 
 async function loadPage(target, hash) {
   const app = document.getElementById("app");
+  if (target !== routes.home) stopHomeCountdown();
   try {
     const res = await fetch(target);
     app.innerHTML = await res.text();
@@ -180,7 +182,7 @@ function initNavbar() {
 // ============================================================
 function initReveal() {
   const targets = document.querySelectorAll(
-    ".hero-copy, .hero-visual, .section-header, .stat-card, .timeline-item, .speaker-card, .legacy-card, .faq-item"
+    ".section-header, .timeline-item, .speaker-card, .legacy-card, .faq-item"
   );
   targets.forEach((t) => t.classList.add("reveal"));
   if (!targets.length) return;
@@ -204,8 +206,26 @@ function initReveal() {
   targets.forEach((t) => io.observe(t));
 }
 
+function initHeroMotion() {
+  const hero = document.querySelector(".hero");
+  if (!hero || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  hero.classList.add("is-motion-ready");
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => hero.classList.add("is-entered"));
+  });
+}
+
+function stopHomeCountdown() {
+  if (homeCountdownTimer === null) return;
+  window.clearInterval(homeCountdownTimer);
+  homeCountdownTimer = null;
+}
+
 function initHome() {
+  stopHomeCountdown();
   initReveal();
+  initHeroMotion();
   const cd = document.getElementById("countdown");
   if (!cd) return;
 
@@ -229,25 +249,39 @@ function initHome() {
   const target = new Date(EVENT_DATE).getTime();
 
   function tick() {
+    const daysEl = document.getElementById("cd-days");
+    const hoursEl = document.getElementById("cd-hours");
+    const minsEl = document.getElementById("cd-mins");
+    const secsEl = document.getElementById("cd-secs");
+    if (!daysEl || !hoursEl || !minsEl || !secsEl) {
+      stopHomeCountdown();
+      return false;
+    }
+
     const now = Date.now();
     let diff = target - now;
     const status = document.getElementById("countdown-text");
 
     if (diff <= 0) {
       if (status) status.textContent = "Acara sedang berlangsung!";
-      return;
+      daysEl.textContent = "00";
+      hoursEl.textContent = "00";
+      minsEl.textContent = "00";
+      secsEl.textContent = "00";
+      stopHomeCountdown();
+      return false;
     }
     const d = Math.floor(diff / 86400000);
     const h = Math.floor((diff % 86400000) / 3600000);
     const m = Math.floor((diff % 3600000) / 60000);
     const s = Math.floor((diff % 60000) / 1000);
-    document.getElementById("cd-days").textContent = String(d).padStart(2, "0");
-    document.getElementById("cd-hours").textContent = String(h).padStart(2, "0");
-    document.getElementById("cd-mins").textContent = String(m).padStart(2, "0");
-    document.getElementById("cd-secs").textContent = String(s).padStart(2, "0");
+    daysEl.textContent = String(d).padStart(2, "0");
+    hoursEl.textContent = String(h).padStart(2, "0");
+    minsEl.textContent = String(m).padStart(2, "0");
+    secsEl.textContent = String(s).padStart(2, "0");
+    return true;
   }
-  tick();
-  setInterval(tick, 1000);
+  if (tick()) homeCountdownTimer = window.setInterval(tick, 1000);
 }
 
 // ============================================================
