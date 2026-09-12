@@ -1,173 +1,319 @@
 <!-- ===================== REGISTER ===================== -->
-<section class="section register-section">
-  <div class="container">
-    <div class="register-wrapper card">
-      <div class="register-header">
-        <h2 class="section-title">Formulir <span class="text-gradient">Registrasi</span></h2>
-        <p class="section-subtitle">
-          Lengkapi formulir untuk mendapatkan Digital ID dan tiket QR eksklusif Sorcery Gathering #11.
-        </p>
+<section class="register-section" aria-labelledby="register-title">
+  <div class="container registration-shell">
+    <aside class="registration-context" aria-label="Konteks Sorcery Gathering 11">
+      <div class="registration-context-inner">
+        <svg class="registration-constellation" viewBox="0 0 360 420" role="presentation" aria-hidden="true" focusable="false">
+          <path d="M22 70 94 118 146 48 224 96 324 38M94 118l34 106 98-38 72 84M128 224l-58 92 114 54 114-100M226 186l-42 184" />
+          <circle cx="22" cy="70" r="3" />
+          <circle cx="94" cy="118" r="5" />
+          <circle cx="146" cy="48" r="3" />
+          <circle cx="224" cy="96" r="4" />
+          <circle cx="324" cy="38" r="3" />
+          <circle cx="128" cy="224" r="4" />
+          <circle cx="226" cy="186" r="6" class="node-primary" />
+          <circle cx="70" cy="316" r="3" />
+          <circle cx="184" cy="370" r="4" class="node-gold" />
+          <circle cx="298" cy="270" r="4" />
+        </svg>
+
+        <span class="registration-watermark" aria-hidden="true">011</span>
+
+        <div class="registration-context-content">
+          <div class="registration-kicker">
+            <span>SOGA / 011</span>
+            <span aria-hidden="true"></span>
+          </div>
+
+          <h1>Daftarkan Dirimu di Sorcery Gathering #11.</h1>
+          <p>
+            Edisi ke-11 meramu teknologi AI, data, dan kebijakan untuk
+            memberdayakan ekonomi digital Indonesia.
+          </p>
+
+          <dl class="registration-meta">
+            <div>
+              <dt>Tanggal</dt>
+              <dd><time datetime="2026-10-25">25 Oktober 2026</time></dd>
+            </div>
+            <div>
+              <dt>Lokasi</dt>
+              <dd>Yogyakarta</dd>
+            </div>
+          </dl>
+
+          <ol class="registration-index" aria-label="Lima bagian formulir pendaftaran">
+            <li><span>01</span> Identitas Pribadi</li>
+            <li><span>02</span> Latar Belakang Profesional</li>
+            <li><span>03</span> Spesialisasi Teknis</li>
+            <li><span>04</span> Wawasan &amp; Keterlibatan</li>
+            <li><span>05</span> Legal &amp; Konfirmasi</li>
+          </ol>
+        </div>
+      </div>
+    </aside>
+
+    <div class="registration-document">
+      <header class="registration-header">
+        <div class="registration-heading-row">
+          <span class="registration-label">Registration / SOGA 11</span>
+          <span class="registration-required-note"><span aria-hidden="true">*</span> Wajib diisi</span>
+        </div>
+        <h2 id="register-title">Formulir Pendaftaran</h2>
+        <p>Lengkapi data berikut dengan benar untuk mendapatkan tiket QR Sorcery Gathering #11.</p>
+      </header>
+
+      <!-- Registration status states -->
+      <div id="register-loading" class="registration-state registration-state-loading" role="status" aria-live="polite">
+        <span class="registration-state-marker" aria-hidden="true"></span>
+        <div>
+          <span class="registration-state-label">Registration / Checking</span>
+          <h3>Memeriksa status pendaftaran…</h3>
+          <p>Mohon tunggu sebentar.</p>
+        </div>
       </div>
 
-      <!-- Closed state -->
-      <div id="register-closed" class="register-closed hidden">
-        <h3>Pendaftaran Ditutup</h3>
-        <p>Kuota pendaftaran Sorcery Gathering #11 sudah penuh. Nantikan event berikutnya!</p>
+      <div id="register-closed" class="registration-state register-closed hidden" role="status">
+        <span class="registration-state-code tabular-nums" aria-hidden="true">011</span>
+        <div>
+          <span class="registration-state-label">Registration / Closed</span>
+          <h3>Pendaftaran Ditutup</h3>
+          <p>Pendaftaran Sorcery Gathering #11 saat ini ditutup.</p>
+          <a href="#home" class="btn btn-secondary">Kembali ke Home</a>
+        </div>
       </div>
 
-      <!-- Error alert -->
-      <div id="form-error" class="alert alert-error hidden">
-        <strong>Akses Ditolak:</strong> Ada data wajib yang belum lengkap. Periksa field bertanda merah.
+      <div id="register-status-error" class="registration-state registration-state-error hidden" role="alert">
+        <span class="registration-state-marker" aria-hidden="true">!</span>
+        <div>
+          <span class="registration-state-label">Registration / Unavailable</span>
+          <h3>Status pendaftaran belum dapat diperiksa.</h3>
+          <p>Terjadi gangguan sementara. Coba periksa kembali sebelum mengisi formulir.</p>
+          <button type="button" class="btn btn-secondary" id="btn-retry-registration">Coba Lagi</button>
+        </div>
       </div>
 
-      <form id="register-form" novalidate>
-        <!-- 1. Personal -->
-        <h3 class="form-section">1. Identitas Pribadi</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Nama Lengkap <span class="req">*</span></label>
-            <input type="text" id="f-name" required maxlength="60" placeholder="Nama sesuai sertifikat" />
-            <span class="error-msg">Nama wajib diisi.</span>
-          </div>
-          <div class="form-group">
-            <label>Email <span class="req">*</span></label>
-            <input type="email" id="f-email" required placeholder="email@contoh.com" />
-            <span class="error-msg">Email tidak valid.</span>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Nomor WhatsApp <span class="req">*</span></label>
-            <input type="tel" id="f-whatsapp" required pattern="[0-9]{10,15}" placeholder="08xxxxxxxxxx" />
-            <span class="error-msg">Nomor WA minimal 10 digit.</span>
-          </div>
-          <div class="form-group">
-            <label>Jenis Kelamin <span class="req">*</span></label>
-            <select id="f-gender" required>
-              <option value="" selected disabled>Pilih...</option>
-              <option value="L">Laki-laki</option>
-              <option value="P">Perempuan</option>
-            </select>
-            <span class="error-msg">Pilih jenis kelamin.</span>
-          </div>
+      <form id="register-form" class="registration-form hidden" novalidate>
+        <div id="form-error" class="alert alert-error registration-error-summary hidden" role="alert" tabindex="-1">
+          <strong>Data belum lengkap.</strong>
+          <span>Periksa kembali field yang memiliki penjelasan kesalahan.</span>
         </div>
 
-        <!-- 2. Professional -->
-        <h3 class="form-section">2. Latar Belakang Profesional</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Instansi / Perguruan Tinggi <span class="req">*</span></label>
-            <input type="text" id="f-institution" required maxlength="80" placeholder="Universitas / Perusahaan" />
-            <span class="error-msg">Instansi wajib diisi.</span>
-          </div>
-          <div class="form-group">
-            <label>Pekerjaan / Jabatan <span class="req">*</span></label>
-            <input type="text" id="f-job" required placeholder="Mahasiswa / AI Engineer" />
-            <span class="error-msg">Pekerjaan wajib diisi.</span>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>LinkedIn <span class="opt">(Opsional)</span></label>
-            <input type="url" id="f-linkedin" placeholder="https://linkedin.com/in/..." />
-          </div>
-          <div class="form-group">
-            <label>GitHub / Portfolio <span class="opt">(Opsional)</span></label>
-            <input type="url" id="f-github" placeholder="https://github.com/..." />
-          </div>
-        </div>
+        <!-- 01. Personal -->
+        <section class="registration-block" id="registration-section-01" aria-labelledby="registration-title-01">
+          <header class="registration-block-header">
+            <span class="registration-block-number tabular-nums">01</span>
+            <div>
+              <h3 id="registration-title-01">Identitas Pribadi</h3>
+              <p>Informasi dasar untuk mengenalmu.</p>
+            </div>
+          </header>
 
-        <!-- 3. Technical -->
-        <h3 class="form-section">3. Spesialisasi Teknis</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Level Keahlian AI <span class="req">*</span></label>
-            <select id="f-level" required>
-              <option value="" selected disabled>Pilih level...</option>
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="expert">Expert</option>
-            </select>
-            <span class="error-msg">Pilih level.</span>
+          <div class="registration-fields registration-fields-two">
+            <div class="form-group">
+              <label for="f-name">Nama Lengkap <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="f-name" required maxlength="60" placeholder="Nama lengkap" aria-describedby="f-name-help f-name-error" />
+              <span class="field-help" id="f-name-help">Nama akan dicetak pada sertifikat.</span>
+              <span class="error-msg" id="f-name-error">Nama wajib diisi.</span>
+            </div>
+            <div class="form-group">
+              <label for="f-email">Email <span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="f-email" required placeholder="email@contoh.com" aria-describedby="f-email-error" />
+              <span class="error-msg" id="f-email-error">Masukkan alamat email yang valid.</span>
+            </div>
+            <div class="form-group">
+              <label for="f-whatsapp">Nomor WhatsApp <span class="req" aria-hidden="true">*</span></label>
+              <input type="tel" id="f-whatsapp" required pattern="[0-9]{10,15}" inputmode="numeric" autocomplete="tel" placeholder="08xxxxxxxxxx" aria-describedby="f-whatsapp-error" />
+              <span class="error-msg" id="f-whatsapp-error">Nomor WhatsApp harus berisi 10–15 digit.</span>
+            </div>
+            <div class="form-group">
+              <label for="f-gender">Jenis Kelamin <span class="req" aria-hidden="true">*</span></label>
+              <select id="f-gender" required aria-describedby="f-gender-error">
+                <option value="" selected disabled>Pilih...</option>
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+              </select>
+              <span class="error-msg" id="f-gender-error">Pilih jenis kelamin.</span>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Bidang Minat Utama <span class="req">*</span></label>
-            <select id="f-focus" required>
-              <option value="" selected disabled>Pilih bidang...</option>
-              <option value="data-science">Data Science</option>
-              <option value="data-analyst">Data Analytics</option>
-              <option value="data-engineer">Data Engineering</option>
-              <option value="ml">Machine Learning</option>
-              <option value="deep-learning">Deep Learning</option>
-              <option value="llm">LLM / Generative AI</option>
-              <option value="cv">Computer Vision</option>
-              <option value="nlp">NLP</option>
-              <option value="mlops">MLOps</option>
-              <option value="ai-business">AI for Business / UMKM</option>
-              <option value="other">Lainnya</option>
-            </select>
-            <span class="error-msg">Pilih bidang minat.</span>
+        </section>
+
+        <!-- 02. Professional -->
+        <section class="registration-block" id="registration-section-02" aria-labelledby="registration-title-02">
+          <header class="registration-block-header">
+            <span class="registration-block-number tabular-nums">02</span>
+            <div>
+              <h3 id="registration-title-02">Latar Belakang Profesional</h3>
+              <p>Ceritakan latar belakang profesional dan institusimu.</p>
+            </div>
+          </header>
+
+          <div class="registration-fields registration-fields-two">
+            <div class="form-group">
+              <label for="f-institution">Instansi / Perguruan Tinggi <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="f-institution" required maxlength="80" placeholder="Universitas / Perusahaan" aria-describedby="f-institution-error" />
+              <span class="error-msg" id="f-institution-error">Instansi wajib diisi.</span>
+            </div>
+            <div class="form-group">
+              <label for="f-job">Pekerjaan / Jabatan <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="f-job" required placeholder="Mahasiswa / AI Engineer" aria-describedby="f-job-error" />
+              <span class="error-msg" id="f-job-error">Pekerjaan atau jabatan wajib diisi.</span>
+            </div>
+            <div class="form-group">
+              <label for="f-linkedin">LinkedIn <span class="opt">Opsional</span></label>
+              <input type="url" id="f-linkedin" placeholder="https://linkedin.com/in/..." />
+            </div>
+            <div class="form-group">
+              <label for="f-github">GitHub / Portfolio <span class="opt">Opsional</span></label>
+              <input type="url" id="f-github" placeholder="https://github.com/..." />
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label>Tools / Framework <span class="opt">(Opsional)</span></label>
-          <input type="text" id="f-tools" placeholder="Python, PyTorch, TensorFlow..." />
-        </div>
+        </section>
 
-        <!-- 4. Insights -->
-        <h3 class="form-section">4. Wawasan & Keterlibatan</h3>
-        <div class="form-group">
-          <label>Dari mana tahu event ini? <span class="req">*</span></label>
-          <select id="f-source" required>
-            <option value="" selected disabled>Pilih sumber...</option>
-            <option value="instagram">Instagram</option>
-            <option value="linkedin">LinkedIn</option>
-            <option value="community">Komunitas (WA/Telegram)</option>
-            <option value="friend">Teman / Kolega</option>
-            <option value="other">Lainnya</option>
-          </select>
-          <span class="error-msg">Pilih sumber.</span>
-        </div>
-        <div class="form-group">
-          <label>Ekspektasi utama <span class="req">*</span></label>
-          <textarea id="f-expectation" rows="2" required placeholder="Apa yang ingin kamu dapatkan?"></textarea>
-          <span class="error-msg">Ekspektasi wajib diisi.</span>
-        </div>
-        <div class="form-group">
-          <label>Pertanyaan untuk pembicara <span class="opt">(Opsional)</span></label>
-          <textarea id="f-question" rows="2" placeholder="Tulis pertanyaan spesifik..."></textarea>
-        </div>
+        <!-- 03. Technical -->
+        <section class="registration-block" id="registration-section-03" aria-labelledby="registration-title-03">
+          <header class="registration-block-header">
+            <span class="registration-block-number tabular-nums">03</span>
+            <div>
+              <h3 id="registration-title-03">Spesialisasi Teknis</h3>
+              <p>Bantu kami memahami keahlian dan minatmu di bidang AI dan data.</p>
+            </div>
+          </header>
 
-        <!-- 5. Legal -->
-        <h3 class="form-section">5. Legal & Konfirmasi</h3>
-        <div class="form-group checkbox">
-          <label><input type="checkbox" id="f-attend" required /> Saya konfirmasi akan hadir secara fisik. <span class="req">*</span></label>
-        </div>
-        <div class="form-group checkbox">
-          <label><input type="checkbox" id="f-doc" required /> Saya memberi izin dokumentasi (foto/video). <span class="req">*</span></label>
-        </div>
-        <div class="form-group checkbox">
-          <label><input type="checkbox" id="f-consent" required /> Saya setuju syarat & ketentuan. <span class="req">*</span></label>
-        </div>
+          <div class="registration-fields registration-fields-two">
+            <div class="form-group">
+              <label for="f-level">Level Keahlian AI <span class="req" aria-hidden="true">*</span></label>
+              <select id="f-level" required aria-describedby="f-level-error">
+                <option value="" selected disabled>Pilih level...</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="expert">Expert</option>
+              </select>
+              <span class="error-msg" id="f-level-error">Pilih level keahlian AI.</span>
+            </div>
+            <div class="form-group">
+              <label for="f-focus">Bidang Minat Utama <span class="req" aria-hidden="true">*</span></label>
+              <select id="f-focus" required aria-describedby="f-focus-error">
+                <option value="" selected disabled>Pilih bidang...</option>
+                <option value="data-science">Data Science</option>
+                <option value="data-analyst">Data Analytics</option>
+                <option value="data-engineer">Data Engineering</option>
+                <option value="ml">Machine Learning</option>
+                <option value="deep-learning">Deep Learning</option>
+                <option value="llm">LLM / Generative AI</option>
+                <option value="cv">Computer Vision</option>
+                <option value="nlp">NLP</option>
+                <option value="mlops">MLOps</option>
+                <option value="ai-business">AI for Business / UMKM</option>
+                <option value="other">Lainnya</option>
+              </select>
+              <span class="error-msg" id="f-focus-error">Pilih bidang minat utama.</span>
+            </div>
+            <div class="form-group registration-field-full">
+              <label for="f-tools">Tools / Framework <span class="opt">Opsional</span></label>
+              <input type="text" id="f-tools" placeholder="Python, PyTorch, TensorFlow..." />
+            </div>
+          </div>
+        </section>
 
-        <button type="submit" class="btn btn-primary btn-large" id="btn-submit">
-          <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>
-          Daftar Sekarang
-        </button>
-        <p id="submit-status" class="submit-status"></p>
+        <!-- 04. Insights -->
+        <section class="registration-block" id="registration-section-04" aria-labelledby="registration-title-04">
+          <header class="registration-block-header">
+            <span class="registration-block-number tabular-nums">04</span>
+            <div>
+              <h3 id="registration-title-04">Wawasan &amp; Keterlibatan</h3>
+              <p>Ceritakan bagaimana kamu mengetahui acara ini dan apa yang kamu harapkan.</p>
+            </div>
+          </header>
+
+          <div class="registration-fields registration-fields-two">
+            <div class="form-group">
+              <label for="f-source">Dari mana tahu event ini? <span class="req" aria-hidden="true">*</span></label>
+              <select id="f-source" required aria-describedby="f-source-error">
+                <option value="" selected disabled>Pilih sumber...</option>
+                <option value="instagram">Instagram</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="community">Komunitas (WA/Telegram)</option>
+                <option value="friend">Teman / Kolega</option>
+                <option value="other">Lainnya</option>
+              </select>
+              <span class="error-msg" id="f-source-error">Pilih sumber informasi event.</span>
+            </div>
+            <div class="form-group">
+              <label for="f-expectation">Ekspektasi Utama <span class="req" aria-hidden="true">*</span></label>
+              <textarea id="f-expectation" rows="3" required placeholder="Apa yang ingin kamu dapatkan?" aria-describedby="f-expectation-error"></textarea>
+              <span class="error-msg" id="f-expectation-error">Ekspektasi utama wajib diisi.</span>
+            </div>
+            <div class="form-group registration-field-full">
+              <label for="f-question">Pertanyaan untuk Pembicara <span class="opt">Opsional</span></label>
+              <textarea id="f-question" rows="3" placeholder="Tulis pertanyaan spesifik..."></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- 05. Legal -->
+        <section class="registration-block registration-block-legal" id="registration-section-05" aria-labelledby="registration-title-05">
+          <header class="registration-block-header">
+            <span class="registration-block-number tabular-nums">05</span>
+            <div>
+              <h3 id="registration-title-05">Legal &amp; Konfirmasi</h3>
+              <p>Konfirmasi kehadiran dan persetujuan untuk melanjutkan pendaftaran.</p>
+            </div>
+          </header>
+
+          <fieldset class="consent-list">
+            <legend class="sr-only">Persetujuan wajib</legend>
+
+            <div class="form-group checkbox consent-item">
+              <label for="f-attend">
+                <input type="checkbox" id="f-attend" required aria-describedby="f-attend-error" />
+                <span class="consent-copy"><strong>Kehadiran</strong><span>Saya konfirmasi akan hadir secara fisik. <span class="req" aria-hidden="true">*</span></span></span>
+              </label>
+              <span class="error-msg" id="f-attend-error">Konfirmasi kehadiran wajib disetujui.</span>
+            </div>
+
+            <div class="form-group checkbox consent-item">
+              <label for="f-doc">
+                <input type="checkbox" id="f-doc" required aria-describedby="f-doc-error" />
+                <span class="consent-copy"><strong>Dokumentasi</strong><span>Saya memberi izin dokumentasi (foto/video). <span class="req" aria-hidden="true">*</span></span></span>
+              </label>
+              <span class="error-msg" id="f-doc-error">Izin dokumentasi wajib disetujui.</span>
+            </div>
+
+            <div class="form-group checkbox consent-item">
+              <label for="f-consent">
+                <input type="checkbox" id="f-consent" required aria-describedby="f-consent-error" />
+                <span class="consent-copy"><strong>Syarat &amp; Ketentuan</strong><span>Saya setuju syarat &amp; ketentuan. <span class="req" aria-hidden="true">*</span></span></span>
+              </label>
+              <span class="error-msg" id="f-consent-error">Persetujuan syarat dan ketentuan wajib diberikan.</span>
+            </div>
+          </fieldset>
+        </section>
+
+        <footer class="registration-submit">
+          <div class="registration-submit-copy">
+            <span>05 / Complete</span>
+            <p>Pastikan seluruh data wajib sudah benar sebelum dikirim.</p>
+          </div>
+          <button type="submit" class="btn btn-primary btn-large" id="btn-submit">
+            <span id="btn-submit-label">Daftar Sekarang</span>
+            <span aria-hidden="true">→</span>
+          </button>
+          <p id="submit-status" class="submit-status" aria-live="polite"></p>
+        </footer>
       </form>
 
-      <!-- Success state (QR + badge) -->
-      <div id="register-success" class="success-state hidden">
+      <!-- Success state — visual credential is intentionally deferred to Phase 5. -->
+      <div id="register-success" class="success-state hidden" role="status" aria-live="polite">
         <h3>Registrasi Berhasil!</h3>
-        <p>Ini QR Code tiket kamu. Simpan & tunjukkan saat check-in di lokasi.</p>
+        <p>Ini QR Code tiket kamu. Simpan &amp; tunjukkan saat check-in di lokasi.</p>
         <div id="qr-code" class="qr-box"></div>
-        <div class="ticket-id">ID: <strong id="ticket-id">SGN11-XXXXXX</strong></div>
+        <div class="ticket-id">ID: <strong id="ticket-id" class="tabular-nums">SGN11-XXXXXX</strong></div>
         <div class="success-actions">
           <button id="btn-download" class="btn btn-secondary">Download QR (PNG)</button>
           <a href="#home" class="btn btn-ghost">Selesai</a>
         </div>
-        <p style="margin-top:16px;font-size:0.9rem">Kehilangan QR? Cari lagi nanti di <a href="#find-ticket" style="color:var(--accent);font-weight:700">Cari Tiket</a>.</p>
+        <p class="success-recovery">Kehilangan QR? Cari lagi nanti di <a href="#find-ticket">Cari Tiket</a>.</p>
       </div>
     </div>
   </div>

@@ -300,55 +300,107 @@ async function initRegister() {
   const form = document.getElementById("register-form");
   if (!form) return;
 
-  let open = true;
-  try {
-    open = await window.SOGA_API.isRegistrationOpen();
-  } catch (e) {
-    open = true;
-  }
-  if (!open) {
-    form.classList.add("hidden");
-    document.getElementById("register-closed").classList.remove("hidden");
-    return;
-  }
+  const loadingState = document.getElementById("register-loading");
+  const closedState = document.getElementById("register-closed");
+  const unavailableState = document.getElementById("register-status-error");
+  const retryButton = document.getElementById("btn-retry-registration");
+  const submitButton = document.getElementById("btn-submit");
+  const submitLabel = document.getElementById("btn-submit-label");
+  const submitStatus = document.getElementById("submit-status");
+  const errorSummary = document.getElementById("form-error");
 
-  const fields = [
+  const requiredFields = [
     "f-name", "f-email", "f-whatsapp", "f-gender",
     "f-institution", "f-job", "f-level", "f-focus",
     "f-source", "f-expectation",
   ];
+  const consentFields = ["f-attend", "f-doc", "f-consent"];
+  let isSubmitting = false;
+
+  function showRegistrationView(view) {
+    loadingState?.classList.toggle("hidden", view !== "loading");
+    closedState?.classList.toggle("hidden", view !== "closed");
+    unavailableState?.classList.toggle("hidden", view !== "error");
+    form.classList.toggle("hidden", view !== "open");
+  }
+
+  async function checkRegistrationStatus() {
+    showRegistrationView("loading");
+    if (retryButton) retryButton.disabled = true;
+
+    try {
+      const open = await window.SOGA_API.isRegistrationOpen();
+      showRegistrationView(open ? "open" : "closed");
+    } catch (error) {
+      showRegistrationView("error");
+    } finally {
+      if (retryButton) retryButton.disabled = false;
+    }
+  }
+
+  function setFieldValidity(field, valid) {
+    const group = field.closest(".form-group");
+    field.classList.toggle("invalid", !valid);
+    group?.classList.toggle("invalid", !valid);
+    if (valid) field.removeAttribute("aria-invalid");
+    else field.setAttribute("aria-invalid", "true");
+  }
+
+  function clearFieldError(field) {
+    setFieldValidity(field, true);
+    if (!errorSummary?.classList.contains("hidden")) {
+      const hasInvalidField = [...requiredFields, ...consentFields].some((id) =>
+        document.getElementById(id)?.hasAttribute("aria-invalid")
+      );
+      if (!hasInvalidField) errorSummary.classList.add("hidden");
+    }
+  }
+
+  retryButton?.addEventListener("click", checkRegistrationStatus);
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const errBox = document.getElementById("form-error");
-    errBox.classList.add("hidden");
+    if (isSubmitting) return;
 
-    // Validasi
+    errorSummary?.classList.add("hidden");
+    submitStatus.classList.remove("is-error");
+    submitStatus.textContent = "";
+
     let valid = true;
-    fields.forEach((id) => {
+    let firstInvalidField = null;
+
+    requiredFields.forEach((id) => {
       const el = document.getElementById(id);
       const ok = el.checkValidity();
-      el.classList.toggle("invalid", !ok);
-      el.closest(".form-group")?.classList.toggle("invalid", !ok);
-      if (!ok) valid = false;
-    });
-    ["f-attend", "f-doc", "f-consent"].forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el.checked) {
+      setFieldValidity(el, ok);
+      if (!ok) {
         valid = false;
-        el.closest(".form-group")?.classList.add("invalid");
+        firstInvalidField ||= el;
+      }
+    });
+
+    consentFields.forEach((id) => {
+      const el = document.getElementById(id);
+      const ok = el.checkValidity();
+      setFieldValidity(el, ok);
+      if (!ok) {
+        valid = false;
+        firstInvalidField ||= el;
       }
     });
 
     if (!valid) {
-      errBox.classList.remove("hidden");
+      errorSummary?.classList.remove("hidden");
+      firstInvalidField?.focus();
       return;
     }
 
-    const btn = document.getElementById("btn-submit");
-    const status = document.getElementById("submit-status");
-    btn.disabled = true;
-    status.textContent = "Menyimpan data...";
+    isSubmitting = true;
+    submitButton.disabled = true;
+    submitButton.setAttribute("aria-busy", "true");
+    form.setAttribute("aria-busy", "true");
+    submitLabel.textContent = "Memproses Pendaftaran…";
+    submitStatus.textContent = "Menyimpan data pendaftaran…";
 
     const qrToken = generateToken();
     const data = {
@@ -373,20 +425,29 @@ async function initRegister() {
       await window.SOGA_API.registerParticipant(data);
       showSuccess(qrToken);
     } catch (err) {
-      status.textContent = "Gagal: " + (err.message || "terjadi kesalahan");
+      submitStatus.classList.add("is-error");
+      submitStatus.textContent = "Pendaftaran belum tersimpan karena gangguan sementara. Data yang kamu isi tetap tersedia; silakan coba lagi.";
     } finally {
-      btn.disabled = false;
+      isSubmitting = false;
+      submitButton.disabled = false;
+      submitButton.removeAttribute("aria-busy");
+      form.removeAttribute("aria-busy");
+      submitLabel.textContent = "Daftar Sekarang";
     }
   });
 
-  // Clear error styling on input
-  fields.forEach((id) => {
+  requiredFields.forEach((id) => {
     const el = document.getElementById(id);
-    el.addEventListener("input", () => {
-      el.classList.remove("invalid");
-      el.closest(".form-group")?.classList.remove("invalid");
-    });
+    const eventName = el.tagName === "SELECT" ? "change" : "input";
+    el.addEventListener(eventName, () => clearFieldError(el));
   });
+
+  consentFields.forEach((id) => {
+    const el = document.getElementById(id);
+    el.addEventListener("change", () => clearFieldError(el));
+  });
+
+  await checkRegistrationStatus();
 }
 
 function showSuccess(qrToken) {
