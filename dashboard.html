@@ -13,58 +13,134 @@
   <!-- SEO -->
   <meta name="robots" content="noindex" />
   <meta name="description" content="Command Center — dashboard admin Sorcery Gathering #11" />
-  <meta name="theme-color" content="#7c3aed" />
+  <meta name="theme-color" content="#21152f" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/variables.css?v=9" />
-  <link rel="stylesheet" href="css/global.css?v=9" />
-  <link rel="stylesheet" href="css/dashboard.css?v=9" />
+  <link rel="stylesheet" href="css/variables.css?v=10" />
+  <link rel="stylesheet" href="css/global.css?v=11" />
+  <link rel="stylesheet" href="css/dashboard.css?v=10" />
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="admin-page">
 
   <!-- ===================== LOGIN ===================== -->
   <div id="login-screen" class="login-screen">
-    <div class="login-card card">
-      <img class="brand-logo" src="assets/logo-web.png" alt="Data Sorcerers" style="margin:0 auto 16px" />
-      <h2>Command Center</h2>
-      <p>Login admin Sorcery Gathering #11</p>
-      <form id="login-form">
-        <div class="form-group">
-          <label>Email Admin</label>
-          <input type="email" id="login-email" required placeholder="admin@example.com" />
+    <div class="login-shell">
+      <section class="login-brand-panel" aria-labelledby="login-brand-title">
+        <svg class="login-constellation" viewBox="0 0 720 900" role="presentation" aria-hidden="true" focusable="false">
+          <path d="M34 142 142 82l98 102 124-96 142 126 154-92M142 82l50 250 154 86 160-204 112 258M192 332 78 522l220 126 320-176M298 648l-70 202M364 88l-124 96" />
+          <circle cx="34" cy="142" r="4" />
+          <circle cx="142" cy="82" r="7" />
+          <circle cx="240" cy="184" r="4" />
+          <circle cx="364" cy="88" r="5" />
+          <circle cx="506" cy="214" r="8" class="login-node-primary" />
+          <circle cx="660" cy="122" r="4" />
+          <circle cx="192" cy="332" r="6" />
+          <circle cx="346" cy="418" r="4" />
+          <circle cx="618" cy="472" r="6" />
+          <circle cx="78" cy="522" r="4" />
+          <circle cx="298" cy="648" r="5" class="login-node-gold" />
+          <circle cx="228" cy="850" r="4" />
+        </svg>
+        <span class="login-edition" aria-hidden="true">011</span>
+
+        <div class="login-brand-content">
+          <div class="login-brand-mark">
+            <img src="assets/logo-web.png" alt="Data Sorcerers" />
+            <strong>Data Sorcerers</strong>
+          </div>
+
+          <div class="login-event-code">
+            <span>SOGA / 011</span>
+            <span aria-hidden="true"></span>
+          </div>
+
+          <h1 id="login-brand-title">Command Center</h1>
+          <p>Ruang operasional Sorcery Gathering #11 untuk pengelolaan event dan peserta.</p>
+
+          <dl class="login-event-meta">
+            <div>
+              <dt>Tanggal</dt>
+              <dd><time datetime="2026-10-25">25 Oktober 2026</time></dd>
+            </div>
+            <div>
+              <dt>Lokasi</dt>
+              <dd>Yogyakarta</dd>
+            </div>
+          </dl>
         </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="login-password" required placeholder="••••••••" />
+      </section>
+
+      <section class="login-form-panel" aria-labelledby="login-title">
+        <div class="login-form-inner">
+          <span class="login-access-label"><i aria-hidden="true"></i> Admin / Internal Access</span>
+          <div class="login-form-heading">
+            <span>SOGA / 011</span>
+            <h2 id="login-title">Masuk ke Command Center.</h2>
+            <p>Gunakan akun admin yang telah terdaftar untuk mengakses sistem event.</p>
+          </div>
+
+          <form id="login-form" class="admin-login-form">
+            <div class="form-group">
+              <label for="login-email">Email Admin</label>
+              <input type="email" id="login-email" required autocomplete="username" placeholder="nama@domain.com" aria-describedby="login-error" />
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" required autocomplete="current-password" placeholder="Masukkan password" aria-describedby="login-error" />
+            </div>
+            <div id="login-error" class="admin-login-error hidden" role="alert" aria-live="assertive" tabindex="-1">
+              <strong>Akses belum berhasil.</strong>
+              <span>Periksa kembali email dan password.</span>
+            </div>
+            <button type="submit" id="btn-login" class="btn btn-primary admin-login-submit">
+              <span id="login-submit-label">Masuk</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <p id="login-status" class="sr-only" aria-live="polite"></p>
+          </form>
+
+          <footer class="login-form-footer">
+            <strong>Data Sorcerers</strong>
+            <span>Sorcery Gathering #11</span>
+          </footer>
         </div>
-        <p id="login-error" class="alert alert-error hidden">Login gagal. Periksa email/password.</p>
-        <button type="submit" class="btn btn-primary btn-large">Masuk</button>
-      </form>
+      </section>
     </div>
   </div>
 
   <!-- ===================== DASHBOARD ===================== -->
   <div id="dashboard" class="dashboard hidden">
+    <a class="admin-skip-link" href="#dash-main">Lewati ke konten operasional</a>
     <header class="dash-header">
       <div class="container dash-header-inner">
-        <div class="navbar-brand">
-          <img class="brand-logo" src="assets/logo-web.png" alt="Data Sorcerers" />
-          <span>Command Center</span>
+        <div class="dash-brand">
+          <img src="assets/logo-web.png" alt="Data Sorcerers" />
+          <span class="dash-brand-copy">
+            <strong>Data Sorcerers</strong>
+            <small>Command Center</small>
+          </span>
+        </div>
+        <div class="dash-event-context" aria-label="Sorcery Gathering 11, 25 Oktober 2026, Yogyakarta">
+          <span>SOGA / 011</span>
+          <small>25 OCT 2026 · YOGYAKARTA</small>
         </div>
         <div class="dash-header-actions">
-          <span class="admin-name" id="admin-name"></span>
+          <span class="admin-identity">
+            <small>Admin Session</small>
+            <span class="admin-name" id="admin-name"></span>
+          </span>
           <button id="btn-logout" class="btn btn-secondary">Keluar</button>
         </div>
       </div>
     </header>
 
-    <main class="container dash-main">
+    <main class="container dash-main" id="dash-main" tabindex="-1">
       <!-- Stats -->
       <div class="grid grid-3 stats-grid dash-stats">
         <div class="stat-card card"><h3 id="stat-total" class="stat-num">0</h3><p>Total Pendaftar</p></div>
@@ -158,6 +234,6 @@
 
   <script src="js/config.js?v=9"></script>
   <script src="js/api.js?v=9"></script>
-  <script src="js/dashboard.js?v=9"></script>
+  <script src="js/dashboard.js?v=10"></script>
 </body>
 </html>

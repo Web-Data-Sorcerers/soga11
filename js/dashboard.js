@@ -22,40 +22,105 @@ const esc = (s) =>
 // ============================================================
 // Auth
 // ============================================================
+const loginForm = document.getElementById("login-form");
+const loginEmail = document.getElementById("login-email");
+const loginPassword = document.getElementById("login-password");
+const loginButton = document.getElementById("btn-login");
+const loginButtonLabel = document.getElementById("login-submit-label");
+const loginError = document.getElementById("login-error");
+const loginStatus = document.getElementById("login-status");
+let loginSubmitting = false;
+
 async function boot() {
-  const user = await window.SOGA_API.getCurrentAdmin();
-  if (user) {
-    showDashboard(user);
-  } else {
-    document.getElementById("login-screen").classList.remove("hidden");
+  try {
+    const user = await window.SOGA_API.getCurrentAdmin();
+    if (user) {
+      showDashboard(user);
+      return;
+    }
+  } catch (e) {
+    // Keep the normalized login surface available if session restoration fails.
   }
+
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("login-screen").classList.remove("hidden");
+}
+
+function clearLoginError() {
+  loginError.classList.add("hidden");
+  loginEmail.removeAttribute("aria-invalid");
+  loginPassword.removeAttribute("aria-invalid");
+}
+
+function setLoginPending(pending) {
+  loginSubmitting = pending;
+  loginButton.disabled = pending;
+  if (pending) {
+    loginButton.setAttribute("aria-busy", "true");
+    loginForm.setAttribute("aria-busy", "true");
+  } else {
+    loginButton.removeAttribute("aria-busy");
+    loginForm.removeAttribute("aria-busy");
+  }
+  loginEmail.readOnly = pending;
+  loginPassword.readOnly = pending;
+  loginButtonLabel.textContent = pending ? "Login / Verifying" : "Masuk";
+  loginStatus.textContent = pending ? "Memverifikasi akun admin…" : "";
+}
+
+function showLoginError() {
+  loginEmail.setAttribute("aria-invalid", "true");
+  loginPassword.setAttribute("aria-invalid", "true");
+  loginError.classList.remove("hidden");
+  loginError.focus();
 }
 
 function showDashboard(user) {
+  const adminName = document.getElementById("admin-name");
   document.getElementById("login-screen").classList.add("hidden");
   document.getElementById("dashboard").classList.remove("hidden");
-  document.getElementById("admin-name").textContent = user.email;
+  adminName.textContent = user.email;
+  adminName.title = user.email;
   loadParticipants();
   loadRegistrationStatus();
 }
 
-document.getElementById("login-form").addEventListener("submit", async (e) => {
+loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const email = document.getElementById("login-email").value.trim();
-  const password = document.getElementById("login-password").value;
-  const err = document.getElementById("login-error");
-  err.classList.add("hidden");
+  if (loginSubmitting) return;
+
+  const email = loginEmail.value.trim();
+  const password = loginPassword.value;
+  clearLoginError();
+  setLoginPending(true);
+
   try {
     const { user } = await window.SOGA_API.signInAdmin(email, password);
     showDashboard(user);
   } catch (e) {
-    err.classList.remove("hidden");
+    showLoginError();
+  } finally {
+    setLoginPending(false);
   }
 });
 
-document.getElementById("btn-logout").addEventListener("click", async () => {
-  await window.SOGA_API.signOutAdmin();
-  location.reload();
+[loginEmail, loginPassword].forEach((field) => {
+  field.addEventListener("input", clearLoginError);
+});
+
+document.getElementById("btn-logout").addEventListener("click", async (event) => {
+  const button = event.currentTarget;
+  if (button.disabled) return;
+  button.disabled = true;
+  button.setAttribute("aria-busy", "true");
+
+  try {
+    await window.SOGA_API.signOutAdmin();
+    location.reload();
+  } catch (e) {
+    button.disabled = false;
+    button.removeAttribute("aria-busy");
+  }
 });
 
 // ============================================================
@@ -162,9 +227,9 @@ function renderTable(filter = "all", query = "") {
         <td><span class="badge ${p.status === "hadir" ? "badge-hadir" : "badge-pending"}">${esc(p.status)}</span></td>
         <td>${p.checkin_time ? new Date(p.checkin_time).toLocaleTimeString("id-ID") : "-"}</td>
         <td class="row-actions">
-          <button class="act-btn" data-action="view" data-id="${esc(p.id)}" title="Detail">${ICON_EYE}</button>
-          <button class="act-btn" data-action="edit" data-id="${esc(p.id)}" title="Edit">${ICON_PENCIL}</button>
-          <button class="act-btn act-btn-danger" data-action="delete" data-id="${esc(p.id)}" title="Hapus">${ICON_TRASH}</button>
+          <button class="act-btn" data-action="view" data-id="${esc(p.id)}" title="Detail" aria-label="Lihat detail ${esc(p.full_name)}">${ICON_EYE}</button>
+          <button class="act-btn" data-action="edit" data-id="${esc(p.id)}" title="Edit" aria-label="Edit ${esc(p.full_name)}">${ICON_PENCIL}</button>
+          <button class="act-btn act-btn-danger" data-action="delete" data-id="${esc(p.id)}" title="Hapus" aria-label="Hapus ${esc(p.full_name)}">${ICON_TRASH}</button>
         </td>
       </tr>`
     )
