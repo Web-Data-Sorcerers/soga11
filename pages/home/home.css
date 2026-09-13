@@ -38,8 +38,7 @@
   padding-left: var(--space-6);
 }
 
-.hero-index,
-.section-index {
+.hero-index {
   display: flex;
   align-items: center;
   gap: var(--space-4);
@@ -390,17 +389,6 @@
 .event-intro {
   grid-column: 1 / span 5;
   padding-right: var(--space-8);
-}
-
-.section-index {
-  margin-bottom: var(--space-6);
-}
-
-.section-index span:last-child {
-  flex: 1;
-  max-width: 100px;
-  height: 1px;
-  background: var(--border-strong);
 }
 
 .event-intro h2 {
@@ -854,14 +842,6 @@
 .speakers-intro {
   grid-column: 1 / span 4;
   padding-right: var(--space-7);
-}
-
-.section-index-on-dark {
-  color: var(--purple-300);
-}
-
-.section-index-on-dark span:last-child {
-  background: rgba(250, 248, 245, 0.24);
 }
 
 .speakers-intro h2 {
