@@ -1,122 +1,192 @@
 /* ============================================================
-   SOGA 11 — Public Navigation / Sorcery Editorial System
+   SOGA 11 — Public Navigation / Floating Island Glass Dock
    ============================================================ */
 .navbar {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  border-bottom: 1px solid rgba(33, 21, 47, 0.12);
-  background: rgba(250, 248, 245, 0.94);
-  transition: background-color var(--duration-fast) ease,
-    border-color var(--duration-fast) ease;
+  padding: 16px 0 0;
+  pointer-events: none;
+  transition: padding var(--duration-fast) ease;
 }
 
 .navbar.is-scrolled {
-  border-bottom-color: var(--border-strong);
-  background: rgba(250, 248, 245, 0.99);
+  padding-top: 10px;
 }
 
 .navbar-inner {
+  pointer-events: auto;
   display: flex;
   min-width: 0;
-  height: 76px;
+  height: 66px;
   align-items: center;
-  gap: var(--space-5);
+  gap: var(--space-4);
+  padding: 0 8px 0 20px;
+  border-radius: var(--radius-pill);
+  background: rgba(250, 248, 245, 0.88);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(82, 39, 127, 0.14);
+  box-shadow: 
+    0 4px 20px -2px rgba(33, 21, 47, 0.08),
+    0 1px 3px rgba(33, 21, 47, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: height var(--duration-fast) ease,
+    background-color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+.navbar.is-scrolled .navbar-inner {
+  height: 60px;
+  background: rgba(250, 248, 245, 0.97);
+  border-color: rgba(82, 39, 127, 0.22);
+  box-shadow: 
+    0 10px 30px -4px rgba(33, 21, 47, 0.12),
+    0 2px 6px rgba(33, 21, 47, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .navbar .brand-logo {
   width: auto;
-  height: 44px;
+  height: 38px;
   aspect-ratio: auto;
+  transition: transform var(--duration-fast) ease;
+}
+
+.navbar-brand:hover .brand-logo {
+  transform: scale(1.05);
 }
 
 .navbar-brand {
   flex: 0 0 auto;
   color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .navbar-brand-name {
   white-space: nowrap;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
 }
 
 .navbar-event-id {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   flex: 0 0 auto;
-  padding-left: var(--space-5);
-  border-left: 1px solid var(--border-default);
-  color: var(--text-muted);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(124, 58, 237, 0.06);
+  border: 1px solid rgba(124, 58, 237, 0.14);
+  color: var(--purple-900);
   font-family: var(--font-mono);
-  font-size: var(--type-micro-size);
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   white-space: nowrap;
+}
+
+.navbar-beacon {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  animation: beacon-pulse 2s infinite ease-in-out;
+}
+
+@keyframes beacon-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
+  }
 }
 
 .navbar-links {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: clamp(4px, 0.7vw, 16px);
+  gap: 4px;
   margin-left: auto;
+  padding: 3px;
 }
 
 .navbar-links a {
   position: relative;
-  padding: 10px 2px;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   white-space: nowrap;
-  transition: color var(--duration-fast) ease;
+  transition: color var(--duration-fast) ease,
+    background-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
 }
 
 .navbar-links a::after {
-  content: "";
-  position: absolute;
-  right: 2px;
-  bottom: 5px;
-  left: 2px;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform var(--duration-fast) var(--ease-standard);
+  display: none;
 }
 
 .navbar-links a:hover {
-  color: var(--primary-hover);
-}
-
-.navbar-links a:hover::after,
-.navbar-links a.is-active::after {
-  transform: scaleX(1);
-  transform-origin: left;
+  color: var(--purple-900);
+  background: rgba(124, 58, 237, 0.08);
 }
 
 .navbar-links a.is-active {
-  color: var(--primary);
+  color: var(--purple-900);
+  background: rgba(124, 58, 237, 0.12);
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(124, 58, 237, 0.2);
 }
 
 .navbar-actions {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
-  margin-left: clamp(8px, 1.4vw, 24px);
+  margin-left: var(--space-2);
 }
 
 .navbar-cta {
-  min-height: 46px;
-  padding: 11px 20px;
+  min-height: 44px;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
   font-size: 0.8125rem;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  background: linear-gradient(135deg, var(--primary) 0%, #4c1d95 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
 }
 
-.navbar-cta > span {
+.navbar-cta .cta-arrow {
+  display: inline-block;
+  font-size: 1.05em;
+  line-height: 1;
   transition: transform var(--duration-fast) var(--ease-standard);
 }
 
-.navbar-cta:hover > span {
-  transform: translateX(3px);
+.navbar-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+}
+
+.navbar-cta:hover .cta-arrow {
+  transform: translate(2px, -2px);
 }
 
 .menu-trigger {
@@ -303,6 +373,16 @@ body.mobile-menu-open {
 }
 
 @media (max-width: 1023px) {
+  .navbar {
+    padding: 10px 0 0;
+  }
+
+  .navbar-inner {
+    height: 58px;
+    padding: 0 14px 0 16px;
+    border-radius: 20px;
+  }
+
   .navbar-links,
   .navbar-actions,
   .navbar-event-id {
