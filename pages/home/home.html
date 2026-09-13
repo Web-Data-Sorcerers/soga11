@@ -179,49 +179,105 @@
   </div>
 </section>
 
-<!-- Event Intro / Statistics -->
-<section class="event-scale-section" aria-labelledby="event-scale-title">
-  <svg class="event-scale-constellation" viewBox="0 0 230 210" role="presentation" aria-hidden="true">
-    <path d="M14 172 72 118 118 142 160 66 216 30M118 142l58 46 40-68" />
-    <circle cx="14" cy="172" r="3" />
-    <circle cx="72" cy="118" r="4" />
-    <circle cx="118" cy="142" r="3" />
-    <circle cx="160" cy="66" r="5" />
-    <circle cx="216" cy="30" r="3" />
-    <circle cx="176" cy="188" r="3" class="node-gold" />
-    <circle cx="216" cy="120" r="4" />
-  </svg>
+<!-- Impact / Event Scale Section -->
+<section class="impact-section" id="scale" aria-labelledby="impact-title">
+  <div class="container impact-grid">
+    <!-- Left Column: Editorial Statement & Copy -->
+    <div class="impact-col-copy">
+      <div class="impact-rail">
+        <span class="impact-rail-tag">IMPACT / 011</span>
+        <span class="impact-rail-line" aria-hidden="true"></span>
+        <span class="impact-rail-tag">SORCERY GATHERING</span>
+      </div>
 
-  <div class="container event-scale-grid">
-    <div class="event-intro">
-      <h2 id="event-scale-title">AI bukan sekadar alat elit, tetapi katalisator perubahan yang inklusif.</h2>
-      <p>
+      <h2 class="impact-title" id="impact-title">
+        <span class="impact-title-block">AI BUKAN<br />SEKADAR ALAT.</span>
+        <span class="impact-title-block">
+          IA ADALAH<br />
+          <span class="impact-accent">KATALISATOR</span><br />
+          PERUBAHAN<br />
+          YANG INKLUSIF.
+        </span>
+      </h2>
+
+      <p class="impact-description">
         Sorcery Gathering adalah program unggulan Data Sorcerers. Data Sorcerers
         menyiapkan talenta digital melalui inisiatif project-based dan open source,
         menjembatani pelajar dengan profesional, praktisi, akademisi, dan lintas spesialisasi.
       </p>
     </div>
 
-    <div class="stats-rail" aria-label="Skala komunitas Data Sorcerers">
-      <article class="stat-item">
-        <strong class="stat-num tabular-nums">10+</strong>
-        <span>Edisi</span>
-      </article>
-      <article class="stat-item">
-        <strong class="stat-num tabular-nums">08</strong>
-        <span>Chapter</span>
-      </article>
-      <article class="stat-item">
-        <strong class="stat-num tabular-nums">1000+</strong>
-        <span>Peserta</span>
-      </article>
-      <article class="stat-item">
-        <strong class="stat-num tabular-nums">50+</strong>
-        <span>Pembicara &amp; Mitra</span>
-      </article>
+    <!-- Right Column: Central Heritage Monument & 4 Corner Stats -->
+    <div class="impact-col-visual" aria-label="Skala komunitas Data Sorcerers">
+      <!-- Central Cyber-Heritage Monument Art -->
+      <div class="impact-stage" aria-hidden="true">
+        <picture>
+          <source srcset="assets/hero/impact-monument.webp" type="image/webp" />
+          <img
+            src="assets/hero/impact-monument.png"
+            alt="Ilustrasi Monolit SOGA XI dan Candi Prambanan Yogyakarta"
+            class="impact-monument-art"
+            width="1200"
+            height="896"
+            loading="lazy"
+          />
+        </picture>
+      </div>
+
+      <!-- 4 Stat Cards in 2x2 Layout Framing the Monument -->
+      <div class="impact-stats-grid">
+        <!-- Top-Left: 10+ Edisi -->
+        <article class="impact-stat-card stat-tl">
+          <div class="stat-indicator" aria-hidden="true">
+            <span class="stat-dot"></span>
+            <span class="stat-line"></span>
+          </div>
+          <div class="stat-body">
+            <strong class="stat-value tabular-nums">10+</strong>
+            <span class="stat-label">EDISI</span>
+          </div>
+        </article>
+
+        <!-- Top-Right: 08 Chapter -->
+        <article class="impact-stat-card stat-tr">
+          <div class="stat-indicator" aria-hidden="true">
+            <span class="stat-dot"></span>
+            <span class="stat-line"></span>
+          </div>
+          <div class="stat-body">
+            <strong class="stat-value tabular-nums">08</strong>
+            <span class="stat-label">CHAPTER</span>
+          </div>
+        </article>
+
+        <!-- Bottom-Left: 1000+ Peserta -->
+        <article class="impact-stat-card stat-bl">
+          <div class="stat-indicator" aria-hidden="true">
+            <span class="stat-dot"></span>
+            <span class="stat-line"></span>
+          </div>
+          <div class="stat-body">
+            <strong class="stat-value tabular-nums">1000+</strong>
+            <span class="stat-label">PESERTA</span>
+          </div>
+        </article>
+
+        <!-- Bottom-Right: 50+ Pembicara & Mitra -->
+        <article class="impact-stat-card stat-br">
+          <div class="stat-indicator" aria-hidden="true">
+            <span class="stat-dot"></span>
+            <span class="stat-line"></span>
+          </div>
+          <div class="stat-body">
+            <strong class="stat-value tabular-nums">50+</strong>
+            <span class="stat-label">PEMBICARA &amp; MITRA</span>
+          </div>
+        </article>
+      </div>
     </div>
   </div>
 </section>
+
 
 <!-- Agenda -->
 <section class="home-agenda" id="agenda" aria-labelledby="agenda-title">

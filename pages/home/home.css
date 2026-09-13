@@ -558,102 +558,207 @@
   transition: opacity 700ms var(--ease-standard) 300ms;
 }
 
-/* Event intro / statistics */
-.event-scale-section {
+/* ===================== IMPACT / EVENT SCALE SECTION ===================== */
+.impact-section {
   position: relative;
   isolation: isolate;
-  overflow: clip;
-  padding: var(--space-11) 0;
-  border-top: 1px solid var(--border-default);
-  border-bottom: 1px solid var(--border-default);
-  background: var(--bg-soft);
+  overflow: hidden;
+  padding: clamp(72px, 8.5vw, 110px) 0 clamp(80px, 9.5vw, 120px);
+  background: var(--paper, #FAF8F5);
+  border-top: 1px solid var(--border-default, #DDD7E5);
+  border-bottom: 1px solid var(--border-default, #DDD7E5);
 }
 
-.event-scale-grid {
-  position: relative;
-  z-index: var(--z-content);
+.impact-grid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--space-5);
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1.28fr);
+  gap: clamp(36px, 5vw, 68px);
+  align-items: center;
 }
 
-.event-intro {
-  grid-column: 1 / span 5;
-  padding-right: var(--space-8);
+/* Left Column: Copywriting */
+.impact-col-copy {
+  display: flex;
+  flex-direction: column;
 }
 
-.event-intro h2 {
-  max-width: 500px;
-  margin-bottom: var(--space-5);
-  font-size: var(--type-section-xl-size);
-  font-weight: var(--type-section-xl-weight);
-  letter-spacing: var(--type-section-xl-tracking);
-  line-height: var(--type-section-xl-leading);
-  text-transform: uppercase;
+.impact-rail {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: clamp(24px, 3vw, 36px);
 }
 
-.event-intro p {
-  max-width: 500px;
-  color: var(--text-secondary);
-  font-size: var(--type-body-size);
-  line-height: var(--type-body-leading);
-}
-
-.stats-rail {
-  grid-column: 6 / -1;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-top: 1px solid var(--border-strong);
-  border-bottom: 1px solid var(--border-strong);
-}
-
-.stat-item {
-  position: relative;
-  min-height: 170px;
-  padding: var(--space-6);
-}
-
-.stat-item:nth-child(even) {
-  border-left: 1px solid var(--border-strong);
-}
-
-.stat-item:nth-child(n + 3) {
-  border-top: 1px solid var(--border-strong);
-}
-
-.stat-num {
-  display: block;
-  margin-bottom: var(--space-3);
-  color: var(--text-primary);
-  font-family: var(--font-mono);
-  font-size: var(--type-data-xl-size);
-  font-weight: 700;
-  letter-spacing: var(--type-data-xl-tracking);
-  line-height: var(--type-data-xl-leading);
-}
-
-.stat-item > span {
-  color: var(--purple-800);
-  font-family: var(--font-mono);
-  font-size: var(--type-label-size);
+.impact-rail-tag {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: var(--type-label-tracking);
+  letter-spacing: 0.14em;
+  color: #8E8599;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.impact-rail-line {
+  flex: 0 0 64px;
+  height: 1px;
+  background: #DDD7E5;
+}
+
+.impact-title {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin: 0 0 clamp(24px, 3.2vw, 36px);
+  font-family: var(--font-heading, "Plus Jakarta Sans", sans-serif);
+  font-size: clamp(2.4rem, 4.2vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.022em;
+  color: #110E1B;
   text-transform: uppercase;
 }
 
-.event-scale-constellation {
+.impact-title-block {
+  display: block;
+}
+
+.impact-accent {
+  color: #6320EE;
+  font-weight: 850;
+  letter-spacing: -0.015em;
+}
+
+.impact-description {
+  margin: 0;
+  max-width: 470px;
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
+  font-size: clamp(0.96rem, 1.1vw, 1.05rem);
+  line-height: 1.68;
+  color: #4A4856;
+}
+
+/* Right Column: Visual Stage & 2x2 Stats */
+.impact-col-visual {
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Central Monument Illustration */
+.impact-stage {
   position: absolute;
-  right: -24px;
-  bottom: -18px;
-  z-index: var(--z-decoration);
-  width: 230px;
-  height: 210px;
-  opacity: 0.28;
-  fill: none;
-  stroke: var(--purple-700);
-  stroke-width: 1;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
+  z-index: 1;
+}
+
+.impact-monument-art {
+  width: auto;
+  max-width: 88%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: contrast(1.02);
+  user-select: none;
+}
+
+/* 2x2 Stats Grid framing the monument */
+.impact-stats-grid {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 490px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  align-items: start;
+}
+
+.impact-stat-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.stat-tl {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.stat-tr {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  padding-right: clamp(0px, 2vw, 24px);
+}
+
+.stat-bl {
+  grid-column: 1;
+  grid-row: 3;
+  justify-self: start;
+}
+
+.stat-br {
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: end;
+  padding-right: clamp(0px, 2vw, 24px);
+}
+
+/* Stat card beacon dot & vertical hairline indicator */
+.stat-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 10px;
+  margin-top: 6px;
+}
+
+.stat-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #6320EE;
+  box-shadow: 0 0 0 3px rgba(99, 32, 238, 0.12);
+}
+
+.stat-line {
+  width: 1px;
+  min-height: 52px;
+  height: 100%;
+  background: #DDD7E5;
+  margin-top: 6px;
+}
+
+.stat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-value {
+  font-family: var(--font-heading, "Plus Jakarta Sans", sans-serif);
+  font-size: clamp(2.4rem, 3.8vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #110E1B;
+}
+
+.stat-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #5C556A;
+  text-transform: uppercase;
 }
 
 @media (min-width: 1280px) {
@@ -697,23 +802,8 @@
     padding-top: 0;
   }
 
-  .event-scale-section {
-    padding: var(--space-10) 0;
-  }
-
-  .event-scale-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-9);
-  }
-
-  .event-intro,
-  .stats-rail {
-    grid-column: 1;
-  }
-
-  .event-intro {
-    max-width: 680px;
-    padding-right: 0;
+  .impact-grid {
+    gap: 40px;
   }
 }
 
@@ -773,41 +863,42 @@
 }
 
 @media (max-width: 767px) {
-  .event-scale-section {
-    padding: var(--space-10) 0;
+  .impact-section {
+    padding: 56px 0 68px;
   }
 
-  .event-scale-grid {
+  .impact-grid {
     grid-template-columns: 1fr;
-    gap: var(--space-8);
+    gap: 48px;
   }
 
-  .event-intro,
-  .stats-rail {
-    grid-column: 1;
+  .impact-title {
+    font-size: clamp(2rem, 8vw, 2.6rem);
   }
 
-  .event-intro {
+  .impact-col-visual {
+    min-height: 400px;
+  }
+
+  .impact-monument-art {
+    max-width: 96%;
+  }
+
+  .impact-stats-grid {
+    min-height: 380px;
+  }
+
+  .stat-tr,
+  .stat-br {
     padding-right: 0;
   }
 
-  .event-intro h2 {
-    font-size: clamp(2rem, 9.5vw, 2.4rem);
+  .stat-value {
+    font-size: clamp(2rem, 7.5vw, 2.5rem);
   }
 
-  .stats-rail {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .stat-item {
-    min-height: 134px;
-    padding: var(--space-5) var(--space-4);
-  }
-
-  .event-scale-constellation {
-    width: 180px;
-    height: 165px;
-    opacity: 0.18;
+  .stat-line {
+    min-height: 44px;
   }
 }
 
@@ -855,7 +946,34 @@
   .telemetry-vertical-rule {
     display: none;
   }
+
+  .impact-rail {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+
+  .impact-rail-line {
+    flex: 0 0 36px;
+  }
+
+  .impact-col-visual {
+    min-height: 350px;
+  }
+
+  .impact-stats-grid {
+    min-height: 320px;
+  }
+
+  .stat-value {
+    font-size: 1.85rem;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.11em;
+  }
 }
+
 /* Shared content-section primitives */
 .home-agenda,
 .home-speakers,

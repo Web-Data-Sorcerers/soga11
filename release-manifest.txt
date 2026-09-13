@@ -10,6 +10,8 @@ assets/logo-web.png
 assets/og-image.png
 assets/hero/11.png
 assets/hero/11.webp
+assets/hero/impact-monument.png
+assets/hero/impact-monument.webp
 components/footer/footer.css
 components/navbar/navbar.css
 css/variables.css
