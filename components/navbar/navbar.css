@@ -9,7 +9,7 @@
   z-index: var(--z-sticky);
   padding: 18px 0 0;
   pointer-events: none;
-  transition: padding 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: padding 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar.is-scrolled {
@@ -17,20 +17,17 @@
 }
 
 .navbar-inner {
+  position: relative;
   pointer-events: auto;
   display: flex;
   min-width: 0;
-  max-width: 1140px;
+  max-width: min(1240px, calc(100vw - 32px));
   height: 64px;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
   margin: 0 auto;
-  padding: 0 16px 0 0; /* Left padding 0 so dark wedge hugs the left chamfered edge */
-  background: rgba(250, 247, 242, 0.94);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(214, 203, 184, 0.85);
+  padding: 0 14px 0 0; /* Left padding 0 so dark wedge hugs the left chamfered edge */
   clip-path: polygon(
     10px 0%,
     calc(100% - 10px) 0%,
@@ -46,19 +43,36 @@
     0 2px 6px rgba(45, 30, 65, 0.03);
   transform: translateZ(0);
   transition: 
-    max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    gap 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    backdrop-filter 0.4s ease,
-    -webkit-backdrop-filter 0.4s ease;
-  will-change: max-width, height, background-color, border-color, box-shadow;
+    max-width 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    gap 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: max-width, height, box-shadow;
+}
+
+/* Glass & Border Layer: Opacity fade prevents costly blur re-rasterization */
+.navbar-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(250, 247, 242, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(214, 203, 184, 0.85);
+  clip-path: inherit;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar-inner > * {
+  position: relative;
+  z-index: 1;
 }
 
 .navbar.is-scrolled .navbar-inner {
-  max-width: 1140px;
+  max-width: min(1240px, calc(100vw - 32px));
   height: 58px;
   gap: 10px;
   box-shadow: 
@@ -73,11 +87,11 @@
     max-width: min(1440px, calc(100vw - 48px));
     height: 66px;
     gap: 18px;
-    background: transparent;
-    border-color: transparent;
     box-shadow: 0 0 0 transparent;
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
+  }
+
+  .navbar.is-transparent .navbar-inner::before {
+    opacity: 0;
   }
 
   .navbar.is-transparent .navbar-divider {
@@ -95,6 +109,11 @@
   background: #111A38;
   clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 100%, 0 100%);
   flex: 0 0 auto;
+  transition: padding 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar.is-scrolled .navbar-brand-wedge {
+  padding: 0 26px 0 20px;
 }
 
 .navbar-brand-wedge .navbar-brand {
@@ -135,6 +154,11 @@
   padding: 0 10px;
   flex: 0 0 auto;
   margin-left: 2px;
+  transition: padding 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar.is-scrolled .navbar-cartouche {
+  padding: 0 8px;
 }
 
 .cartouche-frame {
@@ -161,6 +185,12 @@
   color: #17113A;
   text-transform: uppercase;
   white-space: nowrap;
+  transition: font-size 0.65s cubic-bezier(0.16, 1, 0.3, 1), letter-spacing 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar.is-scrolled .cartouche-text {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
 }
 
 .cartouche-divider {
@@ -199,6 +229,11 @@
   margin-left: auto;
   margin-right: auto;
   padding: 0;
+  transition: gap 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar.is-scrolled .navbar-links {
+  gap: clamp(6px, 0.9vw, 14px);
 }
 
 .navbar-links a {
@@ -211,7 +246,12 @@
   letter-spacing: 0.01em;
   white-space: nowrap;
   text-decoration: none;
-  transition: color var(--duration-fast) ease;
+  transition: color var(--duration-fast) ease, font-size 0.65s cubic-bezier(0.16, 1, 0.3, 1), padding 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar.is-scrolled .navbar-links a {
+  font-size: 0.875rem;
+  padding: 6px 4px;
 }
 
 .navbar-links a:last-child {
@@ -307,6 +347,13 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   white-space: nowrap;
+  transition: height 0.65s cubic-bezier(0.16, 1, 0.3, 1), padding 0.65s cubic-bezier(0.16, 1, 0.3, 1), font-size 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar.is-scrolled .cta-inner {
+  height: 36px;
+  padding: 0 15px;
+  font-size: 0.74rem;
 }
 
 .cta-inner .cta-arrow {
