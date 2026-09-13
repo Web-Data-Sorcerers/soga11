@@ -100,6 +100,15 @@ function initNavbar() {
     );
   }
 
+  function updateNavbarState() {
+    const requestedHash = location.hash.replace("#", "") || "home";
+    const isHomeOrAnchor = requestedHash === "home" || ANCHORS.has(requestedHash);
+    const isScrolled = window.scrollY > 20;
+
+    header.classList.toggle("is-scrolled", isScrolled);
+    header.classList.toggle("is-transparent", isHomeOrAnchor && !isScrolled);
+  }
+
   function updateActiveNavigation() {
     const requestedHash = location.hash.replace("#", "") || "home";
     const isKnownHash = Boolean(routes[requestedHash]) || ANCHORS.has(requestedHash);
@@ -112,6 +121,8 @@ function initNavbar() {
       if (active) link.setAttribute("aria-current", "page");
       else link.removeAttribute("aria-current");
     });
+
+    updateNavbarState();
   }
 
   function openMenu() {
@@ -221,8 +232,15 @@ function initNavbar() {
     closeMenu();
   });
 
+  let scrollTicking = false;
   window.addEventListener("scroll", () => {
-    header.classList.toggle("is-scrolled", window.scrollY > 16);
+    if (!scrollTicking) {
+      requestAnimationFrame(() => {
+        updateNavbarState();
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
   }, { passive: true });
 
   const handleDesktopChange = (event) => {
@@ -231,7 +249,7 @@ function initNavbar() {
   desktopNavigation.addEventListener("change", handleDesktopChange);
 
   updateActiveNavigation();
-  header.classList.toggle("is-scrolled", window.scrollY > 16);
+  updateNavbarState();
 }
 
 // ============================================================

@@ -9,7 +9,7 @@
   z-index: var(--z-sticky);
   padding: 18px 0 0;
   pointer-events: none;
-  transition: padding var(--duration-fast) ease;
+  transition: padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar.is-scrolled {
@@ -20,12 +20,15 @@
   pointer-events: auto;
   display: flex;
   min-width: 0;
+  max-width: min(1280px, calc(100vw - 48px));
   height: 64px;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
+  gap: 12px;
   padding: 0 16px 0 0; /* Left padding 0 so dark wedge hugs the left chamfered edge */
-  background: #FAF7F2;
+  background: rgba(250, 247, 242, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(214, 203, 184, 0.85);
   clip-path: polygon(
     10px 0%,
@@ -40,15 +43,36 @@
   box-shadow: 
     0 10px 30px -4px rgba(45, 30, 65, 0.07),
     0 2px 6px rgba(45, 30, 65, 0.03);
-  transition: height var(--duration-fast) ease,
-    box-shadow var(--duration-fast) ease;
+  transition: 
+    background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    -webkit-backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: background-color, border-color, box-shadow, height;
 }
 
 .navbar.is-scrolled .navbar-inner {
-  height: 60px;
+  height: 58px;
   box-shadow: 
     0 12px 36px -4px rgba(45, 30, 65, 0.12),
     0 3px 8px rgba(45, 30, 65, 0.05);
+}
+
+/* Seamless Hero Mode on Desktop (un-scrolled at the top of hero) */
+@media (min-width: 1024px) {
+  .navbar.is-transparent .navbar-inner {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: 0 0 0 transparent;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+
+  .navbar.is-transparent .navbar-divider {
+    background: rgba(197, 168, 118, 0.45);
+  }
 }
 
 /* Left Brand Dark Navy Angled Wedge */
@@ -98,7 +122,7 @@
   align-items: center;
   justify-content: center;
   height: 38px;
-  padding: 0 14px;
+  padding: 0 10px;
   flex: 0 0 auto;
   margin-left: 2px;
 }
@@ -159,8 +183,9 @@
 .navbar-links {
   display: flex;
   min-width: 0;
+  flex: 0 0 auto;
   align-items: center;
-  gap: clamp(10px, 1.4vw, 26px);
+  gap: clamp(8px, 1.1vw, 18px);
   margin-left: auto;
   margin-right: auto;
   padding: 0;
@@ -168,7 +193,7 @@
 
 .navbar-links a {
   position: relative;
-  padding: 6px 4px;
+  padding: 6px 6px;
   color: #4A4254;
   font-family: var(--font-sans);
   font-size: 0.9375rem;
@@ -177,6 +202,10 @@
   white-space: nowrap;
   text-decoration: none;
   transition: color var(--duration-fast) ease;
+}
+
+.navbar-links a:last-child {
+  padding-right: 8px;
 }
 
 .navbar-links a:hover {
@@ -204,8 +233,9 @@
   width: 1px;
   height: 28px;
   background: rgba(214, 203, 184, 0.85);
-  margin: 0 12px;
-  flex: 0 0 auto;
+  margin: 0 14px 0 10px;
+  flex: 0 0 1px;
+  transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar-actions {
