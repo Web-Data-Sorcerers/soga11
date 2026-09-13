@@ -217,6 +217,24 @@
   gap: 6px;
 }
 
+.footer-legal > a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: rgba(250, 248, 245, 0.78);
+  text-decoration: underline;
+  text-decoration-color: rgba(196, 181, 253, 0.42);
+  text-underline-offset: 0.22em;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    text-decoration-color var(--duration-fast) var(--ease-standard);
+}
+
+.footer-legal > a:hover {
+  color: var(--purple-300);
+  text-decoration-color: currentColor;
+}
+
 .footer-legal small {
   padding: 2px 5px;
   border: 1px solid rgba(250, 248, 245, 0.2);

@@ -282,9 +282,15 @@
 
             <div class="form-group checkbox consent-item">
               <label for="f-consent">
-                <input type="checkbox" id="f-consent" required aria-describedby="f-consent-error" />
-                <span class="consent-copy"><strong>Syarat &amp; Ketentuan</strong><span>Saya setuju syarat &amp; ketentuan. <span class="req" aria-hidden="true">*</span></span></span>
+                <input type="checkbox" id="f-consent" required aria-describedby="f-consent-legal f-consent-error" />
+                <span class="consent-copy"><strong>Syarat &amp; Privasi</strong><span>Saya telah membaca dan menyetujui Syarat Partisipasi serta memahami Privacy Notice. <span class="req" aria-hidden="true">*</span></span></span>
               </label>
+              <p class="consent-legal-links" id="f-consent-legal">
+                Baca
+                <a href="terms.html" target="_blank" rel="noopener noreferrer">Syarat Partisipasi<span class="sr-only"> (membuka tab baru)</span></a>
+                dan
+                <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Notice<span class="sr-only"> (membuka tab baru)</span></a>.
+              </p>
               <span class="error-msg" id="f-consent-error">Persetujuan syarat dan ketentuan wajib diberikan.</span>
             </div>
           </fieldset>
