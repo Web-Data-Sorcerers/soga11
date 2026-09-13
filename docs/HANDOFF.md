@@ -1,7 +1,7 @@
 # SOGA 11 — Handoff Document (UPDATED)
 
 > **Tujuan:** biar AI/developer baru bisa lanjut kerja **tanpa kehilangan konteks**.
-> Baca dari atas ke bawah. File pendamping: **`aturan.md`** (rules + log kesalahan) — WAJIB baca juga.
+> Baca dari atas ke bawah. File pendamping: **`docs/aturan.md`** (rules + log kesalahan) — WAJIB baca juga.
 > Tanggal update terakhir: 12 September 2026.
 
 ---
@@ -100,7 +100,7 @@ Versi BARU (bukan fork SOGA 10). SOGA 10 cuma referensi.
 │   └── footer/footer.css
 ├── assets/                 → logo.png, logo-web.png, favicon.png/.ico, apple-touch-icon.png, og-image.png
 ├── docs/HANDOFF.md         → dokumen ini
-└── aturan.md               → RULES + log kesalahan (WAJIB baca)
+└── docs/aturan.md          → RULES + log kesalahan (WAJIB baca)
 ```
 
 ---
@@ -309,11 +309,11 @@ python3 -m http.server 8091
 
 ---
 
-## 13. RULES → baca `aturan.md`
+## 13. RULES → baca `docs/aturan.md`
 
-`aturan.md` berisi:
+`docs/aturan.md` berisi:
 - Supabase project yang dipakai = `soga-11` (`metnsgficvfvkmmksoua`). **JANGAN sentuh project `jelajah`.**
 - Log kesalahan (query pg_policy, generated columns auth.users, bug register RLS).
 - Keamanan & admin (email admin di-hardcode, RPC revoke).
 
-**Aturan umum:** tiap ada kesalahan baru → TAMBAH ke `aturan.md`.
+**Aturan umum:** tiap ada kesalahan baru → TAMBAH ke `docs/aturan.md`.
