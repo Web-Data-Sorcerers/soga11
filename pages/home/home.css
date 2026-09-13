@@ -64,6 +64,8 @@
 }
 
 .hero-tag-pulse {
+  display: inline-block;
+  flex: 0 0 6px;
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -820,21 +822,23 @@
   }
 
   .hero-index {
-    align-items: flex-start;
+    display: flex;
+    align-items: center;
     flex-wrap: wrap;
-    gap: var(--space-2) var(--space-3);
-    margin-bottom: var(--space-5);
+    gap: 8px 12px;
+    margin-bottom: var(--space-4);
   }
 
   .hero-index-rule {
-    flex: 1;
-    width: auto;
-    min-width: 48px;
-    margin-top: 7px;
+    display: none;
   }
 
-  .hero-index span:last-child {
-    flex-basis: 100%;
+  .hero-edition-pill {
+    flex: 0 0 auto;
+  }
+
+  .hero-edition-location {
+    flex: 0 0 auto;
   }
 
   .hero-title {
