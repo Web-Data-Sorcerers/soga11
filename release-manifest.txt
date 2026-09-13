@@ -1,6 +1,8 @@
 index.html
 dashboard.html
 certificate.html
+terms.html
+privacy.html
 assets/apple-touch-icon.png
 assets/favicon.ico
 assets/favicon.png
@@ -12,6 +14,7 @@ css/variables.css
 css/global.css
 css/dashboard.css
 css/certificate.css
+css/legal.css
 js/config.js
 js/api.js
 js/app.js
