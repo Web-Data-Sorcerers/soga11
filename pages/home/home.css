@@ -1233,49 +1233,7 @@
   z-index: 1;
 }
 
-/* Periodic Data Stream Impulse on Timeline Axis (Living Conduit) */
-.agenda-ledger-list::after {
-  content: "";
-  position: absolute;
-  left: 16px;
-  top: 36px;
-  width: 2px;
-  height: 120px;
-  transform: translateX(-50%);
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(99, 32, 238, 0.85) 50%,
-    rgba(196, 181, 253, 0.95) 80%,
-    transparent
-  );
-  filter: drop-shadow(0 0 6px rgba(99, 32, 238, 0.7));
-  pointer-events: none;
-  z-index: 1;
-  animation: conduitStream 7.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-@keyframes conduitStream {
-  0% {
-    top: 36px;
-    opacity: 0;
-  }
-  12% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  96% {
-    opacity: 0;
-  }
-  100% {
-    top: calc(100% - 156px);
-    opacity: 0;
-  }
-}
-
-/* Dynamic Active Progress Track Line */
+/* Dynamic Active Progress Track Line (Only fills to passed/active sessions) */
 .timeline-active-track {
   position: absolute;
   left: 16px;
@@ -1283,11 +1241,11 @@
   width: 2px;
   height: 0;
   transform: translateX(-50%);
-  background: linear-gradient(to bottom, #6320EE, #8B5CF6, #A78BFA);
+  background: linear-gradient(to bottom, #6320EE, #7C3AED, #8B5CF6);
   box-shadow: 0 0 10px rgba(99, 32, 238, 0.5);
   pointer-events: none;
   z-index: 2;
-  transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: height 0.35s cubic-bezier(0.16, 1, 0.3, 1), top 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Luminous Tracer Beacon (Active Tracking Head) */
@@ -1304,7 +1262,7 @@
   pointer-events: none;
   z-index: 4;
   opacity: 0;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), top 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), top 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
 .timeline-tracer-beacon.is-visible {
@@ -1377,7 +1335,7 @@
   background-color: rgba(99, 32, 238, 0.025);
 }
 
-/* Timeline Nodes */
+/* Timeline Nodes Base */
 .timeline-axis-node {
   position: relative;
   display: flex;
@@ -1390,70 +1348,84 @@
   cursor: pointer;
 }
 
-/* Node Variant: Double Ring (Session 01) */
-.timeline-axis-node.node-double .node-ring {
-  width: 15px;
-  height: 15px;
+/* Default Ring: ALL pending nodes are hollow circle with soft purple-gray border */
+.timeline-axis-node .node-ring {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  border: 1.5px solid #6320EE;
+  border: 1.5px solid #8E839F;
   background: var(--bg-page, #FAF8F5);
-  transition: all 0.25s ease;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.timeline-axis-node.node-double .node-dot {
+/* Default Dot: Hidden when pending */
+.timeline-axis-node .node-dot {
   position: absolute;
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  background: #6320EE;
-  transition: all 0.25s ease;
-}
-
-/* Radar Sonar Ping on Session 01 Starting Anchor */
-.timeline-axis-node.node-double::after {
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(99, 32, 238, 0.7);
-  pointer-events: none;
-  animation: radarPing 3.6s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
-}
-
-@keyframes radarPing {
-  0% {
-    transform: scale(0.85);
-    opacity: 0.9;
-  }
-  60% {
-    transform: scale(2.3);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(2.3);
-    opacity: 0;
-  }
-}
-
-/* Node Variant: Hollow (Sessions 02, 05, 06, 07) */
-.timeline-axis-node.node-hollow .node-ring {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  border: 1.5px solid #6320EE;
-  background: var(--bg-page, #FAF8F5);
+  background: #FFFFFF;
+  transform: scale(0);
+  opacity: 0;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Node Variant: Solid Glowing Purple (Sessions 03 & 04) */
-.timeline-axis-node.node-solid-glow .node-glow {
+/* Default Glow: Hidden when pending */
+.timeline-axis-node .node-glow {
   position: absolute;
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(99, 32, 238, 0.45) 0%, rgba(99, 32, 238, 0) 70%);
-  animation: ambientGlowPulse 3.2s ease-in-out infinite alternate;
+  background: radial-gradient(circle, rgba(99, 32, 238, 0.5) 0%, rgba(99, 32, 238, 0) 70%);
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Node 01: Distinct double-ring styling */
+.agenda-item[data-session="01"] .timeline-axis-node .node-ring {
+  width: 15px;
+  height: 15px;
+  border-color: #6320EE;
+}
+
+/* ==========================================================================
+   PASSED STATE (HANYA AKTIF KETIKA SUDAH DILEWATI SAMA TIMELINENYA -> BOLD UNGU)
+   ========================================================================== */
+.agenda-item.is-passed .timeline-axis-node .node-ring {
+  background: #6320EE;
+  border-color: #6320EE;
+  box-shadow: 0 0 8px rgba(99, 32, 238, 0.55);
+}
+
+.agenda-item.is-passed .timeline-axis-node .node-dot {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Active State: Sesi yang sedang ditunjuk oleh tracer beacon */
+.agenda-item.is-active .timeline-axis-node {
+  transform: scale(1.22);
+}
+
+.agenda-item.is-active .timeline-axis-node .node-ring {
+  background: #6320EE;
+  border-color: #6320EE;
+  box-shadow: 0 0 12px rgba(99, 32, 238, 0.75);
+}
+
+.agenda-item.is-active .timeline-axis-node .node-dot {
+  transform: scale(1.2);
+  opacity: 1;
+}
+
+/* Main Session Glow: ONLY activates when passed or active */
+.agenda-item.is-main-session.is-passed .timeline-axis-node .node-glow,
+.agenda-item.is-main-session.is-active .timeline-axis-node .node-glow {
+  transform: scale(1);
+  opacity: 0.85;
+  animation: ambientGlowPulse 3s ease-in-out infinite alternate;
 }
 
 @keyframes ambientGlowPulse {
@@ -1473,23 +1445,30 @@
   }
 }
 
-.timeline-axis-node.node-solid-glow .node-dot {
-  position: relative;
-  width: 13px;
-  height: 13px;
+/* Radar ping on Session 01 when active */
+.agenda-item[data-session="01"].is-active .timeline-axis-node::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: #6320EE;
-  box-shadow: 0 0 10px rgba(99, 32, 238, 0.55);
-  animation: ambientDotPulse 3.2s ease-in-out infinite alternate;
-  transition: all 0.25s ease;
+  border: 1.5px solid rgba(99, 32, 238, 0.75);
+  pointer-events: none;
+  animation: radarPing 3.6s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
 }
 
-@keyframes ambientDotPulse {
+@keyframes radarPing {
   0% {
-    box-shadow: 0 0 8px rgba(99, 32, 238, 0.4);
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+  60% {
+    transform: scale(2.3);
+    opacity: 0;
   }
   100% {
-    box-shadow: 0 0 14px rgba(99, 32, 238, 0.85);
+    transform: scale(2.3);
+    opacity: 0;
   }
 }
 
@@ -1616,17 +1595,6 @@
   transform: scale(1.24);
 }
 
-.agenda-item-summary:hover .node-hollow .node-ring {
-  border-color: #6320EE;
-  background: rgba(99, 32, 238, 0.15);
-  box-shadow: 0 0 10px rgba(99, 32, 238, 0.45);
-}
-
-.agenda-item-summary:hover .node-double .node-ring {
-  border-color: #7C3AED;
-  box-shadow: 0 0 10px rgba(99, 32, 238, 0.45);
-}
-
 .agenda-item-summary:hover .index-num {
   transform: translateX(2px);
   color: #531BBB;
@@ -1638,28 +1606,18 @@
 
 /* Active Transformation when Opened */
 .agenda-item[open] .timeline-axis-node {
-  transform: scale(1.28);
+  transform: scale(1.26);
 }
 
-.agenda-item[open] .node-hollow .node-ring {
+.agenda-item[open] .timeline-axis-node .node-ring {
   background: #6320EE;
   border-color: #6320EE;
-  box-shadow: 0 0 12px rgba(99, 32, 238, 0.7);
+  box-shadow: 0 0 12px rgba(99, 32, 238, 0.75);
 }
 
-.agenda-item[open] .node-double .node-dot {
-  background: #531BBB;
-  box-shadow: 0 0 12px rgba(99, 32, 238, 0.85);
-}
-
-.agenda-item[open] .node-double .node-ring {
-  border-color: #6320EE;
-  box-shadow: 0 0 10px rgba(99, 32, 238, 0.55);
-}
-
-.agenda-item[open] .node-solid-glow .node-dot {
-  background: #531BBB;
-  box-shadow: 0 0 16px rgba(99, 32, 238, 0.9);
+.agenda-item[open] .timeline-axis-node .node-dot {
+  transform: scale(1.2);
+  opacity: 1;
 }
 
 /* Accordion Drawer Content */
@@ -2635,7 +2593,6 @@
   }
 
   .agenda-ledger-list::before,
-  .agenda-ledger-list::after,
   .timeline-active-track,
   .timeline-tracer-beacon,
   .agenda-item[open] .agenda-item-drawer::before {
@@ -2718,7 +2675,6 @@
   }
 
   .agenda-ledger-list::before,
-  .agenda-ledger-list::after,
   .timeline-active-track,
   .timeline-tracer-beacon,
   .agenda-item[open] .agenda-item-drawer::before {

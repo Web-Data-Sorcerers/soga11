@@ -273,6 +273,9 @@ function initAgendaInteractivity() {
 
   function updateTracker(targetItem) {
     if (!targetItem || !ledgerList.contains(targetItem)) return;
+    const targetIndex = items.indexOf(targetItem);
+    if (targetIndex === -1) return;
+
     const baseTop = getBaseTopOffset();
     const targetOffset = getNodeCenterOffset(targetItem);
     const trackHeight = Math.max(0, targetOffset - baseTop);
@@ -286,6 +289,22 @@ function initAgendaInteractivity() {
       tracerBeacon.classList.add("is-visible");
       tracerBeacon.style.top = `${targetOffset}px`;
     }
+
+    // Only nodes that have been reached/passed by the timeline get is-passed (bold ungu)
+    // Nodes ahead of the current active position remain clean and hollow (belum dilewati)
+    items.forEach((item, index) => {
+      if (index <= targetIndex) {
+        item.classList.add("is-passed");
+      } else {
+        item.classList.remove("is-passed");
+      }
+
+      if (index === targetIndex) {
+        item.classList.add("is-active");
+      } else {
+        item.classList.remove("is-active");
+      }
+    });
   }
 
   // Set initial position
