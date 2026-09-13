@@ -1,5 +1,6 @@
 # Agent internal
 .omo/
+.playwright-mcp/
 
 # OS
 .DS_Store
