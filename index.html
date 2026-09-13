@@ -31,7 +31,7 @@
   <!-- CSS -->
   <link rel="stylesheet" href="css/variables.css?v=10" />
   <link rel="stylesheet" href="css/global.css?v=12" />
-  <link rel="stylesheet" href="components/navbar/navbar.css?v=19" />
+  <link rel="stylesheet" href="components/navbar/navbar.css?v=20" />
   <link rel="stylesheet" href="components/footer/footer.css?v=11" />
   <link rel="stylesheet" href="pages/home/home.css?v=25" />
   <link rel="stylesheet" href="pages/register/register.css?v=12" />
@@ -44,6 +44,9 @@
 <body>
 
   <a class="skip-link" href="#app">Lewati ke konten utama</a>
+
+  <!-- Backdrop scrim for floating mobile menu -->
+  <div class="mobile-menu-backdrop" id="mobile-menu-backdrop" aria-hidden="true"></div>
 
   <!-- ===================== PUBLIC NAVIGATION ===================== -->
   <header class="navbar" id="site-header">
@@ -112,23 +115,10 @@
       hidden
       inert
     >
-      <div class="mobile-menu-header">
-        <a href="#home" class="mobile-menu-brand" aria-label="Data Sorcerers — Home">
-          <img class="brand-logo" src="assets/logo-web.png" alt="" />
-          <span>Data Sorcerers</span>
-        </a>
-        <button class="mobile-menu-close" id="mobile-menu-close" type="button" aria-label="Tutup menu navigasi">
-          <span>Close</span>
-          <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-            <path d="M5 5 19 19M19 5 5 19" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="mobile-menu-body">
+      <div class="mobile-menu-drawer">
         <div class="mobile-menu-identity">
-          <p id="mobile-menu-title">Data Sorcerers</p>
-          <span>SOGA / 011</span>
+          <span class="mobile-menu-edition" id="mobile-menu-title">SOGA XI • YOGYAKARTA</span>
+          <span class="mobile-menu-edition-tag">2026</span>
         </div>
 
         <nav class="mobile-menu-links" aria-label="Navigasi mobile">
@@ -140,9 +130,12 @@
           <a href="#find-ticket" data-nav-link><span>06</span> Cari Tiket</a>
         </nav>
 
-        <a href="#register" class="btn btn-primary mobile-menu-cta" data-nav-link>
-          Register Now <span aria-hidden="true">→</span>
-        </a>
+        <div class="mobile-menu-footer">
+          <a href="#register" class="mobile-menu-cta" data-nav-link>
+            <span>REGISTER NOW</span>
+            <span class="cta-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
       </div>
     </div>
   </header>
@@ -308,6 +301,6 @@
   <!-- ===================== SCRIPTS ===================== -->
   <script src="js/config.js?v=9"></script>
   <script src="js/api.js?v=9"></script>
-  <script src="js/app.js?v=17"></script>
+  <script src="js/app.js?v=18"></script>
 </body>
 </html>

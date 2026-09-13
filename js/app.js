@@ -68,10 +68,11 @@ function initNavbar() {
   const skipLink = document.querySelector(".skip-link");
   const burger = document.getElementById("hamburger");
   const menu = document.getElementById("mobile-menu");
-  const closeButton = document.getElementById("mobile-menu-close");
+  const backdrop = document.getElementById("mobile-menu-backdrop");
   const header = document.getElementById("site-header");
-  if (!burger || !menu || !closeButton || !header) return;
+  if (!burger || !menu || !header) return;
 
+  const burgerLabel = burger.querySelector(".menu-trigger-label");
   const focusableSelector = [
     "a[href]",
     "button:not([disabled])",
@@ -122,11 +123,12 @@ function initNavbar() {
     menu.setAttribute("aria-hidden", "false");
     burger.setAttribute("aria-expanded", "true");
     burger.setAttribute("aria-label", "Tutup menu navigasi");
-    document.body.classList.add("mobile-menu-open");
+    burger.classList.add("is-active");
+    if (burgerLabel) burgerLabel.textContent = "Close";
+    if (backdrop) backdrop.classList.add("is-open");
 
     requestAnimationFrame(() => {
       menu.classList.add("is-open");
-      closeButton.focus();
     });
   }
 
@@ -138,7 +140,9 @@ function initNavbar() {
     menu.setAttribute("aria-hidden", "true");
     burger.setAttribute("aria-expanded", "false");
     burger.setAttribute("aria-label", "Buka menu navigasi");
-    document.body.classList.remove("mobile-menu-open");
+    burger.classList.remove("is-active");
+    if (burgerLabel) burgerLabel.textContent = "Menu";
+    if (backdrop) backdrop.classList.remove("is-open");
 
     if (restoreFocus && !desktopNavigation.matches) burger.focus();
     closeTimer = window.setTimeout(() => {
@@ -150,7 +154,17 @@ function initNavbar() {
     if (menuOpen) closeMenu();
     else openMenu();
   });
-  closeButton.addEventListener("click", () => closeMenu());
+
+  if (backdrop) {
+    backdrop.addEventListener("click", () => closeMenu());
+  }
+
+  document.addEventListener("click", (event) => {
+    if (!menuOpen) return;
+    if (!menu.contains(event.target) && !burger.contains(event.target) && (!backdrop || !backdrop.contains(event.target))) {
+      closeMenu();
+    }
+  });
 
   menu.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
@@ -174,14 +188,39 @@ function initNavbar() {
     }
   });
 
+  // Mobile menu links routing and smooth scroll
   menu.querySelectorAll("a[href]").forEach((link) => {
-    link.addEventListener("click", () => closeMenu());
+    link.addEventListener("click", (event) => {
+      const href = link.getAttribute("href");
+      closeMenu();
+      if (!href || !href.startsWith("#")) return;
+
+      const targetHash = href.replace("#", "");
+      if (ANCHORS.has(targetHash) || targetHash === "home") {
+        const currentHash = location.hash.replace("#", "") || "home";
+        if (currentHash === "home" || ANCHORS.has(currentHash)) {
+          // Already on home/anchor view: scroll directly!
+          event.preventDefault();
+          history.replaceState(null, "", href);
+          updateActiveNavigation();
+          if (targetHash === "home") {
+            window.scrollTo({ top: 0, behavior: reducedMotion.matches ? "auto" : "smooth" });
+          } else {
+            const el = document.getElementById(targetHash);
+            if (el) {
+              el.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth" });
+            }
+          }
+        }
+      }
+    });
   });
 
   window.addEventListener("hashchange", () => {
     updateActiveNavigation();
     closeMenu();
   });
+
   window.addEventListener("scroll", () => {
     header.classList.toggle("is-scrolled", window.scrollY > 16);
   }, { passive: true });
