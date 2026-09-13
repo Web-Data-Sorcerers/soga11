@@ -103,7 +103,11 @@ function initNavbar() {
   function updateNavbarState() {
     const requestedHash = location.hash.replace("#", "") || "home";
     const isHomeOrAnchor = requestedHash === "home" || ANCHORS.has(requestedHash);
-    const isScrolled = window.scrollY > 20;
+    
+    // Hysteresis deadband: activate at >24px, release at <14px to prevent boundary jitter
+    const isCurrentlyScrolled = header.classList.contains("is-scrolled");
+    const threshold = isCurrentlyScrolled ? 14 : 24;
+    const isScrolled = window.scrollY > threshold;
 
     header.classList.toggle("is-scrolled", isScrolled);
     header.classList.toggle("is-transparent", isHomeOrAnchor && !isScrolled);

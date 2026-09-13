@@ -9,7 +9,7 @@
   z-index: var(--z-sticky);
   padding: 18px 0 0;
   pointer-events: none;
-  transition: padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: padding 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar.is-scrolled {
@@ -20,11 +20,12 @@
   pointer-events: auto;
   display: flex;
   min-width: 0;
-  max-width: min(1280px, calc(100vw - 48px));
+  max-width: 1140px;
   height: 64px;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
+  margin: 0 auto;
   padding: 0 16px 0 0; /* Left padding 0 so dark wedge hugs the left chamfered edge */
   background: rgba(250, 247, 242, 0.94);
   backdrop-filter: blur(16px);
@@ -43,26 +44,35 @@
   box-shadow: 
     0 10px 30px -4px rgba(45, 30, 65, 0.07),
     0 2px 6px rgba(45, 30, 65, 0.03);
+  transform: translateZ(0);
   transition: 
-    background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    -webkit-backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: background-color, border-color, box-shadow, height;
+    max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    gap 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    backdrop-filter 0.4s ease,
+    -webkit-backdrop-filter 0.4s ease;
+  will-change: max-width, height, background-color, border-color, box-shadow;
 }
 
 .navbar.is-scrolled .navbar-inner {
+  max-width: 1140px;
   height: 58px;
+  gap: 10px;
   box-shadow: 
-    0 12px 36px -4px rgba(45, 30, 65, 0.12),
+    0 12px 36px -4px rgba(45, 30, 65, 0.14),
     0 3px 8px rgba(45, 30, 65, 0.05);
 }
 
-/* Seamless Hero Mode on Desktop (un-scrolled at the top of hero) */
+/* Seamless Hero Mode on Desktop (un-scrolled at the top of hero):
+   Expanded state (melebar membentang luas di atas langit hero) */
 @media (min-width: 1024px) {
   .navbar.is-transparent .navbar-inner {
+    max-width: min(1440px, calc(100vw - 48px));
+    height: 66px;
+    gap: 18px;
     background: transparent;
     border-color: transparent;
     box-shadow: 0 0 0 transparent;
