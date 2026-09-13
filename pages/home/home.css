@@ -89,9 +89,10 @@
   text-transform: uppercase;
 }
 
-.hero-category-tag .tag-bullet {
-  color: #2A1762;
-  font-size: 0.75rem;
+.hero-category-tag .tag-sep {
+  color: #B8A88A;
+  font-size: 0.72rem;
+  margin: 0 1px;
 }
 
 .hero-title {
@@ -288,16 +289,9 @@
 }
 
 .monument-pin-left .pin-h-line {
-  width: 32px;
+  width: 36px;
   height: 1px;
   background: #8E8599;
-}
-
-.monument-pin-left .pin-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #5B21B6;
 }
 
 /* Telemetry Pin: Right */
@@ -314,16 +308,6 @@
 
 .monument-pin-right .pin-pointer {
   position: relative;
-}
-
-.monument-pin-right .pin-dot {
-  position: absolute;
-  left: -2px;
-  top: 2px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #5B21B6;
 }
 
 .monument-pin-right .pin-arc-svg {
@@ -482,15 +466,6 @@
   gap: 10px;
 }
 
-.telemetry-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #4C1D95;
-  box-shadow: 0 0 0 2px rgba(76, 29, 149, 0.18);
-  flex: 0 0 7px;
-}
-
 .telemetry-meta-text {
   display: flex;
   flex-direction: column;
@@ -645,17 +620,6 @@
 
 .stat-item:nth-child(n + 3) {
   border-top: 1px solid var(--border-strong);
-}
-
-.stat-item::before {
-  content: "";
-  position: absolute;
-  top: 30px;
-  left: -4px;
-  width: 7px;
-  height: 7px;
-  border-radius: var(--radius-pill);
-  background: var(--primary);
 }
 
 .stat-num {
@@ -838,10 +802,6 @@
   .stat-item {
     min-height: 134px;
     padding: var(--space-5) var(--space-4);
-  }
-
-  .stat-item::before {
-    top: 27px;
   }
 
   .event-scale-constellation {
