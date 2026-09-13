@@ -8,6 +8,8 @@ assets/favicon.ico
 assets/favicon.png
 assets/logo-web.png
 assets/og-image.png
+assets/hero/11.png
+assets/hero/11.webp
 components/footer/footer.css
 components/navbar/navbar.css
 css/variables.css

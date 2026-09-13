@@ -2,21 +2,33 @@
 
 <!-- Hero -->
 <section class="hero" aria-labelledby="hero-title">
-  <span class="hero-wordmark" aria-hidden="true">SOGA</span>
+  <!-- Giant Watermark Background -->
+  <div class="hero-watermark-soga" aria-hidden="true">S O G A</div>
 
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <div class="hero-index" data-hero-reveal="index">
-        <span>SOGA / 011</span>
-        <span class="hero-index-rule" aria-hidden="true"></span>
-        <span>Sorcery Gathering #11</span>
+  <div class="container hero-grid-triptych">
+    <!-- Left Column: Editorial Copy & CTA -->
+    <div class="hero-col-copy" data-hero-reveal="title">
+      <div class="hero-index-rail">
+        <span class="hero-rail-item">SOGA / 011</span>
+        <span class="hero-rail-line" aria-hidden="true"></span>
+        <span class="hero-rail-item text-muted">SORCERY GATHERING #11</span>
       </div>
 
-      <h1 class="hero-title" id="hero-title" data-hero-reveal="title">
-        <span class="hero-title-line">Orkestrasi</span>
-        <span class="hero-title-line hero-title-accent">Kecerdasan</span>
-        <span class="hero-title-line">untuk Masa Depan</span>
-        <span class="hero-title-line">Nusantara</span>
+      <div class="hero-category-tag">
+        <span>KONFERENSI TEKNOLOGI</span>
+        <span class="tag-bullet">•</span>
+        <span>AI</span>
+        <span class="tag-bullet">•</span>
+        <span>DATA</span>
+        <span class="tag-bullet">•</span>
+        <span>KEBIJAKAN</span>
+      </div>
+
+      <h1 class="hero-title" id="hero-title">
+        <span class="hero-title-line">ORKESTRASI</span>
+        <span class="hero-title-line hero-title-accent">KECERDASAN</span>
+        <span class="hero-title-line">UNTUK MASA DEPAN</span>
+        <span class="hero-title-line">NUSANTARA</span>
       </h1>
 
       <p class="hero-subtitle" data-hero-reveal="body">
@@ -24,67 +36,91 @@
         ekonomi digital Indonesia — bersama pakar, akademisi, dan praktisi.
       </p>
 
-      <div class="hero-cta" data-hero-reveal="body">
-        <a href="#register" class="btn btn-primary hero-cta-primary">
-          Register Now <span aria-hidden="true">→</span>
+      <div class="hero-cta-group" data-hero-reveal="body">
+        <a href="#register" class="hero-btn-pill-primary" data-nav-link>
+          <span>REGISTER NOW</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
-        <a href="#agenda" class="btn btn-secondary hero-cta-secondary">Lihat Agenda</a>
+        <a href="#agenda" class="hero-btn-pill-secondary" data-nav-link>
+          LIHAT AGENDA
+        </a>
       </div>
-
-      <dl class="hero-meta" data-hero-reveal="body">
-        <div class="meta-item">
-          <dt>Tanggal</dt>
-          <dd id="event-date">TBA</dd>
-        </div>
-        <div class="meta-item">
-          <dt>Lokasi</dt>
-          <dd>Yogyakarta</dd>
-        </div>
-      </dl>
     </div>
 
-    <div class="hero-visual" data-hero-reveal="graphic">
-      <svg class="hero-constellation" viewBox="0 0 520 500" role="presentation" aria-hidden="true">
-        <g class="hero-constellation-frame">
-          <path d="M24 60v-24h24M472 36h24v24M496 438v24h-24M48 462H24v-24" />
-          <path d="M24 212v76M496 178v138" />
-        </g>
-        <g class="hero-constellation-lines">
-          <path d="M58 174 142 116 220 170 302 92 376 146 470 96" />
-          <path d="M142 116 168 252 272 300 376 146 424 286" />
-          <path d="M58 174 96 340 168 252 250 404 424 286 470 390" />
-          <path d="M220 170 272 300 302 92" />
-        </g>
-        <g class="hero-constellation-nodes">
-          <circle cx="58" cy="174" r="4" />
-          <circle cx="142" cy="116" r="6" class="node-primary" />
-          <circle cx="220" cy="170" r="3" />
-          <circle cx="302" cy="92" r="4" />
-          <circle cx="376" cy="146" r="7" class="node-primary" />
-          <circle cx="470" cy="96" r="3" />
-          <circle cx="96" cy="340" r="3" />
-          <circle cx="168" cy="252" r="5" />
-          <circle cx="272" cy="300" r="4" class="node-gold" />
-          <circle cx="424" cy="286" r="5" />
-          <circle cx="250" cy="404" r="3" />
-          <circle cx="470" cy="390" r="4" />
-        </g>
-        <g class="hero-coordinate-marks">
-          <path d="M66 52h56M398 448h56" />
-          <path d="M76 45v14M112 45v14M410 441v14M446 441v14" />
-        </g>
-      </svg>
+    <!-- Center Column: Monumental 3D Sculpture & Telemetry -->
+    <div class="hero-col-monument" data-hero-reveal="graphic">
+      <div class="hero-monument-stage">
+        <!-- Telemetry Pin: Data Manusia Dampak (Left) -->
+        <div class="monument-pin monument-pin-left" aria-hidden="true">
+          <div class="pin-text">
+            <span>DATA</span>
+            <span>MANUSIA</span>
+            <span>DAMPAK</span>
+          </div>
+          <div class="pin-pointer">
+            <span class="pin-h-line"></span>
+            <span class="pin-dot"></span>
+          </div>
+        </div>
 
-      <div class="hero-graphic-note" aria-hidden="true">
-        <span>DATA / AI</span>
-        <span>NUSANTARA</span>
+        <!-- 3D Monument Image with Prambanan & Merapi -->
+        <div class="hero-monument-figure">
+          <picture>
+            <source srcset="assets/hero/11.webp" type="image/webp" />
+            <img
+              src="assets/hero/11.png"
+              alt="Monumen SOGA 11 Yogyakarta — Arsitektur 11 dengan Candi Prambanan dan Gunung Merapi"
+              class="hero-monument-img"
+              width="1086"
+              height="1448"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </picture>
+        </div>
+
+        <!-- Telemetry Pin: Nusantara Lebih Jauh (Right) -->
+        <div class="monument-pin monument-pin-right" aria-hidden="true">
+          <div class="pin-pointer">
+            <span class="pin-dot"></span>
+            <svg class="pin-arc-svg" viewBox="0 0 70 32" fill="none">
+              <path d="M 0 4 Q 35 6 70 30" stroke="#8E8599" stroke-width="1.2" stroke-dasharray="3 2" />
+            </svg>
+          </div>
+          <div class="pin-text">
+            <span>NUSANTARA</span>
+            <span>LEBIH JAUH</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Editorial Monograph & Countdown Timer -->
+    <div class="hero-col-editorial" data-hero-reveal="countdown">
+      <div class="hero-monograph">
+        <div class="monograph-kicker-row">
+          <div class="monograph-kicker">
+            <span>LEBIH</span>
+            <span>CERDAS</span>
+            <span>BERSAMA</span>
+          </div>
+          <span class="monograph-line" aria-hidden="true"></span>
+        </div>
+
+        <div class="monograph-numeral" aria-label="Edisi ke-11">XI</div>
+
+        <p class="monograph-desc">
+          Satu ekosistem untuk teknologi, manusia, dan masa depan Nusantara.
+        </p>
       </div>
 
-      <div class="countdown-instrument" data-hero-reveal="countdown">
-        <div class="countdown-heading">
-          <span>COUNTDOWN / 011</span>
-          <p id="countdown-text">Menuju hari-H</p>
+      <!-- Realtime Countdown Box -->
+      <div class="hero-countdown-box">
+        <div class="countdown-label-strip">
+          <span>COUNTDOWN MENUJU HARI-H</span>
+          <p id="countdown-text" class="sr-only">Menuju hari-H</p>
         </div>
+
         <div
           class="countdown tabular-nums"
           id="countdown"
@@ -92,14 +128,56 @@
           aria-live="off"
           aria-label="Hitung mundur menuju Sorcery Gathering 11"
         >
-          <div class="count-item"><span id="cd-days">00</span><small>Day</small></div>
-          <span class="count-separator" aria-hidden="true">:</span>
-          <div class="count-item"><span id="cd-hours">00</span><small>Hr</small></div>
-          <span class="count-separator" aria-hidden="true">:</span>
-          <div class="count-item"><span id="cd-mins">00</span><small>Min</small></div>
-          <span class="count-separator" aria-hidden="true">:</span>
-          <div class="count-item"><span id="cd-secs">00</span><small>Sec</small></div>
+          <div class="cd-col">
+            <span class="cd-number" id="cd-days">00</span>
+            <small class="cd-tag">DAY</small>
+          </div>
+          <span class="cd-sep" aria-hidden="true">:</span>
+          <div class="cd-col">
+            <span class="cd-number" id="cd-hours">00</span>
+            <small class="cd-tag">HR</small>
+          </div>
+          <span class="cd-sep" aria-hidden="true">:</span>
+          <div class="cd-col">
+            <span class="cd-number" id="cd-mins">00</span>
+            <small class="cd-tag">MIN</small>
+          </div>
+          <span class="cd-sep" aria-hidden="true">:</span>
+          <div class="cd-col">
+            <span class="cd-number" id="cd-secs">00</span>
+            <small class="cd-tag">SEC</small>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Telemetry Strip (Date, Location, Gathering Tag) -->
+  <div class="container">
+    <div class="hero-bottom-telemetry">
+      <div class="telemetry-meta-pair">
+        <div class="telemetry-meta-item">
+          <span class="telemetry-dot" aria-hidden="true"></span>
+          <div class="telemetry-meta-text">
+            <span class="meta-label">TANGGAL</span>
+            <strong class="meta-value" id="event-date">MINGGU, 25 OKTOBER 2026</strong>
+          </div>
+        </div>
+
+        <span class="telemetry-vertical-rule" aria-hidden="true"></span>
+
+        <div class="telemetry-meta-item">
+          <span class="telemetry-dot" aria-hidden="true"></span>
+          <div class="telemetry-meta-text">
+            <span class="meta-label">LOKASI</span>
+            <strong class="meta-value">YOGYAKARTA</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="telemetry-signature-track" aria-hidden="true">
+        <span class="signature-line"></span>
+        <span class="signature-tag">SORCERY GATHERING #11</span>
       </div>
     </div>
   </div>
