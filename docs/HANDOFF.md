@@ -166,7 +166,7 @@ Seed: `registration_open = 'true'`. RLS **enabled tanpa policy** (akses cuma lew
 | Region | `ap-southeast-1` (Singapore) |
 | Anon key | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ldG5zZ2ZpY3ZmdmttbWtzb3VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNDMxMjksImV4cCI6MjEwNDYxOTEyOX0.mQvJN4az9P5llBqDnDWEQBYMkTODUKqC8_clsTkpjIY` |
 | **Email admin** | `admin@data-sorcerers.com` |
-| **Password admin** | `[REMOVED: managed outside repository]` |
+| **Admin credentials** | Managed outside the repository through the approved secure credential channel. |
 | service_role key | ❌ BELUM diambil (RAHASIA — jangan taruh frontend) |
 
 Kredensial anon juga di-hardcode di `js/config.js`.
