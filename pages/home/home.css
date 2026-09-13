@@ -9,7 +9,7 @@
   isolation: isolate;
   overflow: clip; /* Local crop boundary for decorative SOGA watermark. */
   min-height: 820px;
-  padding: clamp(100px, 12vh, 128px) 0 32px;
+  padding: clamp(84px, 9.5vh, 96px) 0 32px;
   background: radial-gradient(circle at 50% 65%, rgba(224, 215, 243, 0.42) 0%, rgba(250, 248, 245, 0) 65%), #FAF8F5;
 }
 
@@ -90,7 +90,7 @@
 }
 
 .hero-category-tag .tag-bullet {
-  color: #6D28D9;
+  color: #2A1762;
   font-size: 0.75rem;
 }
 
@@ -111,11 +111,11 @@
 
 .hero-title-accent {
   display: inline-block;
-  color: #6366F1;
-  background: linear-gradient(135deg, #4F46E5 0%, #6366F1 45%, #7C3AED 100%);
+  color: #2A1762;
+  background: linear-gradient(135deg, #181145 0%, #2A1762 40%, #5B21B6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 28px rgba(99, 102, 241, 0.22);
+  text-shadow: 0 0 28px rgba(42, 23, 98, 0.2);
 }
 
 .hero-subtitle {
@@ -133,67 +133,92 @@
   flex-wrap: wrap;
 }
 
-.hero-btn-pill-primary {
+.hero-btn-chamfer-primary {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  height: 46px;
+  height: 48px;
   padding: 0 28px;
-  background: #5B21B6;
-  border: none;
-  border-radius: 9999px;
+  background: linear-gradient(135deg, #181145 0%, #2A1762 50%, #171040 100%);
+  clip-path: polygon(
+    8px 0%,
+    calc(100% - 8px) 0%,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0% calc(100% - 8px),
+    0% 8px
+  );
   color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid rgba(216, 204, 168, 0.45);
+  outline: 1px solid rgba(197, 168, 118, 0.85);
+  outline-offset: -3px;
+  box-shadow: 0 6px 20px rgba(27, 17, 68, 0.32);
+  transition: all 0.22s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.hero-btn-chamfer-primary:hover {
+  background: linear-gradient(135deg, #24175E 0%, #391E84 50%, #22145A 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(36, 23, 94, 0.42);
+  color: #FFFFFF;
+}
+
+.hero-btn-chamfer-primary .btn-arrow {
+  transition: transform 0.2s ease;
+  display: inline-block;
+  font-size: 0.95rem;
+}
+
+.hero-btn-chamfer-primary:hover .btn-arrow {
+  transform: translate(2px, -2px);
+}
+
+.hero-btn-chamfer-secondary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 28px;
+  background: #FAF7F2;
+  clip-path: polygon(
+    8px 0%,
+    calc(100% - 8px) 0%,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0% calc(100% - 8px),
+    0% 8px
+  );
+  color: #17113A;
   font-family: var(--font-sans);
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  box-shadow: 0 8px 24px rgba(91, 33, 182, 0.28);
-  transition: all 0.2s ease;
+  border: 1px solid #D6CCA8;
+  outline: 1px solid rgba(197, 168, 118, 0.55);
+  outline-offset: -3px;
+  transition: all 0.22s ease;
   cursor: pointer;
   text-decoration: none;
 }
 
-.hero-btn-pill-primary:hover {
-  background: #4C1D95;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(76, 29, 149, 0.36);
-  color: #FFFFFF;
-}
-
-.hero-btn-pill-primary .btn-arrow {
-  transition: transform 0.2s ease;
-  display: inline-block;
-}
-
-.hero-btn-pill-primary:hover .btn-arrow {
-  transform: translateX(4px);
-}
-
-.hero-btn-pill-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 46px;
-  padding: 0 28px;
-  background: #F3EFEA;
-  border: 1px solid #DCD3C5;
-  border-radius: 9999px;
-  color: #17113A;
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.hero-btn-pill-secondary:hover {
-  background: #ECE5DA;
-  border-color: #CBBFA8;
+.hero-btn-chamfer-secondary:hover {
+  background: #EFE9DE;
+  border-color: #C5BAA5;
   transform: translateY(-2px);
   color: #17113A;
 }
@@ -408,7 +433,7 @@
   font-family: var(--font-sans);
   font-size: clamp(1.75rem, 2.25vw, 2.25rem);
   font-weight: 800;
-  color: #4338CA;
+  color: #181145;
   line-height: 1;
   letter-spacing: -0.02em;
 }
@@ -417,7 +442,7 @@
   font-family: var(--font-sans);
   font-size: 1.45rem;
   font-weight: 700;
-  color: #818CF8;
+  color: #6D4C9A;
   line-height: 1;
   margin-top: 2px;
 }
@@ -856,8 +881,8 @@
     width: 100%;
   }
 
-  .hero-btn-pill-primary,
-  .hero-btn-pill-secondary {
+  .hero-btn-chamfer-primary,
+  .hero-btn-chamfer-secondary {
     width: 100%;
   }
 
