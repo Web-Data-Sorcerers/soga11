@@ -1233,6 +1233,113 @@
   z-index: 1;
 }
 
+/* Periodic Data Stream Impulse on Timeline Axis (Living Conduit) */
+.agenda-ledger-list::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 36px;
+  width: 2px;
+  height: 120px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(99, 32, 238, 0.85) 50%,
+    rgba(196, 181, 253, 0.95) 80%,
+    transparent
+  );
+  filter: drop-shadow(0 0 6px rgba(99, 32, 238, 0.7));
+  pointer-events: none;
+  z-index: 1;
+  animation: conduitStream 7.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes conduitStream {
+  0% {
+    top: 36px;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0;
+  }
+  100% {
+    top: calc(100% - 156px);
+    opacity: 0;
+  }
+}
+
+/* Dynamic Active Progress Track Line */
+.timeline-active-track {
+  position: absolute;
+  left: 16px;
+  top: 36px;
+  width: 2px;
+  height: 0;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, #6320EE, #8B5CF6, #A78BFA);
+  box-shadow: 0 0 10px rgba(99, 32, 238, 0.5);
+  pointer-events: none;
+  z-index: 2;
+  transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Luminous Tracer Beacon (Active Tracking Head) */
+.timeline-tracer-beacon {
+  position: absolute;
+  left: 16px;
+  top: 36px;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), top 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.timeline-tracer-beacon.is-visible {
+  opacity: 1;
+}
+
+.timeline-tracer-beacon .beacon-halo {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 32, 238, 0.55) 0%, rgba(99, 32, 238, 0) 70%);
+  animation: beaconHaloPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes beaconHaloPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+}
+
+.timeline-tracer-beacon .beacon-core {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid #6320EE;
+  box-shadow: 0 0 8px #6320EE, 0 0 16px rgba(99, 32, 238, 0.85);
+}
+
 /* Ledger Item (Details / Summary Accordion) */
 .agenda-item {
   position: relative;
@@ -1278,7 +1385,9 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  z-index: 2;
+  z-index: 3;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
 }
 
 /* Node Variant: Double Ring (Session 01) */
@@ -1288,6 +1397,7 @@
   border-radius: 50%;
   border: 1.5px solid #6320EE;
   background: var(--bg-page, #FAF8F5);
+  transition: all 0.25s ease;
 }
 
 .timeline-axis-node.node-double .node-dot {
@@ -1296,6 +1406,34 @@
   height: 5px;
   border-radius: 50%;
   background: #6320EE;
+  transition: all 0.25s ease;
+}
+
+/* Radar Sonar Ping on Session 01 Starting Anchor */
+.timeline-axis-node.node-double::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(99, 32, 238, 0.7);
+  pointer-events: none;
+  animation: radarPing 3.6s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+}
+
+@keyframes radarPing {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+  60% {
+    transform: scale(2.3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.3);
+    opacity: 0;
+  }
 }
 
 /* Node Variant: Hollow (Sessions 02, 05, 06, 07) */
@@ -1305,16 +1443,34 @@
   border-radius: 50%;
   border: 1.5px solid #6320EE;
   background: var(--bg-page, #FAF8F5);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Node Variant: Solid Glowing Purple (Sessions 03 & 04) */
 .timeline-axis-node.node-solid-glow .node-glow {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: rgba(99, 32, 238, 0.22);
-  filter: blur(3px);
+  background: radial-gradient(circle, rgba(99, 32, 238, 0.45) 0%, rgba(99, 32, 238, 0) 70%);
+  animation: ambientGlowPulse 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes ambientGlowPulse {
+  0% {
+    transform: scale(0.88);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.85;
+    filter: blur(3px);
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0.55;
+    filter: blur(4px);
+  }
 }
 
 .timeline-axis-node.node-solid-glow .node-dot {
@@ -1323,7 +1479,18 @@
   height: 13px;
   border-radius: 50%;
   background: #6320EE;
-  box-shadow: 0 0 8px rgba(99, 32, 238, 0.45);
+  box-shadow: 0 0 10px rgba(99, 32, 238, 0.55);
+  animation: ambientDotPulse 3.2s ease-in-out infinite alternate;
+  transition: all 0.25s ease;
+}
+
+@keyframes ambientDotPulse {
+  0% {
+    box-shadow: 0 0 8px rgba(99, 32, 238, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 14px rgba(99, 32, 238, 0.85);
+  }
 }
 
 /* Column Elements */
@@ -1339,6 +1506,7 @@
   color: #2D233D;
   letter-spacing: 0.01em;
   white-space: nowrap;
+  transition: color 0.2s ease;
 }
 
 .col-divider {
@@ -1361,6 +1529,7 @@
   font-weight: 700;
   color: #6320EE;
   letter-spacing: 0.02em;
+  transition: all 0.2s ease;
 }
 
 .col-content {
@@ -1379,6 +1548,7 @@
   letter-spacing: -0.01em;
   line-height: 1.3;
   margin: 0;
+  transition: color 0.2s ease;
 }
 
 .session-title.title-serif {
@@ -1441,12 +1611,79 @@
   transform: rotate(45deg);
 }
 
+/* Interactive Hover State on Rows & Nodes */
+.agenda-item-summary:hover .timeline-axis-node {
+  transform: scale(1.24);
+}
+
+.agenda-item-summary:hover .node-hollow .node-ring {
+  border-color: #6320EE;
+  background: rgba(99, 32, 238, 0.15);
+  box-shadow: 0 0 10px rgba(99, 32, 238, 0.45);
+}
+
+.agenda-item-summary:hover .node-double .node-ring {
+  border-color: #7C3AED;
+  box-shadow: 0 0 10px rgba(99, 32, 238, 0.45);
+}
+
+.agenda-item-summary:hover .index-num {
+  transform: translateX(2px);
+  color: #531BBB;
+}
+
+.agenda-item-summary:hover .time-range {
+  color: #1A102B;
+}
+
+/* Active Transformation when Opened */
+.agenda-item[open] .timeline-axis-node {
+  transform: scale(1.28);
+}
+
+.agenda-item[open] .node-hollow .node-ring {
+  background: #6320EE;
+  border-color: #6320EE;
+  box-shadow: 0 0 12px rgba(99, 32, 238, 0.7);
+}
+
+.agenda-item[open] .node-double .node-dot {
+  background: #531BBB;
+  box-shadow: 0 0 12px rgba(99, 32, 238, 0.85);
+}
+
+.agenda-item[open] .node-double .node-ring {
+  border-color: #6320EE;
+  box-shadow: 0 0 10px rgba(99, 32, 238, 0.55);
+}
+
+.agenda-item[open] .node-solid-glow .node-dot {
+  background: #531BBB;
+  box-shadow: 0 0 16px rgba(99, 32, 238, 0.9);
+}
+
 /* Accordion Drawer Content */
 .agenda-item-drawer {
+  position: relative;
   padding: 16px 50px 24px 244px;
   border-bottom: 1px solid #ECE7F2;
   background-color: rgba(99, 32, 238, 0.02);
   animation: agendaDrawerFade 0.22s ease-out;
+}
+
+/* Glowing Left Conduit Accent for Open Drawer */
+.agenda-item[open] .agenda-item-drawer::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, #6320EE 0%, rgba(99, 32, 238, 0.15) 100%);
+  box-shadow: 0 0 8px rgba(99, 32, 238, 0.35);
+  pointer-events: none;
+  z-index: 1;
 }
 
 @keyframes agendaDrawerFade {
@@ -2397,7 +2634,11 @@
     gap: 0 10px;
   }
 
-  .agenda-ledger-list::before {
+  .agenda-ledger-list::before,
+  .agenda-ledger-list::after,
+  .timeline-active-track,
+  .timeline-tracer-beacon,
+  .agenda-item[open] .agenda-item-drawer::before {
     left: 14px;
   }
 
@@ -2476,7 +2717,11 @@
     display: none;
   }
 
-  .agenda-ledger-list::before {
+  .agenda-ledger-list::before,
+  .agenda-ledger-list::after,
+  .timeline-active-track,
+  .timeline-tracer-beacon,
+  .agenda-item[open] .agenda-item-drawer::before {
     left: 12px;
   }
 
@@ -2584,3 +2829,19 @@
     min-height: 300px;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .agenda-ledger-list::after,
+  .timeline-axis-node.node-double::after,
+  .timeline-axis-node.node-solid-glow .node-glow,
+  .timeline-axis-node.node-solid-glow .node-dot,
+  .timeline-tracer-beacon .beacon-halo {
+    animation: none;
+  }
+
+  .timeline-active-track,
+  .timeline-tracer-beacon {
+    transition: none;
+  }
+}
+

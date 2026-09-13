@@ -240,10 +240,104 @@ function stopHomeCountdown() {
   homeCountdownTimer = null;
 }
 
+// ============================================================
+// Agenda Interactive Smart Progress Tracker & Dynamic Nodes
+// ============================================================
+function initAgendaInteractivity() {
+  const ledgerList = document.querySelector(".agenda-ledger-list");
+  if (!ledgerList) return;
+
+  const items = Array.from(ledgerList.querySelectorAll(".agenda-item"));
+  const activeTrack = ledgerList.querySelector(".timeline-active-track");
+  const tracerBeacon = ledgerList.querySelector(".timeline-tracer-beacon");
+
+  if (!items.length) return;
+
+  function getNodeCenterOffset(item) {
+    const node = item.querySelector(".timeline-axis-node");
+    if (!node) return 0;
+    const listRect = ledgerList.getBoundingClientRect();
+    const nodeRect = node.getBoundingClientRect();
+    return nodeRect.top + nodeRect.height / 2 - listRect.top;
+  }
+
+  function getBaseTopOffset() {
+    const firstNode = items[0].querySelector(".timeline-axis-node");
+    if (!firstNode) return 36;
+    const listRect = ledgerList.getBoundingClientRect();
+    const nodeRect = firstNode.getBoundingClientRect();
+    return nodeRect.top + nodeRect.height / 2 - listRect.top;
+  }
+
+  let currentActiveItem = items.find((item) => item.hasAttribute("open")) || items[0];
+
+  function updateTracker(targetItem) {
+    if (!targetItem || !ledgerList.contains(targetItem)) return;
+    const baseTop = getBaseTopOffset();
+    const targetOffset = getNodeCenterOffset(targetItem);
+    const trackHeight = Math.max(0, targetOffset - baseTop);
+
+    if (activeTrack) {
+      activeTrack.style.top = `${baseTop}px`;
+      activeTrack.style.height = `${trackHeight}px`;
+    }
+
+    if (tracerBeacon) {
+      tracerBeacon.classList.add("is-visible");
+      tracerBeacon.style.top = `${targetOffset}px`;
+    }
+  }
+
+  // Set initial position
+  requestAnimationFrame(() => updateTracker(currentActiveItem));
+
+  // Hover reactivity
+  items.forEach((item) => {
+    item.addEventListener("mouseenter", () => {
+      updateTracker(item);
+    });
+
+    item.addEventListener("mouseleave", () => {
+      const openItem = items.find((it) => it.hasAttribute("open")) || currentActiveItem;
+      updateTracker(openItem);
+    });
+
+    // Details disclosure state change
+    item.addEventListener("toggle", () => {
+      if (item.hasAttribute("open")) {
+        currentActiveItem = item;
+        requestAnimationFrame(() => updateTracker(item));
+      } else {
+        const stillOpen = items.find((it) => it.hasAttribute("open"));
+        currentActiveItem = stillOpen || items[0];
+        requestAnimationFrame(() => updateTracker(currentActiveItem));
+      }
+    });
+
+    // Tooltip and accessibility on node
+    const node = item.querySelector(".timeline-axis-node");
+    if (node) {
+      node.style.cursor = "pointer";
+      node.setAttribute("title", "Klik untuk melihat rincian sesi");
+    }
+  });
+
+  // Re-calculate on resize
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const openItem = items.find((it) => it.hasAttribute("open")) || currentActiveItem;
+      updateTracker(openItem);
+    }, 100);
+  });
+}
+
 function initHome() {
   stopHomeCountdown();
   initReveal();
   initHeroMotion();
+  initAgendaInteractivity();
   const cd = document.getElementById("countdown");
   if (!cd) return;
 
