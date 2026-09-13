@@ -1,11 +1,12 @@
 /* ============================================================
-   SOGA 11 — Public Navigation / Floating Island Glass Dock
+   SOGA 11 — Public Navigation / Sorcery Alchemical Broadsheet
+   Replicating reference: warm parchment, cartouche, active diamond, chamfered button
    ============================================================ */
 .navbar {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  padding: 16px 0 0;
+  padding: 18px 0 0;
   pointer-events: none;
   transition: padding var(--duration-fast) ease;
 }
@@ -18,33 +19,30 @@
   pointer-events: auto;
   display: flex;
   min-width: 0;
-  height: 66px;
+  height: 64px;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-4);
-  padding: 0 8px 0 20px;
+  padding: 0 16px 0 24px;
   border-radius: var(--radius-pill);
-  background: rgba(250, 248, 245, 0.88);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(82, 39, 127, 0.14);
+  background: #FAF7F2;
+  border: 1px solid rgba(214, 203, 184, 0.75);
   box-shadow: 
-    0 4px 20px -2px rgba(33, 21, 47, 0.08),
-    0 1px 3px rgba(33, 21, 47, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    0 10px 30px -4px rgba(45, 30, 65, 0.07),
+    0 2px 6px rgba(45, 30, 65, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
   transition: height var(--duration-fast) ease,
-    background-color var(--duration-fast) ease,
-    border-color var(--duration-fast) ease,
-    box-shadow var(--duration-fast) ease;
+    box-shadow var(--duration-fast) ease,
+    border-color var(--duration-fast) ease;
 }
 
 .navbar.is-scrolled .navbar-inner {
   height: 60px;
-  background: rgba(250, 248, 245, 0.97);
-  border-color: rgba(82, 39, 127, 0.22);
+  border-color: rgba(184, 168, 140, 0.85);
   box-shadow: 
-    0 10px 30px -4px rgba(33, 21, 47, 0.12),
-    0 2px 6px rgba(33, 21, 47, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    0 12px 36px -4px rgba(45, 30, 65, 0.12),
+    0 3px 8px rgba(45, 30, 65, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 .navbar .brand-logo {
@@ -64,128 +62,223 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
+}
+
+.brand-sparkle {
+  color: #C5A876;
+  font-size: 0.85rem;
+  line-height: 1;
 }
 
 .navbar-brand-name {
   white-space: nowrap;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.45rem;
   font-weight: 700;
-  font-size: 1.05rem;
-  letter-spacing: -0.02em;
+  color: #17113A;
+  letter-spacing: -0.01em;
 }
 
-.navbar-event-id {
+/* Ornamental Cartouche Badge */
+.navbar-cartouche {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 14px;
+  flex: 0 0 auto;
+  margin-left: 2px;
+}
+
+.cartouche-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.cartouche-body {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  flex: 0 0 auto;
-  padding: 4px 12px;
-  border-radius: var(--radius-pill);
-  background: rgba(124, 58, 237, 0.06);
-  border: 1px solid rgba(124, 58, 237, 0.14);
-  color: var(--purple-900);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
+}
+
+.cartouche-sparkle {
+  color: #2E1B6B;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.cartouche-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.8125rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
+  color: #17113A;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
-.navbar-beacon {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-  animation: beacon-pulse 2s infinite ease-in-out;
-}
-
-@keyframes beacon-pulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-  }
-  50% {
-    transform: scale(1.2);
-    box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
-  }
-}
-
+/* Navigation Links with Signature Active Diamond */
 .navbar-links {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: 4px;
+  gap: clamp(8px, 1.2vw, 24px);
   margin-left: auto;
-  padding: 3px;
+  margin-right: auto;
+  padding: 0;
 }
 
 .navbar-links a {
   position: relative;
-  padding: 8px 14px;
-  border-radius: var(--radius-pill);
-  color: var(--text-secondary);
-  font-size: 0.8125rem;
+  padding: 6px 4px;
+  color: #362E45;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.15rem;
   font-weight: 600;
+  letter-spacing: 0.01em;
   white-space: nowrap;
-  transition: color var(--duration-fast) ease,
-    background-color var(--duration-fast) ease,
-    box-shadow var(--duration-fast) ease;
-}
-
-.navbar-links a::after {
-  display: none;
+  text-decoration: none;
+  transition: color var(--duration-fast) ease;
 }
 
 .navbar-links a:hover {
-  color: var(--purple-900);
-  background: rgba(124, 58, 237, 0.08);
+  color: #2E1B6B;
 }
 
 .navbar-links a.is-active {
-  color: var(--purple-900);
-  background: rgba(124, 58, 237, 0.12);
+  color: #2E1B6B;
   font-weight: 700;
-  box-shadow: inset 0 0 0 1px rgba(124, 58, 237, 0.2);
+}
+
+.navbar-links a.is-active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  right: 2px;
+  height: 1px;
+  background: #2E1B6B;
+}
+
+.navbar-links a.is-active::before {
+  content: "◆";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 6px;
+  color: #2E1B6B;
+  line-height: 1;
+  background: #FAF7F2;
+  padding: 0 4px;
+  z-index: 1;
+}
+
+/* Vertical Ornament Divider with Diamond Star */
+.navbar-ornament-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  flex: 0 0 auto;
+  color: #C5A876;
+  margin: 0 8px;
+}
+
+.navbar-ornament-divider .divider-line {
+  width: 1px;
+  flex: 1;
+  background: #D8CCA8;
+}
+
+.navbar-ornament-divider .divider-star {
+  font-size: 7px;
+  line-height: 1;
+  margin: 2px 0;
+  color: #C5A876;
+}
+
+.navbar-ornament-divider.divider-end {
+  margin-left: 8px;
+  margin-right: 0;
 }
 
 .navbar-actions {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
-  margin-left: var(--space-2);
 }
 
-.navbar-cta {
-  min-height: 44px;
-  padding: 8px 18px;
-  border-radius: var(--radius-pill);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, var(--primary) 0%, #4c1d95 100%);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+/* Chamfered Royal Velvet CTA Button */
+.navbar-cta-chamfer {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #D4C19C 0%, #A88F5E 50%, #D4C19C 100%);
+  clip-path: polygon(
+    8px 0%,
+    calc(100% - 8px) 0%,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0% calc(100% - 8px),
+    0% 8px
+  );
+  filter: drop-shadow(0 4px 12px rgba(25, 15, 60, 0.35));
+  text-decoration: none;
   transition: transform var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard);
+    filter var(--duration-fast) var(--ease-standard);
 }
 
-.navbar-cta .cta-arrow {
-  display: inline-block;
+.navbar-cta-chamfer:hover {
+  transform: translateY(-1px);
+  filter: drop-shadow(0 6px 18px rgba(25, 15, 60, 0.5));
+}
+
+.cta-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  background: linear-gradient(135deg, #181145 0%, #2A1762 50%, #171040 100%);
+  clip-path: polygon(
+    7px 0%,
+    calc(100% - 7px) 0%,
+    100% 7px,
+    100% calc(100% - 7px),
+    calc(100% - 7px) 100%,
+    7px 100%,
+    0% calc(100% - 7px),
+    0% 7px
+  );
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cta-inner .cta-arrow {
   font-size: 1.05em;
   line-height: 1;
   transition: transform var(--duration-fast) var(--ease-standard);
 }
 
-.navbar-cta:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
-}
-
-.navbar-cta:hover .cta-arrow {
+.navbar-cta-chamfer:hover .cta-arrow {
   transform: translate(2px, -2px);
 }
 
