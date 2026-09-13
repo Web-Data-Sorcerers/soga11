@@ -31,7 +31,7 @@
   <!-- CSS -->
   <link rel="stylesheet" href="css/variables.css?v=10" />
   <link rel="stylesheet" href="css/global.css?v=12" />
-  <link rel="stylesheet" href="components/navbar/navbar.css?v=10" />
+  <link rel="stylesheet" href="components/navbar/navbar.css?v=15" />
   <link rel="stylesheet" href="components/footer/footer.css?v=11" />
   <link rel="stylesheet" href="pages/home/home.css?v=11" />
   <link rel="stylesheet" href="pages/register/register.css?v=12" />
@@ -48,24 +48,25 @@
   <!-- ===================== PUBLIC NAVIGATION ===================== -->
   <header class="navbar" id="site-header">
     <div class="container navbar-inner">
-      <a href="#home" class="navbar-brand" aria-label="Data Sorcerers — Home">
-        <img class="brand-logo" src="assets/logo-web.png" alt="" />
-        <span class="brand-sparkle" aria-hidden="true">✦</span>
-        <span class="navbar-brand-name">Data Sorcerers</span>
-      </a>
+      <div class="navbar-brand-wedge">
+        <a href="#home" class="navbar-brand" aria-label="Data Sorcerers — Home">
+          <img class="brand-logo" src="assets/logo-web.png" alt="" />
+          <span class="navbar-brand-name">Data Sorcerers</span>
+        </a>
+      </div>
 
       <div class="navbar-cartouche" aria-hidden="true">
-        <svg class="cartouche-frame" viewBox="0 0 206 36" fill="none" preserveAspectRatio="none">
-          <path d="M 12 1.5 H 194 A 9 9 0 0 0 204.5 12 V 24 A 9 9 0 0 0 194 34.5 H 12 A 9 9 0 0 0 1.5 24 V 12 A 9 9 0 0 0 12 1.5 Z" fill="#FFFDFB" stroke="#D8CCA8" stroke-width="1.2" />
-          <path d="M 14 4 H 192 A 7 7 0 0 0 202 14 V 22 A 7 7 0 0 0 192 32 H 14 A 7 7 0 0 0 4 22 V 14 A 7 7 0 0 0 14 4 Z" fill="none" stroke="#ECE0C4" stroke-width="0.8" />
-          <circle cx="203" cy="3" r="1.2" fill="#C5A876" />
-          <circle cx="203" cy="33" r="1.2" fill="#C5A876" />
-          <circle cx="3" cy="3" r="1.2" fill="#C5A876" />
-          <circle cx="3" cy="33" r="1.2" fill="#C5A876" />
+        <svg class="cartouche-frame" viewBox="0 0 226 38" fill="none" preserveAspectRatio="none">
+          <rect x="1.5" y="1.5" width="223" height="35" rx="5" fill="#FFFDFB" stroke="#D8CCA8" stroke-width="1.2" />
+          <rect x="4.5" y="4.5" width="217" height="29" rx="3" fill="none" stroke="#ECE0C4" stroke-width="0.8" />
         </svg>
         <div class="cartouche-body">
-          <span class="cartouche-sparkle">✦</span>
+          <span class="cartouche-dot"></span>
           <span class="cartouche-text">SOGA XI • YOGYAKARTA</span>
+          <span class="cartouche-divider"></span>
+          <div class="cartouche-barcode" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
         </div>
       </div>
 
@@ -78,11 +79,7 @@
         <a href="#find-ticket" data-nav-link>Cari Tiket</a>
       </nav>
 
-      <div class="navbar-ornament-divider" aria-hidden="true">
-        <span class="divider-line"></span>
-        <span class="divider-star">✦</span>
-        <span class="divider-line"></span>
-      </div>
+      <div class="navbar-divider" aria-hidden="true"></div>
 
       <div class="navbar-actions">
         <a href="#register" class="navbar-cta-chamfer" data-nav-link>
@@ -91,12 +88,6 @@
             <span class="cta-arrow" aria-hidden="true">↗</span>
           </span>
         </a>
-      </div>
-
-      <div class="navbar-ornament-divider divider-end" aria-hidden="true">
-        <span class="divider-line"></span>
-        <span class="divider-star">✦</span>
-        <span class="divider-line"></span>
       </div>
 
       <button

@@ -1,6 +1,7 @@
 /* ============================================================
-   SOGA 11 — Public Navigation / Sorcery Alchemical Broadsheet
-   Replicating reference: warm parchment, cartouche, active diamond, chamfered button
+   SOGA 11 — Public Navigation / High-Editorial Chamfered Dock
+   Matching reference: Angled Navy Wedge, Barcode Cartouche,
+   Plus Jakarta Sans Nav with solid active pill, Chamfered Button
    ============================================================ */
 .navbar {
   position: sticky;
@@ -23,70 +24,80 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding: 0 16px 0 24px;
-  border-radius: var(--radius-pill);
+  padding: 0 16px 0 0; /* Left padding 0 so dark wedge hugs the left chamfered edge */
   background: #FAF7F2;
-  border: 1px solid rgba(214, 203, 184, 0.75);
+  border: 1px solid rgba(214, 203, 184, 0.85);
+  clip-path: polygon(
+    10px 0%,
+    calc(100% - 10px) 0%,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0% calc(100% - 10px),
+    0% 10px
+  );
   box-shadow: 
     0 10px 30px -4px rgba(45, 30, 65, 0.07),
-    0 2px 6px rgba(45, 30, 65, 0.03),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    0 2px 6px rgba(45, 30, 65, 0.03);
   transition: height var(--duration-fast) ease,
-    box-shadow var(--duration-fast) ease,
-    border-color var(--duration-fast) ease;
+    box-shadow var(--duration-fast) ease;
 }
 
 .navbar.is-scrolled .navbar-inner {
   height: 60px;
-  border-color: rgba(184, 168, 140, 0.85);
   box-shadow: 
     0 12px 36px -4px rgba(45, 30, 65, 0.12),
-    0 3px 8px rgba(45, 30, 65, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    0 3px 8px rgba(45, 30, 65, 0.05);
 }
 
-.navbar .brand-logo {
+/* Left Brand Dark Navy Angled Wedge */
+.navbar-brand-wedge {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 34px 0 22px;
+  background: #111A38;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 100%, 0 100%);
+  flex: 0 0 auto;
+}
+
+.navbar-brand-wedge .navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+.navbar-brand-wedge .brand-logo {
   width: auto;
   height: 38px;
   aspect-ratio: auto;
   transition: transform var(--duration-fast) ease;
 }
 
-.navbar-brand:hover .brand-logo {
+.navbar-brand-wedge:hover .brand-logo {
   transform: scale(1.05);
 }
 
-.navbar-brand {
-  flex: 0 0 auto;
-  color: var(--ink);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-
-.brand-sparkle {
-  color: #C5A876;
-  font-size: 0.85rem;
-  line-height: 1;
-}
-
-.navbar-brand-name {
+.navbar-brand-wedge .navbar-brand-name {
   white-space: nowrap;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 1.45rem;
   font-weight: 700;
-  color: #17113A;
+  color: #FFFFFF;
   letter-spacing: -0.01em;
 }
 
-/* Ornamental Cartouche Badge */
+/* Ornamental Cartouche Badge with Barcode */
 .navbar-cartouche {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 36px;
+  height: 38px;
   padding: 0 14px;
   flex: 0 0 auto;
   margin-left: 2px;
@@ -105,31 +116,60 @@
   z-index: 1;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
 }
 
-.cartouche-sparkle {
-  color: #2E1B6B;
-  font-size: 0.85rem;
-  line-height: 1;
+.cartouche-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4C1D95;
+  box-shadow: 0 0 0 2px rgba(76, 29, 149, 0.2);
+  flex: 0 0 8px;
 }
 
 .cartouche-text {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 0.8125rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   color: #17113A;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-/* Navigation Links with Signature Active Diamond */
+.cartouche-divider {
+  width: 1px;
+  height: 18px;
+  background: rgba(197, 168, 118, 0.6);
+  flex: 0 0 1px;
+}
+
+.cartouche-barcode {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
+.cartouche-barcode span {
+  display: inline-block;
+  height: 100%;
+  background: #C5A876;
+  width: 1px;
+}
+
+.cartouche-barcode span:nth-child(2) { width: 2px; }
+.cartouche-barcode span:nth-child(4) { width: 2.5px; }
+.cartouche-barcode span:nth-child(6) { width: 1.5px; }
+
+/* Navigation Links */
 .navbar-links {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: clamp(8px, 1.2vw, 24px);
+  gap: clamp(10px, 1.4vw, 26px);
   margin-left: auto;
   margin-right: auto;
   padding: 0;
@@ -138,9 +178,9 @@
 .navbar-links a {
   position: relative;
   padding: 6px 4px;
-  color: #362E45;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.15rem;
+  color: #4A4254;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   white-space: nowrap;
@@ -153,62 +193,28 @@
 }
 
 .navbar-links a.is-active {
-  color: #2E1B6B;
+  color: #17113A;
   font-weight: 700;
 }
 
 .navbar-links a.is-active::after {
   content: "";
   position: absolute;
-  bottom: 0;
-  left: 2px;
-  right: 2px;
-  height: 1px;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 2px;
   background: #2E1B6B;
 }
 
-.navbar-links a.is-active::before {
-  content: "◆";
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 6px;
-  color: #2E1B6B;
-  line-height: 1;
-  background: #FAF7F2;
-  padding: 0 4px;
-  z-index: 1;
-}
-
-/* Vertical Ornament Divider with Diamond Star */
-.navbar-ornament-divider {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 32px;
-  flex: 0 0 auto;
-  color: #C5A876;
-  margin: 0 8px;
-}
-
-.navbar-ornament-divider .divider-line {
+/* Vertical Hairline Divider */
+.navbar-divider {
   width: 1px;
-  flex: 1;
-  background: #D8CCA8;
-}
-
-.navbar-ornament-divider .divider-star {
-  font-size: 7px;
-  line-height: 1;
-  margin: 2px 0;
-  color: #C5A876;
-}
-
-.navbar-ornament-divider.divider-end {
-  margin-left: 8px;
-  margin-right: 0;
+  height: 28px;
+  background: rgba(214, 203, 184, 0.85);
+  margin: 0 12px;
+  flex: 0 0 auto;
 }
 
 .navbar-actions {
@@ -251,7 +257,7 @@
   align-items: center;
   gap: 8px;
   height: 40px;
-  padding: 0 18px;
+  padding: 0 20px;
   background: linear-gradient(135deg, #181145 0%, #2A1762 50%, #171040 100%);
   clip-path: polygon(
     7px 0%,
@@ -265,7 +271,7 @@
   );
   color: #FFFFFF;
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
