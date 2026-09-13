@@ -4,7 +4,7 @@
 // ============================================================
 
 // --- Konfigurasi event (ganti di sini) ---
-const EVENT_DATE = "2026-10-25T09:00:00+07:00"; // Minggu, 25 Oktober 2026
+const EVENT_DATE = "2026-10-25T08:00:00+07:00"; // Minggu, 25 Oktober 2026 — check-in dimulai
 let homeCountdownTimer = null;
 let routeRequestId = 0;
 

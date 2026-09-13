@@ -14,7 +14,7 @@ Versi BARU (bukan fork SOGA 10). SOGA 10 cuma referensi.
 - **Tema desain:** "Light Magic Purple" — background terang (putih/lavender) + aksen ungu `#7c3aed` + glow halus. (Kebalikan SOGA 10 yang dark.)
 - **Backend:** Supabase (PostgreSQL) — BUKAN Google Apps Script.
 - **Tech stack:** Vanilla HTML/CSS/JS (tanpa framework, tanpa build tool).
-- **Tanggal event:** Minggu, **25 Oktober 2026** (jam 09:00 WIB asumsi — bisa diubah).
+- **Tanggal event:** Minggu, **25 Oktober 2026**; countdown menuju aktivitas/check-in pukul **08:00 WIB**.
 
 ---
 
