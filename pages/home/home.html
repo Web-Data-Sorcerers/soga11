@@ -281,49 +281,368 @@
 
 <!-- Agenda -->
 <section class="home-agenda" id="agenda" aria-labelledby="agenda-title">
-  <div class="container agenda-layout">
-    <header class="editorial-section-intro agenda-intro">
-      <h2 id="agenda-title">Agenda Acara</h2>
-      <p class="section-subtitle">Rangkaian sesi intensif Sorcery Gathering #11.</p>
-    </header>
+  <div class="container agenda-editorial-grid">
+    <!-- Left Column: Editorial Identity & Telemetry -->
+    <div class="agenda-col-editorial">
+      <div class="agenda-rail">
+        <span class="agenda-rail-tag">AGENDA / 011</span>
+        <span class="agenda-rail-line" aria-hidden="true"></span>
+      </div>
 
-    <ol class="agenda-ledger" aria-label="Jadwal Sorcery Gathering 11">
-      <li class="timeline-item">
-        <span class="time tabular-nums">08.00 — 09.00</span>
-        <span class="session-index tabular-nums">01</span>
-        <div class="agenda-session"><h3>Registrasi &amp; Check-in</h3></div>
-      </li>
-      <li class="timeline-item">
-        <span class="time tabular-nums">09.00 — 09.15</span>
-        <span class="session-index tabular-nums">02</span>
-        <div class="agenda-session"><h3>Pembukaan</h3></div>
-      </li>
-      <li class="timeline-item">
-        <span class="time tabular-nums">09.15 — 10.00</span>
-        <span class="session-index tabular-nums">03</span>
-        <div class="agenda-session"><h3>Keynote Session</h3></div>
-      </li>
-      <li class="timeline-item">
-        <span class="time tabular-nums">10.00 — 10.45</span>
-        <span class="session-index tabular-nums">04</span>
-        <div class="agenda-session"><h3>Panel Discussion</h3></div>
-      </li>
-      <li class="timeline-item">
-        <span class="time tabular-nums">10.45 — 11.00</span>
-        <span class="session-index tabular-nums">05</span>
-        <div class="agenda-session"><h3>Break</h3></div>
-      </li>
-      <li class="timeline-item">
-        <span class="time tabular-nums">11.00 — 12.00</span>
-        <span class="session-index tabular-nums">06</span>
-        <div class="agenda-session"><h3>Talks &amp; Networking</h3></div>
-      </li>
-      <li class="timeline-item">
-        <span class="time tabular-nums">12.00 — 12.20</span>
-        <span class="session-index tabular-nums">07</span>
-        <div class="agenda-session"><h3>Penutupan</h3></div>
-      </li>
-    </ol>
+      <h2 class="agenda-title" id="agenda-title">
+        <span>AGENDA</span>
+        <span>ACARA</span>
+      </h2>
+
+      <p class="agenda-subtitle">
+        Rangkaian sesi intensif Sorcery Gathering #11.
+      </p>
+
+      <!-- Telemetry Data Cards (3-up strip) -->
+      <div class="agenda-telemetry-strip" role="list">
+        <div class="telemetry-badge" role="listitem">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+            <circle cx="12" cy="15" r="2" />
+          </svg>
+          <div class="badge-text">
+            <strong class="badge-bold">07 Sesi</strong>
+            <span class="badge-muted">dalam 1 hari</span>
+          </div>
+        </div>
+
+        <span class="telemetry-sep" aria-hidden="true"></span>
+
+        <div class="telemetry-badge" role="listitem">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          <div class="badge-text">
+            <strong class="badge-bold">25 Oktober 2026</strong>
+            <span class="badge-muted">Minggu</span>
+          </div>
+        </div>
+
+        <span class="telemetry-sep" aria-hidden="true"></span>
+
+        <div class="telemetry-badge" role="listitem">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          <div class="badge-text">
+            <strong class="badge-bold">Yogyakarta</strong>
+            <span class="badge-muted">Daerah Istimewa</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote Callout -->
+      <blockquote class="agenda-quote-block">
+        <span class="quote-mark" aria-hidden="true">❝</span>
+        <p class="quote-text">Ideas, people, and possibilities in one gathering.</p>
+        <footer class="quote-footer">
+          <cite>SOGA XI</cite>
+          <span class="quote-line" aria-hidden="true"></span>
+        </footer>
+      </blockquote>
+
+      <!-- Bottom Decorative Illustration (Candi Prambanan Etching) -->
+      <div class="agenda-art-stage" aria-hidden="true">
+        <picture>
+          <source srcset="assets/agenda/prambanan-etching.webp" type="image/webp" />
+          <img
+            src="assets/agenda/prambanan-etching.png"
+            alt=""
+            class="agenda-art-img"
+            width="600"
+            height="200"
+            loading="lazy"
+          />
+        </picture>
+      </div>
+    </div>
+
+    <!-- Right Column: Interactive Timeline Ledger -->
+    <div class="agenda-col-ledger" aria-label="Jadwal lengkap Sorcery Gathering 11">
+      <div class="agenda-ledger-list">
+        <!-- Session 01: Registrasi & Check-in -->
+        <details class="agenda-item" data-session="01">
+          <summary class="agenda-item-summary">
+            <div class="timeline-axis-node node-double" aria-hidden="true">
+              <span class="node-ring"></span>
+              <span class="node-dot"></span>
+            </div>
+            <div class="col-time">
+              <span class="time-range tabular-nums">08.00 — 09.00</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-index">
+              <span class="index-num tabular-nums">01</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-content">
+              <h3 class="session-title">Registrasi &amp; Check-in</h3>
+            </div>
+            <div class="col-action">
+              <span class="expand-btn" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="agenda-item-drawer">
+            <div class="drawer-body">
+              <p>Verifikasi tiket digital menggunakan QR Scanner, pengambilan wristband identitas peserta, dan pembagian official SOGA XI conference kit.</p>
+              <div class="drawer-tags">
+                <span class="drawer-tag">Foyer Utama</span>
+                <span class="drawer-tag">QR Check-in</span>
+                <span class="drawer-tag">Gathering Kit</span>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Session 02: Pembukaan -->
+        <details class="agenda-item" data-session="02">
+          <summary class="agenda-item-summary">
+            <div class="timeline-axis-node node-hollow" aria-hidden="true">
+              <span class="node-ring"></span>
+            </div>
+            <div class="col-time">
+              <span class="time-range tabular-nums">09.00 — 09.15</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-index">
+              <span class="index-num tabular-nums">02</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-content">
+              <h3 class="session-title">Pembukaan</h3>
+            </div>
+            <div class="col-action">
+              <span class="expand-btn" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="agenda-item-drawer">
+            <div class="drawer-body">
+              <p>Sambutan pembuka oleh Lead Organizer Data Sorcerers Indonesia, pengenalan delegasi chapter, serta paparan kurasi tema dan peta jalan konferensi.</p>
+              <div class="drawer-tags">
+                <span class="drawer-tag">Main Hall</span>
+                <span class="drawer-tag">Opening Speech</span>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Session 03: Keynote Session (MAIN SESSION) -->
+        <details class="agenda-item is-main-session" data-session="03">
+          <summary class="agenda-item-summary">
+            <div class="timeline-axis-node node-solid-glow" aria-hidden="true">
+              <span class="node-glow"></span>
+              <span class="node-dot"></span>
+            </div>
+            <div class="col-time">
+              <span class="time-range tabular-nums">09.15 — 10.00</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-index">
+              <span class="index-num tabular-nums">03</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-content">
+              <span class="main-session-badge">MAIN SESSION</span>
+              <h3 class="session-title title-serif">Keynote Session</h3>
+            </div>
+            <div class="col-action">
+              <span class="expand-btn" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="agenda-item-drawer">
+            <div class="drawer-body">
+              <p>Paparan visioner bertajuk <strong>"Orkestrasi Kecerdasan untuk Masa Depan Nusantara"</strong> — menelaah integrasi strategis antara kecerdasan artifisial, kedaulatan data, dan kesiapan infrastruktur kebijakan ekonomi digital Indonesia.</p>
+              <div class="drawer-tags">
+                <span class="drawer-tag">Main Stage</span>
+                <span class="drawer-tag">AI Orchestration</span>
+                <span class="drawer-tag">Keynote Address</span>
+                <span class="drawer-tag">Live Q&amp;A</span>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Session 04: Panel Discussion (MAIN SESSION) -->
+        <details class="agenda-item is-main-session" data-session="04">
+          <summary class="agenda-item-summary">
+            <div class="timeline-axis-node node-solid-glow" aria-hidden="true">
+              <span class="node-glow"></span>
+              <span class="node-dot"></span>
+            </div>
+            <div class="col-time">
+              <span class="time-range tabular-nums">10.00 — 10.45</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-index">
+              <span class="index-num tabular-nums">04</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-content">
+              <span class="main-session-badge">MAIN SESSION</span>
+              <h3 class="session-title title-serif">Panel Discussion</h3>
+            </div>
+            <div class="col-action">
+              <span class="expand-btn" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="agenda-item-drawer">
+            <div class="drawer-body">
+              <p>Diskusi panel interaktif lintas sektor menghadirkan pakar industri terkemuka, periset akademis, dan pemangku kebijakan publik untuk membedah tantangan implementasi nyata teknologi masa depan.</p>
+              <div class="drawer-tags">
+                <span class="drawer-tag">Main Stage</span>
+                <span class="drawer-tag">Interactive Panel</span>
+                <span class="drawer-tag">Industry &amp; Policy</span>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Session 05: Break -->
+        <details class="agenda-item" data-session="05">
+          <summary class="agenda-item-summary">
+            <div class="timeline-axis-node node-hollow" aria-hidden="true">
+              <span class="node-ring"></span>
+            </div>
+            <div class="col-time">
+              <span class="time-range tabular-nums">10.45 — 11.00</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-index">
+              <span class="index-num tabular-nums">05</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-content">
+              <h3 class="session-title">Break</h3>
+            </div>
+            <div class="col-action">
+              <span class="expand-btn" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="agenda-item-drawer">
+            <div class="drawer-body">
+              <p>Rehat kopi dan santap ringan. Kesempatan bagi peserta untuk mengunjungi showcase inisiatif open-source serta booth eksplorasi teknologi mitra.</p>
+              <div class="drawer-tags">
+                <span class="drawer-tag">Exhibition Hall</span>
+                <span class="drawer-tag">Coffee &amp; Refreshment</span>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Session 06: Talks & Networking -->
+        <details class="agenda-item" data-session="06">
+          <summary class="agenda-item-summary">
+            <div class="timeline-axis-node node-hollow" aria-hidden="true">
+              <span class="node-ring"></span>
+            </div>
+            <div class="col-time">
+              <span class="time-range tabular-nums">11.00 — 12.00</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-index">
+              <span class="index-num tabular-nums">06</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-content">
+              <h3 class="session-title">Talks &amp; Networking</h3>
+            </div>
+            <div class="col-action">
+              <span class="expand-btn" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="agenda-item-drawer">
+            <div class="drawer-body">
+              <p>Presentasi kilat riset terapan (*lightning talks*) dan ruang temu terarah (*curated networking*) untuk mempertemukan periset, developer, dan pendiri ekosistem inovasi digital.</p>
+              <div class="drawer-tags">
+                <span class="drawer-tag">Community Hall</span>
+                <span class="drawer-tag">Lightning Talks</span>
+                <span class="drawer-tag">Matchmaking</span>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Session 07: Penutupan -->
+        <details class="agenda-item" data-session="07">
+          <summary class="agenda-item-summary">
+            <div class="timeline-axis-node node-hollow" aria-hidden="true">
+              <span class="node-ring"></span>
+            </div>
+            <div class="col-time">
+              <span class="time-range tabular-nums">12.00 — 12.20</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-index">
+              <span class="index-num tabular-nums">07</span>
+            </div>
+            <span class="col-divider" aria-hidden="true"></span>
+            <div class="col-content">
+              <h3 class="session-title">Penutupan</h3>
+            </div>
+            <div class="col-action">
+              <span class="expand-btn" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </span>
+            </div>
+          </summary>
+          <div class="agenda-item-drawer">
+            <div class="drawer-body">
+              <p>Rangkuman penutup, pengumuman inisiatif riset kolaboratif gelombang berikutnya oleh Data Sorcerers, dan sesi dokumentasi/foto bersama seluruh peserta.</p>
+              <div class="drawer-tags">
+                <span class="drawer-tag">Main Stage</span>
+                <span class="drawer-tag">Closing Remark</span>
+                <span class="drawer-tag">Group Photo</span>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
   </div>
 </section>
 

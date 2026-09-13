@@ -1010,81 +1010,485 @@
   line-height: var(--type-body-leading);
 }
 
-/* Agenda / event ledger */
+/* ==========================================================================
+   Agenda Section / Editorial Timeline Ledger (Preserved Reference Fidelity)
+   ========================================================================== */
+
 .home-agenda {
-  padding: var(--space-12) 0;
-  border-bottom: 1px solid var(--border-default);
-  background: var(--bg-page);
+  position: relative;
+  overflow: hidden;
+  padding: clamp(64px, 7vw, 104px) 0;
+  border-bottom: 1px solid var(--border-default, #DDD7E5);
+  background: var(--bg-page, #FAF8F5);
 }
 
-.agenda-layout {
+.agenda-editorial-grid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--space-5);
+  grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+  gap: clamp(40px, 5vw, 68px);
+  align-items: start;
 }
 
-.agenda-intro {
-  grid-column: 1 / span 4;
-  padding-right: var(--space-7);
+/* --- Left Column: Editorial Identity & Telemetry --- */
+.agenda-col-editorial {
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-.agenda-ledger {
-  grid-column: 5 / -1;
+.agenda-rail {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.agenda-rail-tag {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #8E8599;
+  text-transform: uppercase;
+}
+
+.agenda-rail-line {
+  display: inline-block;
+  width: 54px;
+  height: 1px;
+  background: #DDD5E7;
+}
+
+.agenda-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(3rem, 4.6vw, 4.2rem);
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  color: #170E28;
+  text-transform: uppercase;
+  margin: 0 0 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.agenda-title span {
+  display: block;
+}
+
+.agenda-subtitle {
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: #5C556A;
+  margin: 0 0 28px;
+  max-width: 360px;
+}
+
+/* Telemetry Data Cards (3-up strip) */
+.agenda-telemetry-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 24px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #DDD7E5;
+}
+
+.telemetry-badge {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1 1 auto;
+}
+
+.telemetry-badge .badge-icon {
+  width: 20px;
+  height: 20px;
+  color: #531BBB;
+  flex-shrink: 0;
+}
+
+.telemetry-badge .badge-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.telemetry-badge .badge-bold {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #180D29;
+  white-space: nowrap;
+}
+
+.telemetry-badge .badge-muted {
+  font-size: 0.72rem;
+  color: #726883;
+  white-space: nowrap;
+}
+
+.telemetry-sep {
+  display: block;
+  width: 1px;
+  height: 28px;
+  background: #DDD7E5;
+  flex-shrink: 0;
+}
+
+/* Editorial Quote Block */
+.agenda-quote-block {
+  position: relative;
+  margin: 0 0 32px;
+  padding-left: 20px;
+  border-left: 1.5px solid #8B5CF6;
+  max-width: 360px;
+}
+
+.agenda-quote-block .quote-mark {
+  position: absolute;
+  top: -8px;
+  left: 20px;
+  font-size: 2.2rem;
+  line-height: 1;
+  color: #DDD5E7;
+  pointer-events: none;
+  user-select: none;
+}
+
+.agenda-quote-block .quote-text {
+  font-family: Georgia, 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: #4B3F5E;
+  margin: 0 0 10px;
+  padding-top: 8px;
+}
+
+.quote-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quote-footer cite {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #8E8599;
+  font-style: normal;
+}
+
+.quote-footer .quote-line {
+  display: inline-block;
+  width: 42px;
+  height: 1px;
+  background: #DDD5E7;
+}
+
+/* Bottom Heritage Illustration */
+.agenda-art-stage {
+  margin-top: auto;
+  padding-top: 16px;
+  position: relative;
+  pointer-events: none;
+}
+
+.agenda-art-img {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  opacity: 0.75;
+  filter: contrast(1.05);
+  mix-blend-mode: multiply;
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* --- Right Column: Interactive Timeline Ledger --- */
+.agenda-col-ledger {
+  position: relative;
+}
+
+.agenda-ledger-list {
+  position: relative;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--purple-800);
   list-style: none;
 }
 
-.timeline-item {
-  display: grid;
-  grid-template-columns: 158px 52px minmax(0, 1fr);
-  min-height: 78px;
-  align-items: center;
-  border-bottom: 1px solid var(--border-default);
+/* The Continuous Timeline Axis Line */
+.agenda-ledger-list::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 36px;
+  bottom: 36px;
+  width: 1px;
+  background: #DDD7E5;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.timeline-item .time,
-.session-index {
-  font-family: var(--font-mono);
-  font-size: var(--type-small-size);
+/* Ledger Item (Details / Summary Accordion) */
+.agenda-item {
+  position: relative;
+  margin: 0;
+  border: none;
+}
+
+.agenda-item-summary {
+  display: grid;
+  grid-template-columns: 32px 116px 1px 36px 1px minmax(0, 1fr) 36px;
+  align-items: center;
+  gap: 0 14px;
+  min-height: 76px;
+  padding: 16px 0;
+  border-bottom: 1px solid #ECE7F2;
+  cursor: pointer;
+  list-style: none;
+  transition: background-color 0.2s ease;
+}
+
+.agenda-item-summary::-webkit-details-marker {
+  display: none;
+}
+
+.agenda-item-summary::marker {
+  display: none;
+}
+
+.agenda-item:hover .agenda-item-summary {
+  background-color: rgba(99, 32, 238, 0.02);
+}
+
+.agenda-item[open] .agenda-item-summary {
+  border-bottom: 1px dashed rgba(99, 32, 238, 0.18);
+  background-color: rgba(99, 32, 238, 0.025);
+}
+
+/* Timeline Nodes */
+.timeline-axis-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  z-index: 2;
+}
+
+/* Node Variant: Double Ring (Session 01) */
+.timeline-axis-node.node-double .node-ring {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid #6320EE;
+  background: var(--bg-page, #FAF8F5);
+}
+
+.timeline-axis-node.node-double .node-dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #6320EE;
+}
+
+/* Node Variant: Hollow (Sessions 02, 05, 06, 07) */
+.timeline-axis-node.node-hollow .node-ring {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1.5px solid #6320EE;
+  background: var(--bg-page, #FAF8F5);
+}
+
+/* Node Variant: Solid Glowing Purple (Sessions 03 & 04) */
+.timeline-axis-node.node-solid-glow .node-glow {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(99, 32, 238, 0.22);
+  filter: blur(3px);
+}
+
+.timeline-axis-node.node-solid-glow .node-dot {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #6320EE;
+  box-shadow: 0 0 8px rgba(99, 32, 238, 0.45);
+}
+
+/* Column Elements */
+.col-time {
+  display: flex;
+  align-items: center;
+}
+
+.time-range {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.88rem;
   font-weight: 600;
+  color: #2D233D;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.col-divider {
+  display: block;
+  width: 1px;
+  height: 24px;
+  background: #DDD7E5;
+  flex-shrink: 0;
+}
+
+.col-index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.index-num {
+  font-family: var(--font-mono, monospace);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6320EE;
   letter-spacing: 0.02em;
 }
 
-.timeline-item .time {
-  color: var(--text-secondary);
+.col-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding-right: 8px;
 }
 
-.session-index {
-  color: var(--primary);
-}
-
-.agenda-session {
-  position: relative;
-  padding: var(--space-4) var(--space-8) var(--space-4) var(--space-5);
-  border-left: 1px solid var(--border-default);
-}
-
-.agenda-session::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 2px;
-  width: 7px;
-  height: 7px;
-  border: 1px solid var(--purple-700);
-  border-radius: var(--radius-pill);
-  background: var(--bg-page);
-  transform: translateY(-50%);
-}
-
-.agenda-session h3 {
-  color: var(--text-primary);
-  font-size: var(--type-h4-size);
+.session-title {
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 1.15rem;
   font-weight: 600;
-  letter-spacing: var(--type-h4-tracking);
-  line-height: var(--type-h4-leading);
+  color: #1A1128;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.session-title.title-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #140A24;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin-top: 2px;
+}
+
+.main-session-badge {
+  display: inline-block;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #6320EE;
+  text-transform: uppercase;
+}
+
+.col-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.expand-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #9B8EB3;
+  color: #55486E;
+  background: transparent;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.expand-btn svg {
+  display: block;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.agenda-item:hover .expand-btn {
+  border-color: #6320EE;
+  color: #6320EE;
+  background: rgba(99, 32, 238, 0.05);
+}
+
+.agenda-item[open] .expand-btn {
+  border-color: #6320EE;
+  background: #6320EE;
+  color: #FFFFFF;
+}
+
+.agenda-item[open] .expand-btn svg {
+  transform: rotate(45deg);
+}
+
+/* Accordion Drawer Content */
+.agenda-item-drawer {
+  padding: 16px 50px 24px 244px;
+  border-bottom: 1px solid #ECE7F2;
+  background-color: rgba(99, 32, 238, 0.02);
+  animation: agendaDrawerFade 0.22s ease-out;
+}
+
+@keyframes agendaDrawerFade {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.drawer-body {
+  max-width: 580px;
+}
+
+.drawer-body p {
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: #4C4359;
+  margin: 0 0 12px;
+}
+
+.drawer-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.drawer-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: rgba(99, 32, 238, 0.08);
+  color: #531BBB;
+  border: 1px solid rgba(99, 32, 238, 0.16);
 }
 
 /* Speakers / dark editorial chapter */
@@ -1975,20 +2379,42 @@
     padding: var(--space-11) 0;
   }
 
-  .agenda-layout,
+  .agenda-editorial-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-9);
+  }
+
+  .agenda-col-editorial {
+    max-width: 640px;
+  }
+
+  .agenda-art-stage {
+    max-width: 320px;
+  }
+
+  .agenda-item-summary {
+    grid-template-columns: 28px 110px 1px 36px 1px minmax(0, 1fr) 34px;
+    gap: 0 10px;
+  }
+
+  .agenda-ledger-list::before {
+    left: 14px;
+  }
+
+  .agenda-item-drawer {
+    padding: 16px 20px 24px 206px;
+  }
+
   .speakers-layout {
     grid-template-columns: 1fr;
     gap: var(--space-9);
   }
 
-  .agenda-intro,
-  .agenda-ledger,
   .speakers-intro,
   .speakers-grid {
     grid-column: 1;
   }
 
-  .agenda-intro,
   .speakers-intro {
     max-width: 620px;
     padding-right: 0;
@@ -2013,47 +2439,130 @@
     padding: var(--space-10) 0;
   }
 
-  .agenda-layout,
+  .agenda-editorial-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .agenda-title {
+    font-size: clamp(2.4rem, 9vw, 3.2rem);
+  }
+
+  .agenda-telemetry-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+
+  .telemetry-sep {
+    display: none;
+  }
+
+  .telemetry-badge {
+    padding: 8px 12px;
+    background: rgba(99, 32, 238, 0.03);
+    border: 1px solid rgba(99, 32, 238, 0.08);
+    border-radius: 8px;
+  }
+
+  .agenda-quote-block {
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .agenda-art-stage {
+    display: none;
+  }
+
+  .agenda-ledger-list::before {
+    left: 12px;
+  }
+
+  .agenda-item-summary {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr) 32px;
+    column-gap: 12px;
+    row-gap: 6px;
+    padding: 16px 0;
+  }
+
+  .timeline-axis-node {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: start;
+    margin-top: 2px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .col-divider {
+    display: none;
+  }
+
+  .col-time {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .time-range {
+    font-size: 0.8rem;
+    color: #55486E;
+  }
+
+  .col-index {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .index-num {
+    font-size: 0.88rem;
+  }
+
+  .col-action {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+
+  .col-content {
+    grid-column: 2;
+    grid-row: 2;
+    padding-right: 0;
+  }
+
+  .session-title {
+    font-size: 1.02rem;
+  }
+
+  .session-title.title-serif {
+    font-size: 1.32rem;
+  }
+
+  .agenda-item-drawer {
+    padding: 12px 0 18px 36px;
+  }
+
+  .drawer-body p {
+    font-size: 0.88rem;
+  }
+
   .speakers-layout {
     grid-template-columns: 1fr;
     gap: var(--space-8);
   }
 
-  .agenda-intro,
-  .agenda-ledger,
   .speakers-intro,
   .speakers-grid {
     grid-column: 1;
   }
 
-  .agenda-intro,
   .speakers-intro {
     padding-right: 0;
-  }
-
-  .timeline-item {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: var(--space-2) var(--space-4);
-    min-height: 0;
-    padding: var(--space-5) 0;
-  }
-
-  .timeline-item .time {
-    font-size: 0.75rem;
-  }
-
-  .session-index {
-    justify-self: end;
-  }
-
-  .agenda-session {
-    grid-column: 1 / -1;
-    padding: var(--space-2) var(--space-6) 0 0;
-    border-left: 0;
-  }
-
-  .agenda-session::after {
-    top: calc(50% + var(--space-1));
   }
 
   .speakers-grid {
