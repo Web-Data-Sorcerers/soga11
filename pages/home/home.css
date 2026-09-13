@@ -7,28 +7,43 @@
 .hero {
   position: relative;
   isolation: isolate;
-  overflow: clip; /* Local crop boundary for decorative SOGA watermark. */
-  min-height: 820px;
+  overflow: clip;
+  min-height: 840px;
   padding: clamp(84px, 9.5vh, 96px) 0 32px;
-  background: radial-gradient(circle at 50% 65%, rgba(224, 215, 243, 0.42) 0%, rgba(250, 248, 245, 0) 65%), #FAF8F5;
+  background-color: #FAF7F2;
 }
 
-/* Giant SOGA Watermark */
-.hero-watermark-soga {
+/* Cinematic Background Artwork Layer */
+.hero-backdrop-artwork {
   position: absolute;
-  bottom: 85px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-  font-family: var(--font-sans);
-  font-size: clamp(8rem, 20vw, 21rem);
-  font-weight: 900;
-  letter-spacing: 0.16em;
-  line-height: 0.75;
-  color: rgba(23, 17, 58, 0.045);
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    /* 1. Left atmospheric light fog scrim - ensures razor-sharp contrast for title & copy */
+    linear-gradient(90deg, 
+      rgba(250, 247, 242, 0.82) 0%, 
+      rgba(250, 247, 242, 0.62) 30%, 
+      rgba(250, 247, 242, 0.22) 52%, 
+      rgba(250, 247, 242, 0) 68%
+    ),
+    /* 2. Bottom soft mist dissolve into page canvas */
+    linear-gradient(to bottom, 
+      transparent 70%, 
+      rgba(250, 247, 242, 0.82) 90%, 
+      #FAF7F2 100%
+    ),
+    /* 3. Top subtle ambient sky soften */
+    linear-gradient(180deg, 
+      rgba(250, 247, 242, 0.38) 0%, 
+      transparent 18%
+    ),
+    /* 4. Full cinematic background artwork */
+    url('../../assets/hero/bg.webp');
+  background-position: center 26%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: contrast(1.04) brightness(1.01) saturate(1.06);
   pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
 }
 
 /* Triptych 3-Column Grid */
@@ -224,7 +239,7 @@
   color: #17113A;
 }
 
-/* Center Column: 3D Monument & Telemetry Pins */
+/* Center Column: Open Stage for 3D Monument & Telemetry */
 .hero-col-monument {
   position: relative;
   display: flex;
@@ -238,31 +253,66 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  height: clamp(420px, 48vh, 580px);
 }
 
-.hero-monument-figure {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 550px;
-  display: flex;
-  justify-content: center;
+/* Luminous Beacon Glow for the Monument 11 Portal */
+.monument-beacon-glow {
+  position: absolute;
+  top: 32%;
+  left: 51%;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 220px;
+  background: radial-gradient(ellipse at center, rgba(142, 68, 243, 0.32) 0%, rgba(168, 85, 247, 0.15) 45%, transparent 70%);
+  filter: blur(28px);
+  pointer-events: none;
+  border-radius: 50%;
+  animation: beaconPulse 4.5s ease-in-out infinite alternate;
 }
 
-.hero-monument-img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  max-height: 640px;
-  display: block;
-  filter: drop-shadow(0 24px 44px rgba(76, 29, 149, 0.14));
+@keyframes beaconPulse {
+  0% {
+    opacity: 0.45;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  100% {
+    opacity: 0.88;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+/* Sorcerer Staff Crystal Orb Glow */
+.sorcerer-staff-glow {
+  position: absolute;
+  top: 66%;
+  left: 17%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle, rgba(216, 180, 254, 0.9) 0%, rgba(168, 85, 247, 0.5) 40%, transparent 70%);
+  filter: blur(4px);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: staffGlint 3s ease-in-out infinite alternate;
+}
+
+@keyframes staffGlint {
+  0% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(0.85);
+  }
+  100% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(1.25);
+  }
 }
 
 /* Telemetry Pin: Left */
 .monument-pin-left {
   position: absolute;
-  left: -14px;
-  top: 52%;
+  left: -20px;
+  top: 50%;
   z-index: 3;
   display: flex;
   align-items: center;
@@ -274,10 +324,10 @@
   display: flex;
   flex-direction: column;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: #71697A;
+  color: #554D61;
   text-align: right;
   line-height: 1.35;
 }
@@ -289,43 +339,43 @@
 }
 
 .monument-pin-left .pin-h-line {
-  width: 36px;
+  width: 44px;
   height: 1px;
-  background: #8E8599;
+  background: #71697A;
 }
 
 /* Telemetry Pin: Right */
 .monument-pin-right {
   position: absolute;
-  right: -20px;
-  top: 38%;
+  right: -14px;
+  top: 36%;
   z-index: 3;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
   pointer-events: none;
 }
 
 .monument-pin-right .pin-pointer {
-  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.monument-pin-right .pin-arc-svg {
-  width: 60px;
-  height: 28px;
-  display: block;
+.monument-pin-right .pin-h-line {
+  width: 44px;
+  height: 1px;
+  background: #71697A;
 }
 
 .monument-pin-right .pin-text {
   display: flex;
   flex-direction: column;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: #71697A;
+  color: #554D61;
   line-height: 1.35;
-  margin-top: 22px;
 }
 
 /* Right Column: Editorial Monograph & Countdown */
@@ -393,17 +443,31 @@
 .countdown-label-strip {
   font-family: var(--font-mono);
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.14em;
-  color: #71697A;
-  margin-bottom: 10px;
+  color: #17113A;
+  margin-bottom: 8px;
   text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  background: rgba(250, 247, 242, 0.75);
+  border: 1px solid rgba(216, 204, 168, 0.35);
+  border-radius: 4px;
 }
 
 .hero-countdown-box .countdown {
   display: flex;
   align-items: flex-start;
   gap: 6px;
+  background: rgba(255, 255, 255, 0.52);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(216, 204, 168, 0.4);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 24px -4px rgba(45, 30, 65, 0.06);
 }
 
 .cd-col {
@@ -774,11 +838,15 @@
 @media (min-width: 900px) and (max-width: 1199px) {
   .hero {
     min-height: 0;
-    padding: clamp(90px, 10vh, 110px) 0 28px;
+    padding: clamp(80px, 9vh, 100px) 0 28px;
+  }
+
+  .hero-backdrop-artwork {
+    background-position: 48% 24%;
   }
 
   .hero-grid-triptych {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.15fr 1fr;
     gap: 28px;
   }
 
@@ -790,6 +858,10 @@
     grid-column: 2;
   }
 
+  .hero-monument-stage {
+    height: 380px;
+  }
+
   .hero-col-editorial {
     grid-column: 1 / -1;
     display: grid;
@@ -798,7 +870,7 @@
     min-height: auto;
     align-items: center;
     padding-top: 24px;
-    border-top: 1px solid #EBE4D8;
+    border-top: 1px solid rgba(214, 203, 184, 0.6);
   }
 
   .hero-countdown-box {
@@ -814,12 +886,25 @@
 @media (max-width: 899px) {
   .hero {
     min-height: 0;
-    padding: clamp(80px, 9vh, 100px) 0 24px;
+    padding: 72px 0 24px;
+  }
+
+  .hero-backdrop-artwork {
+    background-image: 
+      linear-gradient(180deg, 
+        rgba(250, 247, 242, 0.95) 0%, 
+        rgba(250, 247, 242, 0.75) 24%, 
+        rgba(250, 247, 242, 0.15) 45%, 
+        rgba(250, 247, 242, 0.68) 76%, 
+        #FAF7F2 100%
+      ),
+      url('../../assets/hero/bg.webp');
+    background-position: 45% 18%;
   }
 
   .hero-grid-triptych {
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 28px;
   }
 
   .hero-col-copy {
@@ -830,17 +915,31 @@
     order: 2;
     max-width: 440px;
     margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero-monument-stage {
+    height: clamp(220px, 32vh, 320px);
+  }
+
+  .sorcerer-staff-glow {
+    left: 28%;
+    top: 60%;
   }
 
   .hero-col-editorial {
     order: 3;
     min-height: auto;
-    padding-left: 0;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 28px;
-    padding-top: 24px;
-    border-top: 1px solid #EBE4D8;
+    gap: 20px;
+    background: rgba(250, 247, 242, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(216, 204, 168, 0.45);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px -4px rgba(45, 30, 65, 0.08);
   }
 
   .hero-countdown-box {
@@ -848,10 +947,21 @@
     padding-top: 0;
   }
 
+  .hero-countdown-box .countdown {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(216, 204, 168, 0.45);
+    border-radius: 12px;
+    padding: 12px 14px;
+    justify-content: space-around;
+  }
+
   .hero-bottom-telemetry {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+    margin-top: 24px;
   }
 
   .telemetry-signature-track {
