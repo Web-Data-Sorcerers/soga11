@@ -217,32 +217,38 @@
         </ul>
       </nav>
 
-      <!-- Sidebar Atmosphere & Monument Footer -->
+      <!-- Sidebar Royal Magic Sigil Card -->
       <div class="sidebar-atmosphere">
-        <div class="atmosphere-card" role="complementary" aria-label="SOGA 11 Operational Context">
-          <div class="atmosphere-glow" aria-hidden="true"></div>
+        <div class="royal-sigil-card" role="complementary" aria-label="SOGA 11 Royal Command Sigil">
+          <!-- Arcane Constellation Lines -->
+          <svg class="royal-constellation-svg" viewBox="0 0 240 120" aria-hidden="true">
+            <path d="M15 18 L75 14 L135 38 L195 20 M75 14 L115 62 L175 52 M25 82 L115 62 L155 100 M115 62 L215 92" />
+            <circle cx="15" cy="18" r="2.5" />
+            <circle cx="75" cy="14" r="3.5" class="sigil-node-gold" />
+            <circle cx="135" cy="38" r="2.5" />
+            <circle cx="195" cy="20" r="3" />
+            <circle cx="115" cy="62" r="4.5" class="sigil-node-amethyst" />
+            <circle cx="175" cy="52" r="2.5" />
+            <circle cx="25" cy="82" r="2.5" />
+            <circle cx="155" cy="100" r="3.5" class="sigil-node-gold" />
+            <circle cx="215" cy="92" r="2.5" />
+          </svg>
+          <div class="royal-sigil-glow" aria-hidden="true"></div>
 
-          <div class="atmosphere-header">
-            <div class="atmosphere-tag">
-              <span class="atmosphere-tag-dot" aria-hidden="true"></span>
+          <div class="royal-sigil-header">
+            <div class="royal-sigil-kicker">
+              <span class="royal-sigil-gem" aria-hidden="true"></span>
               <span>PEOPLE • IDEAS • IMPACT</span>
             </div>
-            <span class="atmosphere-edition" aria-hidden="true">011</span>
+            <span class="royal-sigil-edition">011</span>
           </div>
 
-          <div class="atmosphere-monument" aria-hidden="true">
-            <img src="assets/hero/impact-monument.webp" alt="" class="atmosphere-monument-img" loading="lazy" />
-          </div>
-
-          <div class="atmosphere-footer">
-            <div class="atmosphere-title-row">
-              <strong class="atmosphere-title">SOGA 11</strong>
-              <span class="atmosphere-live-badge">Live 2026</span>
-            </div>
-            <div class="atmosphere-meta-row">
-              <span class="atmosphere-subtitle">Command Center</span>
-              <span class="atmosphere-sep" aria-hidden="true">•</span>
-              <span class="atmosphere-version">v1.0.0</span>
+          <div class="royal-sigil-footer">
+            <strong class="royal-sigil-title">SOGA 11</strong>
+            <div class="royal-sigil-meta">
+              <span class="royal-sigil-realm">Command Center</span>
+              <span class="royal-sigil-sep" aria-hidden="true">•</span>
+              <span class="royal-sigil-ver">v1.0.0</span>
             </div>
           </div>
         </div>
@@ -314,31 +320,39 @@
         <!-- Welcome Hero & Event Context -->
         <section class="dash-welcome-row" aria-label="Ringkasan Sambutan">
           <div class="welcome-copy">
+            <div class="welcome-sorcery-kicker">
+              <span class="kicker-gem" aria-hidden="true"></span>
+              <span>ORCHESTRATION SANCTUM • SOGA 11</span>
+            </div>
             <h1>Selamat Datang, <span id="admin-welcome-name">Panitia</span>!</h1>
             <p>Kelola acara SOGA 11 dengan lebih mudah. Pantau check-in, peserta, dan aktivitas secara real-time.</p>
           </div>
 
           <div class="dash-event-card">
+            <div class="event-card-shimmer" aria-hidden="true"></div>
             <div class="event-card-icon" aria-hidden="true">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
             </div>
             <div class="event-card-text">
-              <span class="event-card-kicker">Hari H</span>
+              <span class="event-card-kicker">Hari H Pelaksanaan</span>
               <strong>25 Oktober 2026</strong>
               <small>Yogyakarta, Indonesia</small>
             </div>
           </div>
         </section>
 
-        <!-- 4 Key Metrics Cards (Bento Stat Cards) -->
+        <!-- 4 Key Metrics Cards (Royal Magic Bento Cards) -->
         <section class="dash-stats-grid" aria-label="Statistik Utama">
           <!-- Card 1: Total Peserta -->
           <article class="stat-card stat-card-total">
+            <div class="stat-corner-gilt" aria-hidden="true"></div>
+            <div class="stat-card-glow" aria-hidden="true"></div>
             <div class="stat-card-header">
               <div class="stat-icon-wrap stat-icon-purple" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
               </div>
               <div class="stat-meta">
+                <span class="stat-kicker-royal">GRAND LEDGER</span>
                 <span class="stat-label">Total Peserta</span>
                 <strong class="stat-value" id="stat-total">0</strong>
               </div>
@@ -350,11 +364,14 @@
 
           <!-- Card 2: Sudah Check-in -->
           <article class="stat-card stat-card-present">
+            <div class="stat-corner-gilt" aria-hidden="true"></div>
+            <div class="stat-card-glow" aria-hidden="true"></div>
             <div class="stat-card-header">
               <div class="stat-icon-wrap stat-icon-green" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div class="stat-meta">
+                <span class="stat-kicker-royal stat-kicker-emerald">VERIFIED SEAL</span>
                 <span class="stat-label">Sudah Check-in</span>
                 <strong class="stat-value text-success" id="stat-present">0</strong>
               </div>
@@ -366,11 +383,14 @@
 
           <!-- Card 3: Belum Check-in -->
           <article class="stat-card stat-card-pending">
+            <div class="stat-corner-gilt" aria-hidden="true"></div>
+            <div class="stat-card-glow" aria-hidden="true"></div>
             <div class="stat-card-header">
               <div class="stat-icon-wrap stat-icon-amber" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </div>
               <div class="stat-meta">
+                <span class="stat-kicker-royal stat-kicker-amber">PENDING RUNE</span>
                 <span class="stat-label">Belum Check-in</span>
                 <strong class="stat-value text-warning" id="stat-pending">0</strong>
               </div>
@@ -382,11 +402,14 @@
 
           <!-- Card 4: Status Pendaftaran -->
           <article class="stat-card stat-card-registration">
+            <div class="stat-corner-gilt" aria-hidden="true"></div>
+            <div class="stat-card-glow" aria-hidden="true"></div>
             <div class="stat-card-header">
               <div class="stat-icon-wrap stat-icon-blue" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               </div>
               <div class="stat-meta">
+                <span class="stat-kicker-royal stat-kicker-indigo">ARCANE GATE</span>
                 <span class="stat-label">Pendaftaran Peserta</span>
                 <div class="stat-registration-status">
                   <span id="reg-status-badge" class="reg-pill" data-state="loading">LOADING</span>
