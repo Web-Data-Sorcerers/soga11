@@ -2419,13 +2419,12 @@
   border-top: 1px solid var(--border-strong);
 }
 
-.legacy-card:nth-child(1),
-.legacy-card:nth-child(8) {
+.legacy-card:nth-child(1) {
   grid-column: span 6;
 }
 
-.legacy-card:nth-child(15),
-.legacy-card:nth-child(16) {
+.legacy-card:nth-child(16),
+.legacy-card:nth-child(17) {
   grid-column: span 6;
 }
 
@@ -2466,13 +2465,12 @@
   background: var(--bg-soft);
 }
 
-.legacy-card:nth-child(1) .legacy-embed,
-.legacy-card:nth-child(8) .legacy-embed {
+.legacy-card:nth-child(1) .legacy-embed {
   height: 500px;
 }
 
-.legacy-card:nth-child(15) .legacy-embed,
-.legacy-card:nth-child(16) .legacy-embed {
+.legacy-card:nth-child(16) .legacy-embed,
+.legacy-card:nth-child(17) .legacy-embed {
   height: 440px;
 }
 
@@ -2566,9 +2564,8 @@
   }
 
   .legacy-card,
-  .legacy-card:nth-child(8),
-  .legacy-card:nth-child(15),
-  .legacy-card:nth-child(16) {
+  .legacy-card:nth-child(16),
+  .legacy-card:nth-child(17) {
     grid-column: auto;
   }
 
@@ -2577,9 +2574,8 @@
   }
 
   .legacy-card:nth-child(1) .legacy-embed,
-  .legacy-card:nth-child(8) .legacy-embed,
-  .legacy-card:nth-child(15) .legacy-embed,
-  .legacy-card:nth-child(16) .legacy-embed {
+  .legacy-card:nth-child(16) .legacy-embed,
+  .legacy-card:nth-child(17) .legacy-embed {
     height: 430px;
   }
 }
@@ -2612,9 +2608,8 @@
   }
 
   .legacy-card,
-  .legacy-card:nth-child(8),
-  .legacy-card:nth-child(15),
-  .legacy-card:nth-child(16) {
+  .legacy-card:nth-child(16),
+  .legacy-card:nth-child(17) {
     grid-column: auto;
   }
 
@@ -2623,9 +2618,8 @@
   }
 
   .legacy-card:nth-child(1) .legacy-embed,
-  .legacy-card:nth-child(8) .legacy-embed,
-  .legacy-card:nth-child(15) .legacy-embed,
-  .legacy-card:nth-child(16) .legacy-embed {
+  .legacy-card:nth-child(16) .legacy-embed,
+  .legacy-card:nth-child(17) .legacy-embed {
     height: 430px;
   }
 }
@@ -2660,17 +2654,15 @@
 
   .legacy-card,
   .legacy-card:nth-child(1),
-  .legacy-card:nth-child(8),
-  .legacy-card:nth-child(15),
-  .legacy-card:nth-child(16) {
+  .legacy-card:nth-child(16),
+  .legacy-card:nth-child(17) {
     grid-column: 1;
   }
 
   .legacy-embed,
   .legacy-card:nth-child(1) .legacy-embed,
-  .legacy-card:nth-child(8) .legacy-embed,
-  .legacy-card:nth-child(15) .legacy-embed,
-  .legacy-card:nth-child(16) .legacy-embed {
+  .legacy-card:nth-child(16) .legacy-embed,
+  .legacy-card:nth-child(17) .legacy-embed {
     height: 440px;
   }
 }
