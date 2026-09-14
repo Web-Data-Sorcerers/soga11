@@ -356,6 +356,11 @@ function navigateToRoute(rawRoute, updateHash = true) {
   if (config.paneId === "pane-analytics") {
     setTimeout(renderCharts, 60);
   }
+
+  // 9. Stop scanner camera when navigating away from check-in pane
+  if (config.paneId !== "pane-checkin" && typeof stopScanner === "function") {
+    stopScanner();
+  }
 }
 
 // Backward compatibility helper
@@ -861,48 +866,407 @@ async function undoCheckin(p) {
 // ============================================================
 // Check-in Operations (Manual & Scanner)
 // ============================================================
-function renderCheckinStatus(state, message) {
-  const status = document.getElementById("checkin-status");
-  if (!status) return;
-  const icons = {
-    success: ICON_CHECK,
-    warning: ICON_WARNING,
-    invalid: ICON_X,
-    error: ICON_X,
-  };
+let scanLock = false;
+let scanCooldownTimer = null;
+let audioCtx = null;
 
-  status.innerHTML = (icons[state] || "") + `<span>${esc(message)}</span>`;
-  status.dataset.state = state;
+function getAudioContext() {
+  try {
+    if (!audioCtx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext) audioCtx = new AudioContext();
+    }
+    if (audioCtx && audioCtx.state === "suspended") {
+      audioCtx.resume().catch(() => {});
+    }
+    return audioCtx;
+  } catch (_) {
+    return null;
+  }
 }
 
-async function doCheckin(token) {
-  token = token.trim().toUpperCase();
-  if (!token.startsWith("SGN11-")) {
-    renderCheckinStatus("invalid", "Format Ticket ID belum sesuai. Contoh: SGN11-ABC123.");
+function playScanAudio(type) {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    if (type === "success") {
+      const freqs = [523.25, 659.25, 783.99, 1046.5];
+      freqs.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+        gain.gain.setValueAtTime(0.001, now + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.24, now + idx * 0.08 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.28);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now + idx * 0.08);
+        osc.stop(now + idx * 0.08 + 0.3);
+      });
+    } else if (type === "already-checked" || type === "warning") {
+      const tones = [440, 369.99];
+      tones.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq, now + idx * 0.15);
+
+        gain.gain.setValueAtTime(0.001, now + idx * 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.26, now + idx * 0.15 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.15 + 0.26);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now + idx * 0.15);
+        osc.stop(now + idx * 0.15 + 0.28);
+      });
+    } else if (type === "error" || type === "invalid") {
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc1.type = "sawtooth";
+      osc2.type = "sawtooth";
+      osc1.frequency.setValueAtTime(220, now);
+      osc2.frequency.setValueAtTime(216, now);
+      osc1.frequency.exponentialRampToValueAtTime(120, now + 0.28);
+      osc2.frequency.exponentialRampToValueAtTime(116, now + 0.28);
+
+      gain.gain.setValueAtTime(0.18, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+
+      osc1.connect(gain);
+      osc2.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc1.start(now);
+      osc2.start(now);
+      osc1.stop(now + 0.31);
+      osc2.stop(now + 0.31);
+    }
+  } catch (_) {
+    // Non-blocking audio fallback
+  }
+}
+
+function extractQrToken(raw) {
+  if (!raw) return "";
+  const match = String(raw).toUpperCase().match(/SGN11-[A-Z0-9]+/);
+  return match ? match[0] : String(raw).trim().toUpperCase();
+}
+
+function renderCheckinStatus(state, payload) {
+  const statusEl = document.getElementById("checkin-status");
+  if (!statusEl) return;
+
+  let kicker = "";
+  let title = "";
+  let meta = "";
+  let badge = "";
+
+  if (typeof payload === "string") {
+    title = payload;
+  } else if (payload && typeof payload === "object") {
+    kicker = payload.kicker || "";
+    title = payload.title || "";
+    meta = payload.meta || "";
+    badge = payload.badge || "";
+  }
+
+  let iconSvg = "";
+  if (state === "success") {
+    iconSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
+  } else if (state === "already-checked") {
+    iconSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>`;
+  } else if (state === "verifying") {
+    iconSvg = `<svg class="loading-spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>`;
+  } else {
+    iconSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+  }
+
+  statusEl.dataset.state = state;
+  statusEl.innerHTML = `
+    <div class="checkin-alert-icon-box" aria-hidden="true">
+      ${iconSvg}
+    </div>
+    <div class="checkin-alert-content">
+      ${kicker ? `<span class="checkin-alert-kicker">${esc(kicker)}</span>` : ""}
+      <strong class="checkin-alert-title">${esc(title)}</strong>
+      ${meta ? `<span class="checkin-alert-meta">${esc(meta)}</span>` : ""}
+      ${badge ? `<span class="checkin-alert-badge">${esc(badge)}</span>` : ""}
+    </div>
+  `;
+}
+
+function renderScannerHud(state, data = {}) {
+  const hud = document.getElementById("scanner-hud-overlay");
+  if (!hud) return;
+
+  hud.dataset.state = state;
+  hud.classList.remove("hidden");
+
+  if (state === "verifying") {
+    hud.innerHTML = `
+      <div class="hud-radar-spinner" aria-hidden="true"></div>
+      <div class="hud-verifying-text">Memverifikasi Tiket...</div>
+      <div class="hud-verifying-sub">${esc(data.token || "Menghubungkan ke basis data")}</div>
+    `;
     return;
+  }
+
+  if (state === "success") {
+    const p = data.participant || {};
+    hud.innerHTML = `
+      <div class="hud-icon-badge" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <span class="hud-kicker">Presensi Berhasil</span>
+      <h3 class="hud-name">${esc(p.full_name || "Peserta SOGA 11")}</h3>
+      <div class="hud-meta">${esc(p.institution || "Peserta Umum")}</div>
+      <div class="hud-token-pill">${esc(data.token || p.qr_token || "")}</div>
+      <div class="hud-time">Check-in: ${esc(data.time || "Baru saja")}</div>
+      <div class="scanner-hud-footer">
+        <div class="hud-countdown-track" aria-hidden="true"><div class="hud-countdown-fill"></div></div>
+        <button type="button" class="btn-hud-next" id="btn-hud-scan-next">Scan Tiket Berikutnya</button>
+      </div>
+    `;
+  } else if (state === "already-checked") {
+    const p = data.participant || {};
+    hud.innerHTML = `
+      <div class="hud-icon-badge" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>
+      </div>
+      <span class="hud-kicker">Perhatian: Sudah Hadir</span>
+      <h3 class="hud-name">${esc(p.full_name || "Peserta SOGA 11")}</h3>
+      <div class="hud-meta">${esc(p.institution || "Peserta Umum")}</div>
+      <div class="hud-token-pill">${esc(data.token || p.qr_token || "")}</div>
+      <div class="hud-time">Telah check-in pada: ${esc(data.time || "-")}</div>
+      <div class="hud-warning-notice">Tiket ini telah diverifikasi sebelumnya. Presensi ganda otomatis dicegah.</div>
+      <div class="scanner-hud-footer">
+        <div class="hud-countdown-track" aria-hidden="true"><div class="hud-countdown-fill"></div></div>
+        <button type="button" class="btn-hud-next" id="btn-hud-scan-next">Scan Tiket Berikutnya</button>
+      </div>
+    `;
+  } else {
+    // error / invalid
+    hud.innerHTML = `
+      <div class="hud-icon-badge" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      </div>
+      <span class="hud-kicker">Peringatan Keamanan</span>
+      <h3 class="hud-name">${esc(data.title || "Tiket Tidak Valid")}</h3>
+      <div class="hud-meta">${esc(data.message || "Nomor tiket tidak terdaftar pada sistem presensi.")}</div>
+      <div class="hud-token-pill">${esc(data.token || "-")}</div>
+      <div class="scanner-hud-footer">
+        <div class="hud-countdown-track" aria-hidden="true"><div class="hud-countdown-fill"></div></div>
+        <button type="button" class="btn-hud-next" id="btn-hud-scan-next">Scan Tiket Berikutnya</button>
+      </div>
+    `;
+  }
+
+  const btnNext = hud.querySelector("#btn-hud-scan-next");
+  if (btnNext) {
+    btnNext.onclick = () => {
+      resetScannerCooldown();
+    };
+  }
+}
+
+function startScannerCooldown(durationMs = 3500) {
+  const laser = document.getElementById("scanner-laser-line");
+  if (laser) laser.classList.add("hidden");
+  if (scanCooldownTimer) clearTimeout(scanCooldownTimer);
+
+  const btnNext = document.getElementById("btn-hud-scan-next");
+  if (btnNext) {
+    btnNext.addEventListener("click", () => {
+      resetScannerCooldown();
+    }, { once: true });
+  }
+
+  scanCooldownTimer = setTimeout(() => {
+    resetScannerCooldown();
+  }, durationMs);
+}
+
+function resetScannerCooldown() {
+  if (scanCooldownTimer) {
+    clearTimeout(scanCooldownTimer);
+    scanCooldownTimer = null;
+  }
+  const hud = document.getElementById("scanner-hud-overlay");
+  if (hud) {
+    hud.classList.add("hidden");
+    hud.innerHTML = "";
+    delete hud.dataset.state;
+  }
+  const laser = document.getElementById("scanner-laser-line");
+  const box = document.getElementById("scanner-box");
+  if (laser && scanner && box && !box.classList.contains("hidden")) {
+    laser.classList.remove("hidden");
+  }
+  scanLock = false;
+}
+
+async function doCheckin(rawToken, isFromCamera = false) {
+  getAudioContext();
+  const token = extractQrToken(rawToken);
+  const isCameraActive = !!(scanner && scannerBox && !scannerBox.classList.contains("hidden"));
+
+  if (!token || !token.startsWith("SGN11-")) {
+    playScanAudio("error");
+    renderCheckinStatus("invalid", {
+      kicker: "Format Tiket Salah",
+      title: "Format Ticket ID belum sesuai",
+      meta: "Kode tiket wajib diawali 'SGN11-'. Contoh: SGN11-ABC123.",
+      badge: rawToken || "KOSONG",
+    });
+
+    if (isCameraActive) {
+      renderScannerHud("invalid", {
+        title: "Format Tiket Tidak Sesuai",
+        message: "Format kode tiket harus diawali SGN11-.",
+        token: rawToken || "KOSONG",
+      });
+      startScannerCooldown();
+    }
+    return false;
+  }
+
+  // Check in-memory list
+  const existing = participants.find(
+    (p) => (p.qr_token || "").trim().toUpperCase() === token
+  );
+
+  // If already checked in
+  if (existing && existing.status === "hadir") {
+    playScanAudio("already-checked");
+    const checkinTimeFormatted = existing.checkin_time
+      ? new Date(existing.checkin_time).toLocaleTimeString("id-ID", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }) + " WIB"
+      : "Waktu tidak tercatat";
+
+    renderCheckinStatus("already-checked", {
+      kicker: "Perhatian: Sudah Hadir",
+      title: `${existing.full_name} sudah presensi`,
+      meta: `Check-in tercatat pada pukul ${checkinTimeFormatted}. Mencegah presensi ganda.`,
+      badge: existing.qr_token,
+    });
+
+    if (isCameraActive) {
+      renderScannerHud("already-checked", {
+        participant: existing,
+        token: existing.qr_token,
+        time: checkinTimeFormatted,
+      });
+      startScannerCooldown();
+    }
+    return false;
+  }
+
+  // Show verifying state
+  if (isCameraActive) {
+    renderScannerHud("verifying", { token });
+  } else {
+    renderCheckinStatus("verifying", {
+      kicker: "Memverifikasi...",
+      title: `Memproses presensi untuk ${existing ? existing.full_name : token}`,
+      meta: "Menyinkronkan status dengan server presensi...",
+      badge: token,
+    });
   }
 
   try {
     await window.SOGA_API.checkInParticipant(token);
-    renderCheckinStatus("success", `Tiket ${token} berhasil diverifikasi dan check-in tercatat.`);
+
+    const nowIso = new Date().toISOString();
+    const timeFormatted =
+      new Date(nowIso).toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }) + " WIB";
+
+    // Immediate local optimistic update
+    if (existing) {
+      existing.status = "hadir";
+      existing.checkin_time = nowIso;
+    }
+
+    renderStats();
+    renderTable();
+    renderCharts();
+
+    playScanAudio("success");
+
+    const displayName = existing ? existing.full_name : "Peserta SOGA 11";
+    const displayInst = existing ? (existing.institution || "Peserta Umum") : "Berhasil diverifikasi";
+
+    renderCheckinStatus("success", {
+      kicker: "Presensi Berhasil",
+      title: `${displayName} berhasil check-in`,
+      meta: `${displayInst} - Waktu: ${timeFormatted}`,
+      badge: token,
+    });
+
     const input = document.getElementById("checkin-input");
     if (input) input.value = "";
-    await loadParticipants();
+
+    if (isCameraActive) {
+      renderScannerHud("success", {
+        participant: existing || { full_name: displayName, institution: displayInst, qr_token: token },
+        token: token,
+        time: timeFormatted,
+      });
+      startScannerCooldown();
+    }
+
+    loadParticipants().catch(() => {});
+    return true;
   } catch (e) {
-    renderCheckinStatus(
-      "error",
-      "Check-in tidak dapat diproses. Periksa Ticket ID atau status peserta, lalu coba kembali."
-    );
+    playScanAudio("error");
+    const errMsg = e.message || "Tiket tidak terdaftar atau koneksi terganggu.";
+
+    renderCheckinStatus("error", {
+      kicker: "Gagal Verifikasi",
+      title: "Check-in tidak dapat diproses",
+      meta: "Periksa kembali kode tiket atau status peserta dalam database.",
+      badge: token,
+    });
+
+    if (isCameraActive) {
+      renderScannerHud("error", {
+        title: "Tiket Tidak Terdaftar",
+        message: errMsg.includes("tidak ditemukan")
+          ? errMsg
+          : "Nomor tiket tidak terdaftar pada sistem presensi SOGA 11.",
+        token: token,
+      });
+      startScannerCooldown();
+    }
+    return false;
   }
 }
 
 document.getElementById("btn-checkin")?.addEventListener("click", () => {
+  getAudioContext();
   const input = document.getElementById("checkin-input");
   if (input) doCheckin(input.value);
 });
 
 document.getElementById("checkin-input")?.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") doCheckin(e.target.value);
+  if (e.key === "Enter") {
+    getAudioContext();
+    doCheckin(e.target.value);
+  }
 });
 
 // QR Scanner via Camera
@@ -910,26 +1274,43 @@ const btnScanToggle = document.getElementById("btn-scan-toggle");
 const scanToggleLabel = document.getElementById("scan-toggle-label");
 const scannerBox = document.getElementById("scanner-box");
 const scannerPlaceholder = document.getElementById("scanner-placeholder");
+const scannerLaserLine = document.getElementById("scanner-laser-line");
+const scannerHudOverlay = document.getElementById("scanner-hud-overlay");
+
+scannerHudOverlay?.addEventListener("click", (e) => {
+  if (e.target && e.target.closest("#btn-hud-scan-next")) {
+    resetScannerCooldown();
+  }
+});
 
 btnScanToggle?.addEventListener("click", () => {
+  getAudioContext();
   if (!scannerBox) return;
 
   if (scannerBox.classList.contains("hidden")) {
     scannerBox.classList.remove("hidden");
     scannerPlaceholder?.classList.add("hidden");
+    scannerLaserLine?.classList.remove("hidden");
+    scannerHudOverlay?.classList.add("hidden");
     if (scanToggleLabel) scanToggleLabel.textContent = "Tutup Kamera";
 
     if (!scanner && typeof Html5Qrcode !== "undefined") {
       scanner = new Html5Qrcode("scanner-box");
       scanner.start(
         { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
+        { fps: 15, qrbox: 250 },
         (text) => {
-          doCheckin(text);
-          stopScanner();
-        }
+          if (scanLock) return;
+          scanLock = true;
+          doCheckin(text, true);
+        },
+        () => {}
       ).catch(() => {
-        renderCheckinStatus("error", "Kamera tidak dapat diakses. Gunakan input manual Ticket ID.");
+        renderCheckinStatus("error", {
+          kicker: "Akses Kamera Ditolak",
+          title: "Kamera tidak dapat diakses",
+          meta: "Pastikan izin kamera telah diberikan di browser atau gunakan input manual.",
+        });
         stopScanner();
       });
     }
@@ -939,12 +1320,15 @@ btnScanToggle?.addEventListener("click", () => {
 });
 
 function stopScanner() {
+  resetScannerCooldown();
   if (scannerBox) scannerBox.classList.add("hidden");
+  if (scannerLaserLine) scannerLaserLine.classList.add("hidden");
   if (scannerPlaceholder) scannerPlaceholder.classList.remove("hidden");
   if (scanToggleLabel) scanToggleLabel.textContent = "Buka Kamera Scanner";
   if (scanner) {
-    scanner.stop().then(() => scanner.clear()).catch(() => {});
+    const cur = scanner;
     scanner = null;
+    cur.stop().then(() => cur.clear()).catch(() => {});
   }
 }
 

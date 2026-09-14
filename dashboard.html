@@ -570,8 +570,10 @@
                 </button>
               </div>
 
-              <div class="scanner-viewfinder-zone">
+              <div class="scanner-viewfinder-zone" id="scanner-viewfinder-zone">
                 <div id="scanner-box" class="scanner-box hidden" aria-label="Pemindai QR peserta"></div>
+                <div class="scanner-laser-line hidden" id="scanner-laser-line" aria-hidden="true"></div>
+                <div class="scanner-hud-overlay hidden" id="scanner-hud-overlay" role="status" aria-live="polite"></div>
                 <div id="scanner-placeholder" class="scanner-placeholder">
                   <div class="scanner-target-reticle">
                     <span class="corner top-left"></span>
@@ -751,7 +753,7 @@
   <!-- Scripts -->
   <script src="js/config.js?v=9"></script>
   <script src="js/api.js?v=9"></script>
-  <script src="js/dashboard.js?v=13"></script>
+  <script src="js/dashboard.js?v=14"></script>
 </body>
 </html>
 
