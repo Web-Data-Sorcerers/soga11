@@ -2563,29 +2563,68 @@
   transform: translateX(4px);
 }
 
-/* 4. Featured Hero Card: SOGA 10 */
+/* 4. Featured Hero Card: SOGA 10 (Master Relic) */
 .legacy-featured-card {
+  position: relative;
   display: grid;
   grid-template-columns: 360px 1fr 240px;
   gap: var(--space-6);
   padding: var(--space-6);
   margin-bottom: var(--space-8);
-  border: 1px solid var(--border-default);
-  border-radius: 14px;
-  background: #ffffff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(110, 86, 207, 0.22);
+  border-radius: 16px;
+  background: linear-gradient(150deg, #ffffff 0%, #FAF8FE 60%, #F5F0FE 100%);
+  box-shadow: 0 10px 36px rgba(110, 86, 207, 0.08), 0 2px 4px rgba(0, 0, 0, 0.02);
   align-items: center;
+  overflow: hidden;
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 320ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.legacy-featured-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.7) 0%, rgba(168, 85, 247, 0.9) 35%, rgba(110, 86, 207, 0.85) 70%, rgba(212, 175, 55, 0.7) 100%);
+}
+
+.legacy-featured-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(168, 85, 247, 0.5);
+  box-shadow: 0 20px 48px rgba(110, 86, 207, 0.15), 0 0 24px rgba(168, 85, 247, 0.1);
 }
 
 .featured-poster-frame {
   position: relative;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #0f0a1c;
   aspect-ratio: 4 / 5;
   width: 100%;
   max-width: 360px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(15, 10, 28, 0.2);
+  border: 1px solid rgba(110, 86, 207, 0.2);
+}
+
+.featured-poster-frame::after {
+  content: '';
+  position: absolute;
+  inset: -50% -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 42%, rgba(255, 255, 255, 0.3) 50%, transparent 58%);
+  transform: rotate(-35deg) translateX(-110%);
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.legacy-featured-card:hover .featured-poster-frame::after {
+  transform: rotate(-35deg) translateX(110%);
 }
 
 .featured-poster-img {
@@ -2596,8 +2635,29 @@
   transition: transform 400ms ease;
 }
 
-.featured-poster-frame:hover .featured-poster-img {
+.legacy-featured-card:hover .featured-poster-img {
   transform: scale(1.02);
+}
+
+.relic-seal-featured {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(15, 10, 28, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  color: #F7EF8A;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 .featured-info-col {
@@ -2612,11 +2672,18 @@
 }
 
 .featured-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(110, 86, 207, 0.08);
+  border: 1px solid rgba(110, 86, 207, 0.22);
   color: var(--primary);
   font-family: var(--font-mono);
   font-size: 0.625rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
@@ -2628,7 +2695,9 @@
 }
 
 .featured-edition-num {
-  color: var(--text-primary);
+  background: linear-gradient(180deg, #160D2E 0%, #442B73 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-family: 'Playfair Display', Georgia, serif;
   font-size: clamp(3.2rem, 4.5vw, 4.5rem);
   font-weight: 700;
@@ -2639,22 +2708,6 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-}
-
-.legacy-tag-edition {
-  color: var(--primary);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.legacy-tag-year {
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 600;
 }
 
 .featured-title {
@@ -2681,38 +2734,42 @@
   margin-bottom: var(--space-5);
 }
 
-.meta-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  color: var(--text-secondary);
-  font-size: 0.8125rem;
-}
-
-.meta-icon {
-  flex-shrink: 0;
-  stroke: var(--primary);
-}
-
-.legacy-action-link,
-.legacy-card-link {
+.legacy-action-link {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
+  width: fit-content;
+  padding: 8px 18px;
+  border-radius: 8px;
+  background: rgba(110, 86, 207, 0.08);
+  border: 1px solid rgba(110, 86, 207, 0.22);
   color: var(--primary);
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-decoration: none;
   text-transform: uppercase;
-  transition: gap 180ms ease, color 180ms ease;
+  transition: all 220ms ease;
 }
 
-.legacy-action-link:hover,
-.legacy-card-link:hover {
-  gap: var(--space-3);
-  color: #7C65DB;
-  text-decoration: underline;
+.legacy-action-link:hover {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(110, 86, 207, 0.35);
+}
+
+.legacy-action-link .arcane-arrow {
+  display: inline-block;
+  font-size: 0.875rem;
+  transition: transform 220ms ease, color 220ms ease;
+}
+
+.legacy-action-link:hover .arcane-arrow {
+  transform: translate(2px, -2px);
+  color: #D4AF37;
 }
 
 .featured-quote-col {
@@ -2739,7 +2796,7 @@
   line-height: 1.45;
 }
 
-/* 5. Editorial Archive Grid */
+/* 5. Editorial Archive Grid & Sorcerer Relic Cards */
 .legacy-editorial-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -2747,21 +2804,65 @@
 }
 
 .legacy-card {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: stretch;
   padding: var(--space-3);
   gap: var(--space-4);
-  border: 1px solid var(--border-default);
-  border-radius: 10px;
-  background: #ffffff;
-  transition: transform 220ms var(--ease-standard), box-shadow 220ms var(--ease-standard), border-color 220ms var(--ease-standard);
+  border: 1px solid rgba(110, 86, 207, 0.18);
+  border-radius: 12px;
+  background: linear-gradient(150deg, #ffffff 0%, #FAF8FE 100%);
+  box-shadow: 0 4px 18px rgba(35, 18, 70, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Top Arcane Foil Hairline */
+.legacy-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.6) 20%, rgba(168, 85, 247, 0.8) 50%, rgba(110, 86, 207, 0.6) 80%, transparent 100%);
+  opacity: 0.4;
+  transition: opacity 300ms ease;
+}
+
+/* Bottom-right Corner Arcane Register Bracket */
+.legacy-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  border-bottom: 2px solid rgba(168, 85, 247, 0.4);
+  border-right: 2px solid rgba(168, 85, 247, 0.4);
+  border-bottom-right-radius: 10px;
+  opacity: 0;
+  transition: opacity 250ms ease, transform 250ms ease;
+  transform: scale(0.8);
+  pointer-events: none;
 }
 
 .legacy-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--purple-300);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  transform: translateY(-4px);
+  border-color: rgba(168, 85, 247, 0.45);
+  box-shadow: 0 14px 34px -4px rgba(110, 86, 207, 0.16), 0 0 16px -2px rgba(168, 85, 247, 0.1);
+}
+
+.legacy-card:hover::before {
+  opacity: 1;
+}
+
+.legacy-card:hover::after {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .legacy-card--col4 {
@@ -2788,9 +2889,10 @@
   min-width: 105px;
   max-width: 105px;
   overflow: hidden;
-  border-radius: 6px;
-  background: var(--bg-soft);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  background: #0f0a1c;
+  box-shadow: 0 3px 12px rgba(15, 10, 28, 0.15);
+  border: 1px solid rgba(110, 86, 207, 0.16);
 }
 
 .legacy-card-thumb--reel {
@@ -2799,16 +2901,57 @@
   max-width: 90px;
 }
 
+/* Diagonal Sheen Sweep on Card Hover */
+.legacy-card-thumb::after {
+  content: '';
+  position: absolute;
+  inset: -50% -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.32) 50%, transparent 60%);
+  transform: rotate(-35deg) translateX(-110%);
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.legacy-card:hover .legacy-card-thumb::after {
+  transform: rotate(-35deg) translateX(110%);
+}
+
 .legacy-card-thumb img {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
-  transition: transform 300ms ease;
+  transition: transform 350ms ease;
 }
 
 .legacy-card:hover .legacy-card-thumb img {
   transform: scale(1.05);
+}
+
+/* Micro Seal Tag on Poster */
+.relic-seal {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: rgba(15, 10, 28, 0.82);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #F5EE9E;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  z-index: 3;
+  line-height: 1;
+  pointer-events: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .legacy-card-body {
@@ -2827,17 +2970,43 @@
 }
 
 .legacy-card-num {
-  color: var(--text-primary);
+  background: linear-gradient(180deg, #160D2E 0%, #3D2666 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   font-weight: 700;
-  line-height: 0.95;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
 }
 
 .legacy-card-tags {
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
+}
+
+.sorcery-glyph {
+  color: #D4AF37;
+  font-size: 0.625rem;
+  vertical-align: middle;
+}
+
+.legacy-tag-edition {
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.legacy-tag-year {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .legacy-card-heading {
@@ -2869,6 +3038,30 @@
   line-height: 1.35;
 }
 
+.meta-glyph {
+  color: var(--primary);
+  font-size: 0.6875rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.meta-label {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.meta-val {
+  color: var(--text-primary);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .legacy-desc-row {
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -2877,11 +3070,36 @@
 }
 
 .legacy-card-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
   margin-top: auto;
   padding-top: var(--space-2);
-  border-top: 1px solid var(--border-subtle);
-  font-size: 0.6875rem;
-  letter-spacing: 0.06em;
+  border-top: 1px solid rgba(110, 86, 207, 0.12);
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 200ms ease;
+}
+
+.legacy-card-link .arcane-arrow {
+  display: inline-block;
+  font-size: 0.8125rem;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), color 220ms ease;
+}
+
+.legacy-card:hover .legacy-card-link {
+  color: #7C65DB;
+}
+
+.legacy-card:hover .legacy-card-link .arcane-arrow {
+  transform: translate(2px, -2px);
+  color: #D4AF37;
 }
 
 /* 6. The Archive Continues Showcase Banner */
@@ -2889,9 +3107,15 @@
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(110, 86, 207, 0.35);
-  border-radius: 10px;
+  border-radius: 12px;
   background: #110B22 url('/assets/legacy/archive-continues-full.webp') no-repeat right center / cover;
   box-shadow: 0 4px 20px rgba(17, 11, 34, 0.25);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.legacy-continue-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(110, 86, 207, 0.35);
 }
 
 .continue-card-inner {
@@ -2906,6 +3130,17 @@
 
 .continue-card-content {
   max-width: 320px;
+}
+
+.continue-portal-tag {
+  display: inline-block;
+  margin-bottom: var(--space-2);
+  color: #F7EF8A;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .continue-heading {
@@ -2958,15 +3193,19 @@
 .continue-card-telemetry {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   text-align: right;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.5);
   font-family: var(--font-mono);
   font-size: 0.5625rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   line-height: 1.4;
   text-transform: uppercase;
+}
+
+.telemetry-highlight {
+  color: #F7EF8A !important;
 }
 
 /* 7. Bottom Legacy Telemetry Bar */
