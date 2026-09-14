@@ -1,322 +1,747 @@
 /* ============================================================
-   SOGA 11 — Registration / Sorcery Editorial Utility Surface
+   SOGA 11 — Registration / Editorial Utility Surface
    ============================================================ */
 .register-section {
   position: relative;
-  padding: var(--space-8) 0 var(--space-11);
-  background: var(--bg-page);
+  padding: 40px 0 100px;
+  background: var(--bg-page, #FAF7F2);
+  min-height: 100vh;
 }
 
-.registration-shell {
+/* ============================================================
+   Top Registration Hero Banner
+   ============================================================ */
+.registration-hero-banner {
+  margin-bottom: 40px;
   display: grid;
-  max-width: var(--container-wide);
-  gap: var(--space-7);
+  grid-template-columns: minmax(0, 1.45fr) auto minmax(0, 0.9fr);
+  align-items: center;
+  gap: 48px;
 }
 
-/* Contextual event rail */
-.registration-context {
-  min-width: 0;
+.registration-hero-lead {
+  display: flex;
+  flex-direction: column;
 }
 
-.registration-context-inner {
+.registration-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--purple-700, #6929C4);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.registration-hero-kicker .kicker-sep {
+  color: rgba(105, 41, 196, 0.4);
+}
+
+.registration-hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.1rem, 2.75vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #1E112A;
+  margin: 0 0 14px;
+  letter-spacing: -0.02em;
+}
+
+.registration-hero-subtitle {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #5D5468;
+  max-width: 520px;
+  margin: 0;
+}
+
+.registration-hero-monument {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.monument-telemetry {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #8C8299;
+  text-transform: uppercase;
+  line-height: 1.3;
+  text-align: right;
+}
+
+.monument-art-wrap {
   position: relative;
-  isolation: isolate;
-  min-height: 460px;
-  overflow: clip;
-  padding: var(--space-7);
-  border: 1px solid var(--purple-300);
-  border-radius: var(--radius-lg);
-  background: var(--purple-050);
+  width: 220px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.registration-context-content {
-  position: relative;
-  z-index: var(--z-content);
-}
-
-.registration-constellation {
+.monument-halo {
   position: absolute;
-  right: -60px;
-  bottom: -72px;
-  z-index: var(--z-decoration);
-  width: min(78%, 360px);
-  fill: var(--purple-800);
-  stroke: rgba(91, 43, 191, 0.24);
-  stroke-width: 1;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 1px dashed rgba(105, 41, 196, 0.22);
   pointer-events: none;
 }
 
-.registration-constellation path {
-  fill: none;
+.monument-etching {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: grayscale(1) contrast(1.1);
+  mix-blend-mode: multiply;
 }
 
-.registration-constellation .node-primary {
-  fill: var(--primary);
-}
-
-.registration-constellation .node-gold {
-  fill: var(--ds-gold);
-}
-
-.registration-watermark {
+.monument-sparkle {
   position: absolute;
-  right: -0.06em;
-  bottom: -0.18em;
-  z-index: var(--z-decoration);
-  color: rgba(33, 21, 47, 0.045);
-  font-family: var(--font-mono);
-  font-size: clamp(10rem, 29vw, 19rem);
+  top: -6px;
+  right: 16px;
+  color: #6929C4;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.registration-hero-dispatch {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-left: 12px;
+}
+
+.hero-dispatch-date {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hero-dispatch-date time {
+  font-family: var(--font-mono, monospace);
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: -0.11em;
-  line-height: 0.8;
+  letter-spacing: 0.04em;
+  color: #1E112A;
+}
+
+.hero-dispatch-date span {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #8C8299;
+}
+
+.hero-dispatch-divider {
+  height: 1px;
+  background: rgba(214, 203, 184, 0.7);
+  width: 100%;
+}
+
+.hero-dispatch-manifesto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono, monospace);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #6D6378;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Registration Shell (2-Column Grid Layout)
+   ============================================================ */
+.registration-shell {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+/* Left Sticky Rail */
+.registration-context {
+  position: sticky;
+  top: 92px;
+}
+
+.registration-context-card {
+  position: relative;
+  background: #FAF8FD;
+  border: 1px solid rgba(138, 63, 252, 0.18);
+  border-radius: 16px;
+  padding: 36px 28px;
+  box-shadow: 0 4px 20px rgba(45, 30, 65, 0.03);
+  overflow: hidden;
+}
+
+.rail-kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--purple-700, #6929C4);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.rail-kicker-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(105, 41, 196, 0.25);
+}
+
+.rail-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #1E112A;
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+
+.rail-desc {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #635B6E;
+  margin: 0 0 22px;
+}
+
+.rail-event-meta {
+  border-top: 1px solid rgba(214, 203, 184, 0.55);
+  border-bottom: 1px solid rgba(214, 203, 184, 0.55);
+  padding: 16px 0;
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.rail-meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.rail-meta-icon {
+  color: var(--purple-700, #6929C4);
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.rail-meta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rail-meta-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #8C8299;
+  text-transform: uppercase;
+}
+
+.rail-meta-value {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1E112A;
+}
+
+/* Stepper */
+.registration-stepper {
+  margin-bottom: 24px;
+}
+
+.stepper-list {
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stepper-list::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 11px;
+  width: 1px;
+  background: rgba(138, 63, 252, 0.3);
+  z-index: 1;
+}
+
+.stepper-item {
+  position: relative;
+  z-index: 2;
+}
+
+.stepper-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.stepper-marker {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #FAF8FD;
+  border: 1.5px solid rgba(138, 63, 252, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  color: #7E758C;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.stepper-dot {
+  display: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--purple-700, #6929C4);
+}
+
+.stepper-num {
+  display: block;
+}
+
+.stepper-item.is-active .stepper-marker {
+  border-color: var(--purple-700, #6929C4);
+  box-shadow: 0 0 0 3px rgba(105, 41, 196, 0.16);
+  background: #FFFFFF;
+}
+
+.stepper-item.is-active .stepper-dot {
+  display: block;
+}
+
+.stepper-item.is-active .stepper-num {
+  display: none;
+}
+
+.stepper-item.is-active .stepper-label {
+  color: #1E112A;
+  font-weight: 700;
+}
+
+.stepper-label {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: #5D5468;
+  line-height: 1.35;
+}
+
+/* Progress Tracker */
+.rail-progress-box {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(214, 203, 184, 0.55);
+}
+
+.rail-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.rail-progress-status {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--purple-700, #6929C4);
+}
+
+.rail-progress-track {
+  height: 6px;
+  background: #EAE4D9;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.rail-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #6929C4, #8A3FFC);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.rail-progress-caption {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 12px;
+  color: #7E758C;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Archival Quote Box */
+.rail-archival-footer {
+  position: relative;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(214, 203, 184, 0.55);
+}
+
+.rail-watermark-bg {
+  position: absolute;
+  right: -24px;
+  bottom: -16px;
+  width: 170px;
+  height: auto;
+  opacity: 0.12;
+  pointer-events: none;
+  filter: grayscale(1);
+  mix-blend-mode: multiply;
+}
+
+.rail-quote {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #2E223B;
+  margin: 0 0 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.rail-quote-sparkle {
+  color: var(--purple-700, #6929C4);
+  font-size: 14px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.rail-community-tag {
+  display: block;
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #8C8299;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================================
+   Right Form Document
+   ============================================================ */
+.registration-document {
+  background: #FFFFFF;
+  border: 1px solid rgba(214, 203, 184, 0.7);
+  border-radius: 16px;
+  padding: 44px 48px;
+  box-shadow: 0 4px 24px rgba(45, 30, 65, 0.03);
+  min-width: 0;
+}
+
+.registration-legend-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+}
+
+.registration-required-legend {
+  font-family: var(--font-mono, monospace);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #8C8299;
+}
+
+.req {
+  color: var(--danger, #DA1E28);
+}
+
+/* Chapter Headers */
+.chapter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.chapter-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.chapter-big-num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.85rem;
+  font-weight: 700;
+  line-height: 0.95;
+  color: var(--purple-700, #6929C4);
+}
+
+.chapter-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chapter-tag {
+  display: inline-block;
+  align-self: flex-start;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--purple-700, #6929C4);
+  background: #F4EFFB;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+}
+
+.chapter-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #1E112A;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.chapter-desc {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 13px;
+  color: #7E758C;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.chapter-watermark-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
   pointer-events: none;
   user-select: none;
 }
 
-.registration-kicker {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  margin-bottom: var(--space-7);
-  color: var(--purple-800);
-  font-family: var(--font-mono);
-  font-size: var(--type-micro-size);
+.chapter-faded-num {
+  font-family: var(--font-mono, monospace);
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 0.8;
+  color: rgba(105, 41, 196, 0.08);
+}
+
+.chapter-faded-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 9.5px;
   font-weight: 700;
-  letter-spacing: var(--type-micro-tracking);
+  letter-spacing: 0.16em;
+  color: rgba(105, 41, 196, 0.35);
   text-transform: uppercase;
+  margin-top: 4px;
 }
 
-.registration-kicker > span:last-child {
-  width: 72px;
-  height: 1px;
-  background: var(--purple-700);
-}
-
-.registration-context h1 {
-  max-width: 640px;
-  color: var(--purple-950);
-  font-size: clamp(2.25rem, 7vw, 4.25rem);
-  line-height: 0.98;
-  letter-spacing: -0.05em;
-}
-
-.registration-context-content > p {
-  max-width: 610px;
-  margin-top: var(--space-5);
-  color: var(--text-secondary);
-  font-size: var(--type-body-lg-size);
-  line-height: 1.65;
-}
-
-.registration-meta {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  max-width: 520px;
-  gap: var(--space-5);
-  margin-top: var(--space-7);
-  padding-top: var(--space-5);
-  border-top: 1px solid rgba(91, 43, 191, 0.28);
-}
-
-.registration-meta div {
-  display: grid;
-  gap: var(--space-1);
-}
-
-.registration-meta dt,
-.registration-index span,
-.registration-label,
-.registration-state-label,
-.registration-submit-copy > span {
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: var(--type-micro-size);
-  font-weight: 600;
-  letter-spacing: var(--type-micro-tracking);
-  text-transform: uppercase;
-}
-
-.registration-meta dd {
-  color: var(--purple-950);
-  font-size: var(--type-small-size);
-  font-weight: 700;
-}
-
-.registration-index {
-  display: none;
-  margin-top: var(--space-8);
-  list-style: none;
-}
-
-.registration-index li {
-  display: grid;
-  grid-template-columns: 38px minmax(0, 1fr);
-  align-items: baseline;
-  gap: var(--space-2);
-  padding: var(--space-3) 0;
-  border-bottom: 1px solid rgba(91, 43, 191, 0.18);
-  color: var(--text-secondary);
-  font-size: var(--type-small-size);
-  font-weight: 600;
-}
-
-.registration-index span {
-  color: var(--primary);
-}
-
-/* Form document */
-.registration-document {
-  min-width: 0;
-  padding: var(--space-6) var(--space-5);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  background: var(--bg-surface);
-}
-
-.registration-header {
-  padding-bottom: var(--space-7);
-  border-bottom: 1px solid var(--purple-800);
-}
-
-.registration-heading-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin-bottom: var(--space-5);
-}
-
-.registration-label {
-  color: var(--primary);
-}
-
-.registration-required-note {
-  color: var(--text-muted);
-  font-size: var(--type-small-size);
-}
-
-.registration-required-note span,
-.req {
-  color: var(--danger);
-}
-
-.registration-header h2 {
-  color: var(--text-primary);
-  font-size: var(--type-h2-size);
-  line-height: var(--type-h2-leading);
-  letter-spacing: var(--type-h2-tracking);
-}
-
-.registration-header > p {
-  max-width: 620px;
-  margin-top: var(--space-3);
-  color: var(--text-secondary);
-}
-
-.registration-form {
-  min-width: 0;
-}
-
-.registration-error-summary {
-  display: grid;
-  gap: var(--space-1);
-  margin: var(--space-6) 0 0;
-}
-
-.registration-error-summary:focus-visible {
-  outline: 3px solid var(--danger);
-  outline-offset: 3px;
-}
-
+/* Blocks & Dividers */
 .registration-block {
-  padding: var(--space-8) 0;
-  border-bottom: 1px solid var(--border-default);
+  position: relative;
+  padding: 36px 0;
 }
 
-.registration-block-header {
-  display: grid;
-  grid-template-columns: 52px minmax(0, 1fr);
-  gap: var(--space-3);
-  margin-bottom: var(--space-6);
+.registration-block:first-of-type {
+  padding-top: 8px;
 }
 
-.registration-block-number {
-  padding-top: 2px;
-  color: var(--primary);
-  font-family: var(--font-mono);
-  font-size: 1.35rem;
-  font-weight: 700;
+.registration-block + .registration-block {
+  border-top: 1px solid rgba(214, 203, 184, 0.55);
+}
+
+.registration-block + .registration-block::before {
+  content: '✦';
+  position: absolute;
+  top: -8px;
+  left: -32px;
+  color: var(--purple-700, #6929C4);
+  font-size: 13px;
   line-height: 1;
 }
 
-.registration-block-header h3 {
-  color: var(--text-primary);
-  font-size: var(--type-h4-size);
-  letter-spacing: var(--type-h4-tracking);
-}
-
-.registration-block-header p {
-  max-width: 520px;
-  margin-top: var(--space-1);
-  color: var(--text-muted);
-  font-size: var(--type-small-size);
+.registration-block-legal {
+  padding-bottom: 12px;
 }
 
 .registration-fields {
   display: grid;
-  gap: var(--space-5);
+  gap: 20px 24px;
+}
+
+.registration-fields-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .registration-field-full {
   grid-column: 1 / -1;
 }
 
+/* Form Groups & Inputs */
 .registration-form .form-group {
-  min-width: 0;
   margin-bottom: 0;
 }
 
-.registration-form .form-group label {
+.registration-form .form-group > label {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-2);
-  margin-bottom: var(--space-2);
-  color: var(--text-primary);
-  font-size: var(--type-small-size);
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  color: #2D2338;
+  margin-bottom: 8px;
+}
+
+.registration-form .badge-optional {
+  margin-left: auto;
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
   font-weight: 700;
-  line-height: 1.45;
+  letter-spacing: 0.08em;
+  background: #F1EFEA;
+  color: #7E758C;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.registration-form input:not([type="checkbox"]),
+.registration-form select,
+.registration-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 14px;
+  color: #1E112A;
+  background: #FFFFFF;
+  border: 1px solid #D6CEBE;
+  border-radius: 8px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .registration-form input:not([type="checkbox"]),
 .registration-form select {
-  min-height: 50px;
+  height: 46px;
+  padding: 0 14px;
+}
+
+.registration-form select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23635B6E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
 }
 
 .registration-form textarea {
-  min-height: 124px;
+  padding: 12px 14px;
+  min-height: 90px;
+  resize: vertical;
 }
 
-.opt {
-  flex: 0 0 auto;
-  padding: 3px 6px;
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-xs);
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
+.registration-form input:focus,
+.registration-form select:focus,
+.registration-form textarea:focus {
+  outline: none;
+  border-color: var(--purple-700, #6929C4);
+  box-shadow: 0 0 0 3px rgba(105, 41, 196, 0.15);
+}
+
+.registration-form input::placeholder,
+.registration-form textarea::placeholder {
+  color: #A39BAE;
+  font-size: 13px;
+}
+
+/* Phone input combo */
+.phone-input-combo {
+  display: flex;
+  align-items: stretch;
+}
+
+.phone-prefix-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  background: #FAFAFD;
+  border: 1px solid #D6CEBE;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-transform: uppercase;
+  color: #3E324A;
+  user-select: none;
+  flex-shrink: 0;
 }
 
+.phone-prefix-select::after {
+  content: '◆';
+  color: rgba(105, 41, 196, 0.4);
+  font-size: 8px;
+  margin-left: 6px;
+}
+
+.phone-input-combo input {
+  border-radius: 0 8px 8px 0 !important;
+}
+
+.prefix-chevron {
+  color: #8C8299;
+}
+
+/* Validation error */
 .error-msg {
   display: none;
-  margin-top: var(--space-2);
-  color: var(--danger);
-  font-size: var(--type-small-size);
-  line-height: var(--type-small-leading);
+  margin-top: 6px;
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 12px;
+  color: var(--danger, #DA1E28);
+  line-height: 1.4;
 }
 
 .form-group.invalid .error-msg {
@@ -326,162 +751,204 @@
 .form-group.invalid input:not([type="checkbox"]),
 .form-group.invalid select,
 .form-group.invalid textarea {
-  border-color: var(--danger);
+  border-color: var(--danger, #DA1E28);
 }
 
-/* Legal consent */
+.registration-error-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: #FFF1F0;
+  border: 1px solid #FF8389;
+  color: #DA1E28;
+  margin-bottom: 24px;
+}
+
+/* Consent Chapter 05 */
 .consent-list {
-  min-width: 0;
-  border: 0;
-  border-top: 1px solid var(--border-default);
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .consent-item {
-  border-bottom: 1px solid var(--border-default);
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(214, 203, 184, 0.45);
 }
 
-.registration-form .consent-item label {
+.consent-label {
   display: grid;
-  min-height: 72px;
-  grid-template-columns: 24px minmax(0, 1fr);
-  align-items: flex-start;
-  justify-content: initial;
-  gap: var(--space-4);
-  margin: 0;
-  padding: var(--space-4) 0;
+  grid-template-columns: 20px 170px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  margin: 0 !important;
+}
+
+.consent-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--purple-700, #6929C4);
   cursor: pointer;
 }
 
-.consent-item input[type="checkbox"] {
-  width: 22px;
-  height: 22px;
-  margin-top: 1px;
-}
-
-.consent-item input[type="checkbox"]:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 3px;
-  box-shadow: 0 0 0 4px var(--focus-ring);
-}
-
-.consent-copy {
-  display: grid;
-  gap: var(--space-1);
-  color: var(--text-secondary);
-  font-size: var(--type-small-size);
-  font-weight: 500;
-  line-height: 1.55;
-}
-
-.consent-copy strong {
-  color: var(--text-primary);
-  font-family: var(--font-mono);
-  font-size: var(--type-micro-size);
-  letter-spacing: var(--type-micro-tracking);
-  text-transform: uppercase;
-}
-
-.consent-legal-links {
-  margin: calc(var(--space-3) * -1) 0 var(--space-3) calc(24px + var(--space-4));
-  color: var(--text-muted);
-  font-size: var(--type-small-size);
-  line-height: 1.6;
-}
-
-.consent-legal-links a {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  color: var(--purple-700);
+.consent-tag {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #1E112A;
+  white-space: nowrap;
+}
+
+.consent-text {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 13px;
+  color: #635B6E;
+  line-height: 1.45;
+}
+
+.consent-text a {
+  color: var(--purple-700, #6929C4);
+  font-weight: 600;
   text-decoration: underline;
-  text-decoration-color: var(--purple-300);
-  text-underline-offset: 0.2em;
-  transition:
-    color var(--duration-fast) var(--ease-standard),
-    text-decoration-color var(--duration-fast) var(--ease-standard);
+  text-underline-offset: 2px;
 }
 
-.consent-legal-links a:hover {
-  color: var(--primary-hover);
-  text-decoration-color: currentColor;
+/* Submission Card */
+.registration-submit-card {
+  margin-top: 36px;
+  background: #F6F2FC;
+  border: 1px solid rgba(138, 63, 252, 0.22);
+  border-radius: 14px;
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
 }
 
-.consent-item .error-msg {
-  margin: 0 0 var(--space-3) calc(24px + var(--space-4));
+.submit-card-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-.consent-item.invalid label {
-  color: var(--danger);
+.submit-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #EDE4FC;
+  color: var(--purple-700, #6929C4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-/* Submit */
-.registration-submit {
-  display: grid;
-  gap: var(--space-5);
-  padding-top: var(--space-8);
+.submit-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.registration-submit-copy {
-  display: grid;
-  gap: var(--space-1);
+.submit-card-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.registration-submit-copy > span {
-  color: var(--primary);
+.submit-card-step {
+  font-family: var(--font-mono, monospace);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--purple-700, #6929C4);
 }
 
-.registration-submit-copy p {
-  color: var(--text-muted);
-  font-size: var(--type-small-size);
+.submit-card-badge strong {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 14px;
+  font-weight: 700;
+  color: #1E112A;
 }
 
-.registration-submit .btn-large {
-  min-height: 54px;
+.submit-card-text p {
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+  font-size: 12.5px;
+  color: #635B6E;
   margin: 0;
-  text-transform: uppercase;
 }
 
-.registration-submit .btn-large > span:last-child {
-  transition: transform var(--duration-fast) var(--ease-standard);
+.registration-submit-btn {
+  background: linear-gradient(135deg, #6929C4 0%, #4F1D96 100%);
+  color: #FFFFFF;
+  font-family: var(--font-mono, monospace);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 14px 28px;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 18px rgba(105, 41, 196, 0.35);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
-.registration-submit .btn-large:hover:not(:disabled) > span:last-child {
-  transform: translateX(4px);
+.registration-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(105, 41, 196, 0.45);
+}
+
+.registration-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.submit-btn-arrow {
+  font-size: 16px;
+  line-height: 1;
 }
 
 .submit-status {
-  min-height: 1.5em;
-  color: var(--text-secondary);
-  font-size: var(--type-small-size);
-  line-height: var(--type-small-leading);
-  text-align: left;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #635B6E;
 }
 
 .submit-status.is-error {
-  color: var(--danger);
+  color: var(--danger, #DA1E28);
   font-weight: 600;
 }
 
-/* Loading / closed / unavailable */
+/* ============================================================
+   Loading / Closed / Error States
+   ============================================================ */
 .registration-state {
   position: relative;
   display: grid;
-  min-height: 310px;
+  min-height: 280px;
   grid-template-columns: 44px minmax(0, 1fr);
   align-items: start;
-  gap: var(--space-5);
-  margin-top: var(--space-7);
+  gap: var(--space-5, 20px);
   overflow: clip;
-  padding: var(--space-7);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  background: var(--bg-soft);
+  padding: var(--space-7, 28px);
+  border: 1px solid rgba(214, 203, 184, 0.7);
+  border-radius: 12px;
+  background: #FAF7F2;
 }
 
 .registration-state > div {
   position: relative;
-  z-index: var(--z-content);
+  z-index: 2;
   max-width: 540px;
 }
 
@@ -490,57 +957,62 @@
   width: 34px;
   height: 34px;
   place-items: center;
-  border: 1px solid var(--primary);
-  border-radius: var(--radius-pill);
-  color: var(--primary);
-  font-family: var(--font-mono);
+  border: 1px solid var(--purple-700, #6929C4);
+  border-radius: 50%;
+  color: var(--purple-700, #6929C4);
+  font-family: var(--font-mono, monospace);
   font-weight: 700;
 }
 
 .registration-state-loading .registration-state-marker::after {
   width: 8px;
   height: 8px;
-  border-radius: var(--radius-pill);
-  background: var(--primary);
-  content: "";
+  border-radius: 50%;
+  background: var(--purple-700, #6929C4);
+  content: '';
   animation: registration-pulse 1.2s ease-in-out infinite;
 }
 
 .registration-state-label {
   display: block;
-  margin-bottom: var(--space-4);
-  color: var(--primary);
+  margin-bottom: 12px;
+  color: var(--purple-700, #6929C4);
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .registration-state h3 {
   max-width: 480px;
-  color: var(--text-primary);
-  font-size: var(--type-h3-size);
-  line-height: var(--type-h3-leading);
-  letter-spacing: var(--type-h3-tracking);
+  color: #1E112A;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.5rem;
+  line-height: 1.3;
 }
 
 .registration-state p {
-  margin-top: var(--space-3);
-  color: var(--text-secondary);
+  margin-top: 8px;
+  color: #635B6E;
 }
 
 .registration-state .btn {
-  margin-top: var(--space-6);
+  margin-top: 20px;
 }
 
 .registration-state-error {
   border-color: rgba(180, 35, 24, 0.4);
-  background: var(--danger-soft);
+  background: #FFF1F0;
 }
 
 .registration-state-error .registration-state-marker {
-  border-color: var(--danger);
-  color: var(--danger);
+  border-color: var(--danger, #DA1E28);
+  color: var(--danger, #DA1E28);
 }
 
 .registration-state-error .registration-state-label {
-  color: var(--danger);
+  color: var(--danger, #DA1E28);
 }
 
 .register-closed {
@@ -556,7 +1028,7 @@
   right: -0.06em;
   bottom: -0.24em;
   color: rgba(33, 21, 47, 0.05);
-  font-family: var(--font-mono);
+  font-family: var(--font-mono, monospace);
   font-size: clamp(10rem, 23vw, 16rem);
   font-weight: 700;
   letter-spacing: -0.1em;
@@ -565,8 +1037,7 @@
 }
 
 @keyframes registration-pulse {
-  0%,
-  100% {
+  0%, 100% {
     opacity: 0.35;
     transform: scale(0.75);
   }
@@ -576,306 +1047,148 @@
   }
 }
 
-/* Registration success composition; credential internals live in global.css. */
+/* ============================================================
+   Registration Success
+   ============================================================ */
 .registration-success {
-  padding: var(--space-8) 0 var(--space-5);
-}
-
-.registration-success:focus-visible {
-  outline: none;
+  padding: 32px 0 20px;
 }
 
 .registration-success-header {
   max-width: 600px;
-  margin: 0 auto var(--space-7);
+  margin: 0 auto 28px;
   text-align: center;
 }
 
 .registration-success-header > span {
   display: block;
-  margin-bottom: var(--space-4);
-  color: var(--primary);
-  font-family: var(--font-mono);
-  font-size: var(--type-micro-size);
-  font-weight: 600;
-  letter-spacing: var(--type-micro-tracking);
+  margin-bottom: 12px;
+  color: var(--purple-700, #6929C4);
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .registration-success-header h3 {
-  color: var(--text-primary);
-  font-size: var(--type-h2-size);
-  line-height: var(--type-h2-leading);
-  letter-spacing: var(--type-h2-tracking);
-}
-
-.registration-success-header h3:focus {
-  padding-left: var(--space-3);
-  border-left: 3px solid var(--primary);
-  outline: none;
-  box-shadow: none;
+  color: #1E112A;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  line-height: 1.25;
 }
 
 .registration-success-header p {
-  margin-top: var(--space-3);
-  color: var(--text-secondary);
+  margin-top: 8px;
+  color: #635B6E;
 }
 
 .registration-credential-mount {
-  --credential-surround: var(--bg-surface);
+  --credential-surround: #FFFFFF;
 }
 
 .registration-success-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--space-3);
+  gap: 12px;
   max-width: 520px;
-  margin: var(--space-6) auto 0;
+  margin: 24px auto 0;
 }
 
 .registration-success-recovery {
-  margin-top: var(--space-5);
-  color: var(--text-muted);
-  font-size: var(--type-small-size);
+  margin-top: 20px;
+  color: #8C8299;
+  font-size: 13px;
   text-align: center;
 }
 
 .registration-success-recovery a {
-  color: var(--primary);
+  color: var(--purple-700, #6929C4);
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-/* Tablet: contextual header, one-column form fields. */
-@media (min-width: 768px) {
-  .register-section {
-    padding: var(--space-9) 0 var(--space-12);
+/* ============================================================
+   Responsive Queries
+   ============================================================ */
+@media (max-width: 1023px) {
+  .registration-hero-banner {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
 
-  .registration-context-inner {
-    padding: var(--space-8);
-  }
-
-  .registration-context h1 {
-    max-width: 720px;
-  }
-
-  .registration-index {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--space-7);
-    max-width: 720px;
-  }
-
-  .registration-document {
-    padding: var(--space-8);
-  }
-
-  .registration-block-header {
-    grid-template-columns: 64px minmax(0, 1fr);
-  }
-
-  .registration-block-number {
-    font-size: 1.65rem;
-  }
-
-  .registration-submit {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-  }
-
-  .registration-submit .btn-large {
-    width: auto;
-    min-width: 250px;
-  }
-
-  .submit-status {
-    grid-column: 1 / -1;
-  }
-}
-
-/* Desktop: contextual rail + paired fields. */
-@media (min-width: 1024px) {
-  .register-section {
-    padding-top: var(--space-9);
+  .registration-hero-monument {
+    border-top: 1px dashed rgba(214, 203, 184, 0.7);
+    border-bottom: 1px dashed rgba(214, 203, 184, 0.7);
+    padding: 20px 0;
+    justify-content: space-around;
   }
 
   .registration-shell {
-    grid-template-columns: minmax(270px, 0.82fr) minmax(0, 1.78fr);
-    align-items: start;
-    gap: var(--space-7);
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
 
   .registration-context {
-    align-self: stretch;
+    position: static;
   }
 
-  .registration-context-inner {
-    min-height: 760px;
-    padding: var(--space-7);
+  .chapter-watermark-col {
+    display: none;
   }
 
-  .registration-context h1 {
-    font-size: clamp(2.5rem, 3.55vw, 3.75rem);
-  }
-
-  .registration-context-content > p {
-    font-size: var(--type-body-size);
-  }
-
-  .registration-meta {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-
-  .registration-index {
-    grid-template-columns: 1fr;
-    gap: 0;
-    margin-top: var(--space-7);
-  }
-
-  .registration-index li {
-    padding: var(--space-2) 0;
-  }
-
-  .registration-document {
-    padding: var(--space-8);
-  }
-
-  .registration-fields-two {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1280px) {
-  .registration-shell {
-    grid-template-columns: minmax(330px, 4fr) minmax(0, 7fr);
-    gap: var(--space-8);
-  }
-
-  .registration-context-inner,
-  .registration-document {
-    padding: var(--space-9);
-  }
-
-  .registration-block {
-    padding: var(--space-9) 0;
-  }
-
-  .registration-block-header {
-    grid-template-columns: 72px minmax(0, 1fr);
+  .registration-block + .registration-block::before {
+    display: none;
   }
 }
 
 @media (max-width: 767px) {
   .register-section {
-    padding-top: var(--space-5);
+    padding: 28px 0 64px;
   }
 
-  .registration-shell {
-    gap: var(--space-5);
+  .registration-hero-title {
+    font-size: 1.85rem;
   }
 
-  .registration-context-inner {
-    min-height: 420px;
-    padding: var(--space-6) var(--space-5);
-  }
-
-  .registration-kicker {
-    margin-bottom: var(--space-6);
-  }
-
-  .registration-context h1 {
-    font-size: clamp(2.25rem, 11.5vw, 3.25rem);
-  }
-
-  .registration-meta {
-    grid-template-columns: 1fr;
-    gap: var(--space-3);
-    margin-top: var(--space-6);
-  }
-
-  .registration-constellation {
-    right: -92px;
-    bottom: -120px;
-    width: 320px;
-    opacity: 0.68;
-  }
-
-  .registration-watermark {
-    font-size: 10rem;
+  .monument-art-wrap {
+    width: 140px;
+    height: 90px;
   }
 
   .registration-document {
-    padding: var(--space-6) var(--space-5);
-    border-radius: var(--radius-md);
+    padding: 28px 20px;
+    border-radius: 12px;
   }
 
-  .registration-heading-row {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: var(--space-2);
+  .registration-context-card {
+    padding: 24px 20px;
+    border-radius: 12px;
   }
 
-  .registration-header {
-    padding-bottom: var(--space-6);
-  }
-
-  .registration-block {
-    padding: var(--space-7) 0;
-  }
-
-  .registration-block-header {
-    grid-template-columns: 44px minmax(0, 1fr);
-    margin-bottom: var(--space-5);
-  }
-
-  .registration-fields {
+  .registration-fields-two {
     grid-template-columns: 1fr;
-    gap: var(--space-5);
   }
 
-  .registration-form .form-group:not(.consent-item) > label {
+  .consent-label {
+    grid-template-columns: 20px minmax(0, 1fr);
     align-items: flex-start;
   }
 
-  .registration-form .consent-item label {
-    min-height: 84px;
+  .consent-text {
+    grid-column: 2 / -1;
   }
 
-  .registration-submit {
-    padding-top: var(--space-7);
-  }
-
-  .registration-submit .btn-large {
-    width: 100%;
-  }
-
-  .registration-state {
-    min-height: 280px;
-    grid-template-columns: 1fr;
-    padding: var(--space-6) var(--space-5);
-  }
-
-  .registration-success-actions {
+  .registration-submit-card {
     flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
   }
 
-  .registration-success-actions .btn {
+  .registration-submit-btn {
     width: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .registration-state-loading .registration-state-marker::after {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-
-  .registration-submit .btn-large > span:last-child {
-    transition-duration: 0.01ms;
+    justify-content: center;
   }
 }

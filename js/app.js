@@ -736,6 +736,53 @@ async function initRegister() {
     el.addEventListener("change", () => clearFieldError(el));
   });
 
+  // Stepper navigation and scroll spy
+  const sectionIds = [
+    "registration-section-01",
+    "registration-section-02",
+    "registration-section-03",
+    "registration-section-04",
+    "registration-section-05",
+  ];
+  const stepperItems = document.querySelectorAll(".stepper-item");
+  const progressBar = document.getElementById("reg-progress-bar");
+  const progressStatus = document.getElementById("reg-progress-status");
+
+  function updateActiveStep(stepIndex) {
+    stepperItems.forEach((item, idx) => {
+      item.classList.toggle("is-active", idx === stepIndex);
+    });
+    const stepNum = stepIndex + 1;
+    if (progressBar) progressBar.style.width = `${stepNum * 20}%`;
+    if (progressStatus) progressStatus.textContent = `0${stepNum} / 05 COMPLETE`;
+  }
+
+  stepperItems.forEach((item, idx) => {
+    const link = item.querySelector(".stepper-link");
+    link?.addEventListener("click", (e) => {
+      e.preventDefault();
+      const targetSec = document.getElementById(sectionIds[idx]);
+      if (targetSec) {
+        targetSec.scrollIntoView({ behavior: "smooth", block: "start" });
+        updateActiveStep(idx);
+      }
+    });
+  });
+
+  if ("IntersectionObserver" in window) {
+    const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const idx = sectionIds.indexOf(entry.target.id);
+          if (idx !== -1) updateActiveStep(idx);
+        }
+      });
+    }, { rootMargin: "-15% 0px -65% 0px" });
+
+    sections.forEach((sec) => observer.observe(sec));
+  }
+
   await checkRegistrationStatus();
 }
 
