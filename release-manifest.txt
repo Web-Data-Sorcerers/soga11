@@ -8,6 +8,7 @@ assets/favicon.ico
 assets/favicon.png
 assets/logo-web.png
 assets/og-image.png
+assets/og-image.jpg
 assets/hero/11.png
 assets/hero/11.webp
 assets/hero/impact-monument.png
