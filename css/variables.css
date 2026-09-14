@@ -93,7 +93,7 @@
   --type-section-xl-size: clamp(2.25rem, 4vw, 3.5rem);
   --type-section-xl-leading: 1;
   --type-section-xl-tracking: -0.035em;
-  --type-section-xl-weight: 700;
+  --type-section-xl-weight: 800;
 
   --type-h2-size: clamp(2rem, 3.2vw, 2.75rem);
   --type-h2-leading: 1.05;
