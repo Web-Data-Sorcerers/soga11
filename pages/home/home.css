@@ -2566,7 +2566,7 @@
 /* 4. Featured Hero Card: SOGA 10 */
 .legacy-featured-card {
   display: grid;
-  grid-template-columns: 5.5fr 4.3fr 2.2fr;
+  grid-template-columns: 360px 1fr 240px;
   gap: var(--space-6);
   padding: var(--space-6);
   margin-bottom: var(--space-8);
@@ -2582,7 +2582,9 @@
   overflow: hidden;
   border-radius: 10px;
   background: #0f0a1c;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  max-width: 360px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
@@ -2656,12 +2658,20 @@
 }
 
 .featured-title {
-  margin: var(--space-2) 0 var(--space-4);
+  margin: var(--space-2) 0 var(--space-2);
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: clamp(1.35rem, 1.8vw, 1.625rem);
   font-weight: 700;
   line-height: 1.25;
+}
+
+.featured-subtitle {
+  margin: 0 0 var(--space-4);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-weight: 500;
 }
 
 .featured-meta-items {
@@ -3004,7 +3014,7 @@
   }
 
   .legacy-featured-card {
-    grid-template-columns: 5fr 4.5fr 2.5fr;
+    grid-template-columns: 300px 1fr 200px;
   }
 
   .legacy-card--col4 {
