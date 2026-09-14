@@ -1,6 +1,9 @@
 // ============================================================
-// SOGA 11 — Dashboard Admin Logic
+// SOGA 11 — Command Center Admin Application Logic
+// Sorcery Gathering #11 — Operational System
+// Reference: 08-admin-command-center-reference-board.png
 // ============================================================
+
 let participants = [];
 let scanner = null;
 let conversionChart = null;
@@ -8,13 +11,16 @@ let arrivalChart = null;
 let registrationOpen = null;
 let registrationStatusLoading = false;
 let registrationToggleBusy = false;
+let currentViewingParticipant = null;
 
-const ICON_CHECK = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
-const ICON_X = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
+// SVG Icons
+const ICON_CHECK = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
+const ICON_X = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>';
 const ICON_WARNING = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>';
 const ICON_EYE = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
 const ICON_PENCIL = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>';
 const ICON_TRASH = '<svg class="ico" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>';
+const ICON_COPY = '<svg class="ico" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>';
 
 const esc = (s) =>
   String(s ?? "").replace(
@@ -22,8 +28,22 @@ const esc = (s) =>
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
   );
 
+function getInitials(name, email) {
+  if (name && name.trim()) {
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+  if (email && email.trim()) {
+    return email.slice(0, 2).toUpperCase();
+  }
+  return "DS";
+}
+
 // ============================================================
-// Auth
+// Auth & Initialization
 // ============================================================
 const loginForm = document.getElementById("login-form");
 const loginEmail = document.getElementById("login-email");
@@ -42,7 +62,7 @@ async function boot() {
       return;
     }
   } catch (e) {
-    // Keep the normalized login surface available if session restoration fails.
+    // Keep login screen open if session check fails
   }
 
   document.getElementById("dashboard").classList.add("hidden");
@@ -50,84 +70,189 @@ async function boot() {
 }
 
 function clearLoginError() {
-  loginError.classList.add("hidden");
-  loginEmail.removeAttribute("aria-invalid");
-  loginPassword.removeAttribute("aria-invalid");
+  loginError?.classList.add("hidden");
+  loginEmail?.removeAttribute("aria-invalid");
+  loginPassword?.removeAttribute("aria-invalid");
 }
 
 function setLoginPending(pending) {
   loginSubmitting = pending;
+  if (!loginButton) return;
   loginButton.disabled = pending;
   if (pending) {
     loginButton.setAttribute("aria-busy", "true");
-    loginForm.setAttribute("aria-busy", "true");
+    loginForm?.setAttribute("aria-busy", "true");
   } else {
     loginButton.removeAttribute("aria-busy");
-    loginForm.removeAttribute("aria-busy");
+    loginForm?.removeAttribute("aria-busy");
   }
-  loginEmail.readOnly = pending;
-  loginPassword.readOnly = pending;
-  loginButtonLabel.textContent = pending ? "Login / Verifying" : "Masuk";
-  loginStatus.textContent = pending ? "Memverifikasi akun admin…" : "";
+  if (loginEmail) loginEmail.readOnly = pending;
+  if (loginPassword) loginPassword.readOnly = pending;
+  if (loginButtonLabel) loginButtonLabel.textContent = pending ? "Memverifikasi Akun..." : "Masuk ke Command Center";
+  if (loginStatus) loginStatus.textContent = pending ? "Memverifikasi akun admin..." : "";
 }
 
 function showLoginError() {
-  loginEmail.setAttribute("aria-invalid", "true");
-  loginPassword.setAttribute("aria-invalid", "true");
-  loginError.classList.remove("hidden");
-  loginError.focus();
+  loginEmail?.setAttribute("aria-invalid", "true");
+  loginPassword?.setAttribute("aria-invalid", "true");
+  loginError?.classList.remove("hidden");
+  loginError?.focus();
 }
 
 function showDashboard(user) {
+  document.getElementById("login-screen")?.classList.add("hidden");
+  document.getElementById("dashboard")?.classList.remove("hidden");
+
+  const email = user?.email || "admin@datasorcerers.id";
+  const namePart = email.split("@")[0].replace(/[-_.]/g, " ");
+  const displayName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+  const initials = getInitials(displayName, email);
+
+  // Bind admin profile info
   const adminName = document.getElementById("admin-name");
-  document.getElementById("login-screen").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
-  adminName.textContent = user.email;
-  adminName.title = user.email;
+  if (adminName) adminName.textContent = displayName;
+  const adminAvatar = document.getElementById("admin-avatar");
+  if (adminAvatar) adminAvatar.textContent = initials;
+  const welcomeName = document.getElementById("admin-welcome-name");
+  if (welcomeName) welcomeName.textContent = displayName;
+  const dropdownEmail = document.getElementById("dropdown-user-email");
+  if (dropdownEmail) dropdownEmail.textContent = email;
+  const settingsEmail = document.getElementById("settings-admin-email");
+  if (settingsEmail) settingsEmail.textContent = email;
+
   loadParticipants();
   loadRegistrationStatus();
 }
 
-loginForm.addEventListener("submit", async (e) => {
+// Password toggle
+const btnTogglePwd = document.getElementById("btn-toggle-pwd");
+if (btnTogglePwd && loginPassword) {
+  btnTogglePwd.addEventListener("click", () => {
+    const isPassword = loginPassword.type === "password";
+    loginPassword.type = isPassword ? "text" : "password";
+    btnTogglePwd.querySelector(".eye-open")?.classList.toggle("hidden", isPassword);
+    btnTogglePwd.querySelector(".eye-closed")?.classList.toggle("hidden", !isPassword);
+  });
+}
+
+loginForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   if (loginSubmitting) return;
 
-  const email = loginEmail.value.trim();
-  const password = loginPassword.value;
+  const email = loginEmail?.value.trim() || "";
+  const password = loginPassword?.value || "";
   clearLoginError();
   setLoginPending(true);
 
   try {
     const { user } = await window.SOGA_API.signInAdmin(email, password);
     showDashboard(user);
-  } catch (e) {
+  } catch (err) {
     showLoginError();
   } finally {
     setLoginPending(false);
   }
 });
 
-[loginEmail, loginPassword].forEach((field) => {
-  field.addEventListener("input", clearLoginError);
+[loginEmail, loginPassword].forEach((f) => {
+  f?.addEventListener("input", clearLoginError);
 });
 
-document.getElementById("btn-logout").addEventListener("click", async (event) => {
-  const button = event.currentTarget;
-  if (button.disabled) return;
-  button.disabled = true;
-  button.setAttribute("aria-busy", "true");
-
+// Admin Logout
+document.getElementById("btn-logout")?.addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  if (btn.disabled) return;
+  btn.disabled = true;
   try {
     await window.SOGA_API.signOutAdmin();
     location.reload();
-  } catch (e) {
-    button.disabled = false;
-    button.removeAttribute("aria-busy");
+  } catch (err) {
+    btn.disabled = false;
   }
 });
 
+// Admin Profile Dropdown
+const btnAdminProfile = document.getElementById("btn-admin-profile");
+const adminDropdown = document.getElementById("admin-dropdown");
+if (btnAdminProfile && adminDropdown) {
+  btnAdminProfile.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isExpanded = btnAdminProfile.getAttribute("aria-expanded") === "true";
+    btnAdminProfile.setAttribute("aria-expanded", String(!isExpanded));
+    adminDropdown.classList.toggle("hidden", isExpanded);
+  });
+  document.addEventListener("click", (e) => {
+    if (!adminDropdown.contains(e.target) && !btnAdminProfile.contains(e.target)) {
+      adminDropdown.classList.add("hidden");
+      btnAdminProfile.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+// Mobile Sidebar Toggle
+const btnSidebarToggle = document.getElementById("btn-sidebar-toggle");
+const btnSidebarClose = document.getElementById("btn-sidebar-close");
+const dashSidebar = document.getElementById("dash-sidebar");
+const sidebarBackdrop = document.getElementById("sidebar-backdrop");
+
+function toggleSidebar(open) {
+  dashSidebar?.classList.toggle("is-open", open);
+  sidebarBackdrop?.classList.toggle("is-open", open);
+}
+
+btnSidebarToggle?.addEventListener("click", () => toggleSidebar(true));
+btnSidebarClose?.addEventListener("click", () => toggleSidebar(false));
+sidebarBackdrop?.addEventListener("click", () => toggleSidebar(false));
+
 // ============================================================
-// Data
+// Tab Switching
+// ============================================================
+function switchTab(paneId) {
+  // Activate pane
+  document.querySelectorAll(".dash-pane").forEach((p) => {
+    p.classList.toggle("is-active", p.id === paneId);
+  });
+
+  // Sync tab buttons
+  document.querySelectorAll(".dash-tab-btn").forEach((b) => {
+    const active = b.dataset.target === paneId;
+    b.classList.toggle("is-active", active);
+    b.setAttribute("aria-selected", String(active));
+  });
+
+  // Sync sidebar items
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    item.classList.toggle("is-active", item.dataset.tab === paneId);
+  });
+
+  // Sync mobile bottom nav
+  document.querySelectorAll(".bottom-nav-item").forEach((item) => {
+    item.classList.toggle("is-active", item.dataset.bottomTab === paneId);
+  });
+
+  // Close mobile sidebar
+  toggleSidebar(false);
+
+  // If opening analytics, resize charts
+  if (paneId === "pane-analytics") {
+    setTimeout(renderCharts, 50);
+  }
+}
+
+document.querySelectorAll(".dash-tab-btn").forEach((btn) => {
+  btn.addEventListener("click", () => switchTab(btn.dataset.target));
+});
+
+document.querySelectorAll(".nav-item[data-tab]").forEach((btn) => {
+  btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+});
+
+document.querySelectorAll(".bottom-nav-item[data-bottom-tab]").forEach((btn) => {
+  btn.addEventListener("click", () => switchTab(btn.dataset.bottomTab));
+});
+
+// ============================================================
+// Data Loading & Statistics
 // ============================================================
 async function loadParticipants() {
   try {
@@ -136,18 +261,42 @@ async function loadParticipants() {
     renderTable();
     renderCharts();
   } catch (e) {
-    document.getElementById("table-body").innerHTML =
-      `<tr class="registry-empty-row"><td colspan="7" data-cell="empty" class="text-center">Gagal memuat data.</td></tr>`;
+    const tbody = document.getElementById("table-body");
+    if (tbody) {
+      tbody.innerHTML = `<tr><td colspan="7" class="table-loading-cell">Gagal memuat data peserta. Silakan tekan tombol Refresh.</td></tr>`;
+    }
   }
 }
 
 function renderStats() {
   const total = participants.length;
   const present = participants.filter((p) => p.status === "hadir").length;
+  const pending = total - present;
   const conversion = total ? Math.round((present / total) * 100) : 0;
-  document.getElementById("stat-total").textContent = total;
-  document.getElementById("stat-present").textContent = present;
-  document.getElementById("stat-conversion").textContent = conversion + "%";
+  const pendingRate = total ? Math.round((pending / total) * 100) : 0;
+
+  const statTotal = document.getElementById("stat-total");
+  if (statTotal) statTotal.textContent = total.toLocaleString("id-ID");
+
+  const statPresent = document.getElementById("stat-present");
+  if (statPresent) statPresent.textContent = present.toLocaleString("id-ID");
+
+  const statPresentRate = document.getElementById("stat-present-rate");
+  if (statPresentRate) statPresentRate.textContent = `${conversion}% dari total peserta`;
+
+  const statPending = document.getElementById("stat-pending");
+  if (statPending) statPending.textContent = pending.toLocaleString("id-ID");
+
+  const statPendingRate = document.getElementById("stat-pending-rate");
+  if (statPendingRate) statPendingRate.textContent = `${pendingRate}% dari total peserta`;
+
+  // Counters
+  const navBadge = document.getElementById("nav-badge-peserta");
+  if (navBadge) navBadge.textContent = total;
+  const tabCounter = document.getElementById("tab-count-participants");
+  if (tabCounter) tabCounter.textContent = total;
+  const rateBadge = document.getElementById("analytics-attendance-rate");
+  if (rateBadge) rateBadge.textContent = `${conversion}% Hadir`;
 }
 
 function renderCharts() {
@@ -155,10 +304,10 @@ function renderCharts() {
   const hadir = participants.filter((p) => p.status === "hadir").length;
   const pending = participants.length - hadir;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const sharedChartOptions = {
+  const sharedOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    animation: reducedMotion ? false : { duration: 240 },
+    animation: reducedMotion ? false : { duration: 250 },
     color: "#746b80",
     font: { family: '"Plus Jakarta Sans", system-ui, sans-serif' },
   };
@@ -169,16 +318,21 @@ function renderCharts() {
     conversionChart = new Chart(convCanvas, {
       type: "doughnut",
       data: {
-        labels: ["Hadir", "Belum Hadir"],
-        datasets: [{ data: [hadir, pending], backgroundColor: ["#15803d", "#ddd7e5"], borderWidth: 0 }],
+        labels: ["Sudah Hadir", "Belum Hadir"],
+        datasets: [{
+          data: [hadir, pending],
+          backgroundColor: ["#15803d", "#ede9fe"],
+          hoverBackgroundColor: ["#16a34a", "#ddd6fe"],
+          borderWidth: 0,
+        }],
       },
       options: {
-        ...sharedChartOptions,
-        cutout: "68%",
+        ...sharedOptions,
+        cutout: "70%",
         plugins: {
           legend: {
             position: "bottom",
-            labels: { boxWidth: 10, boxHeight: 10, padding: 16, usePointStyle: true },
+            labels: { boxWidth: 12, boxHeight: 12, padding: 18, usePointStyle: true },
           },
         },
       },
@@ -197,17 +351,23 @@ function renderCharts() {
       type: "bar",
       data: {
         labels: hourCounts.map((_, i) => String(i).padStart(2, "0") + ":00"),
-        datasets: [{ label: "Check-in", data: hourCounts, backgroundColor: "#7c3aed", borderRadius: 4 }],
+        datasets: [{
+          label: "Jumlah Check-in",
+          data: hourCounts,
+          backgroundColor: "#7c3aed",
+          borderRadius: 6,
+          hoverBackgroundColor: "#6d28d9",
+        }],
       },
       options: {
-        ...sharedChartOptions,
+        ...sharedOptions,
         plugins: { legend: { display: false } },
         scales: {
           x: { grid: { display: false }, ticks: { maxTicksLimit: 8, color: "#746b80" } },
           y: {
             beginAtZero: true,
             border: { display: false },
-            grid: { color: "rgba(199, 189, 210, 0.38)" },
+            grid: { color: "rgba(199, 189, 210, 0.35)" },
             ticks: { precision: 0, color: "#746b80" },
           },
         },
@@ -216,8 +376,14 @@ function renderCharts() {
   }
 }
 
+// ============================================================
+// Participant Table Rendering
+// ============================================================
 function renderTable(filter = "all", query = "") {
   const body = document.getElementById("table-body");
+  const paginationInfo = document.getElementById("pagination-info");
+  if (!body) return;
+
   let list = participants;
 
   if (filter !== "all") list = list.filter((p) => p.status === filter);
@@ -233,349 +399,305 @@ function renderTable(filter = "all", query = "") {
     );
   }
 
+  if (paginationInfo) {
+    paginationInfo.textContent = `Menampilkan ${list.length} dari ${participants.length} peserta`;
+  }
+
   if (!list.length) {
-    body.innerHTML = `<tr class="registry-empty-row"><td colspan="7" data-cell="empty" class="text-center">Tidak ada data.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="7" class="table-loading-cell">Tidak ada data peserta yang cocok dengan kriteria pencarian.</td></tr>`;
     return;
   }
 
   body.innerHTML = list
-    .map(
-      (p) => `
-      <tr class="participant-record">
-        <td data-label="Ticket ID" data-cell="ticket">${esc(p.qr_token)}</td>
-        <td data-label="Nama" data-cell="name"><strong>${esc(p.full_name)}</strong></td>
-        <td data-label="Instansi" data-cell="institution">${esc(p.institution)}</td>
-        <td data-label="WhatsApp" data-cell="whatsapp">${esc(p.whatsapp)}</td>
-        <td data-label="Status" data-cell="status"><span class="badge ${p.status === "hadir" ? "badge-hadir" : "badge-pending"}">${esc(p.status)}</span></td>
-        <td data-label="Check-in" data-cell="checkin">${p.checkin_time ? new Date(p.checkin_time).toLocaleTimeString("id-ID") : "-"}</td>
-        <td class="row-actions" data-label="Aksi" data-cell="actions">
-          <button type="button" class="act-btn" data-action="view" data-id="${esc(p.id)}" title="Detail" aria-label="Lihat detail ${esc(p.full_name)}">${ICON_EYE}<span class="act-label">Lihat</span></button>
-          <button type="button" class="act-btn" data-action="edit" data-id="${esc(p.id)}" title="Edit" aria-label="Edit ${esc(p.full_name)}">${ICON_PENCIL}<span class="act-label">Edit</span></button>
-          <button type="button" class="act-btn act-btn-danger" data-action="delete" data-id="${esc(p.id)}" title="Hapus" aria-label="Hapus ${esc(p.full_name)}">${ICON_TRASH}<span class="act-label">Hapus</span></button>
+    .map((p, idx) => {
+      const initials = getInitials(p.full_name, p.email);
+      const isHadir = p.status === "hadir";
+      const checkinTimeFormatted = p.checkin_time
+        ? new Date(p.checkin_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) + " WIB"
+        : "-";
+
+      return `
+      <tr class="participant-row" data-id="${esc(p.id)}">
+        <td class="cell-num">${idx + 1}</td>
+        <td>
+          <div class="participant-cell">
+            <div class="participant-avatar">${esc(initials)}</div>
+            <div class="participant-info">
+              <strong>${esc(p.full_name)}</strong>
+              <small>${esc(p.email || "-")}</small>
+            </div>
+          </div>
         </td>
-      </tr>`
-    )
+        <td>${esc(p.institution || "-")}</td>
+        <td>
+          <span class="badge ${isHadir ? "badge-hadir" : "badge-pending"}">
+            ${isHadir ? ICON_CHECK + " Sudah Hadir" : ICON_WARNING + " Belum Hadir"}
+          </span>
+        </td>
+        <td>
+          <button type="button" class="ticket-tag-btn" data-copy="${esc(p.qr_token)}" title="Klik untuk salin kode tiket">
+            <span>${esc(p.qr_token)}</span>
+            <span class="copy-hint">${ICON_COPY}</span>
+          </button>
+        </td>
+        <td>${checkinTimeFormatted}</td>
+        <td class="cell-actions">
+          <div class="actions-wrap">
+            <button type="button" class="btn-view-ticket" data-action="view" data-id="${esc(p.id)}">Lihat</button>
+            <button type="button" class="act-btn" data-action="edit" data-id="${esc(p.id)}" title="Edit Data" aria-label="Edit ${esc(p.full_name)}">${ICON_PENCIL}</button>
+            <button type="button" class="act-btn act-btn-danger" data-action="delete" data-id="${esc(p.id)}" title="Hapus Data" aria-label="Hapus ${esc(p.full_name)}">${ICON_TRASH}</button>
+          </div>
+        </td>
+      </tr>`;
+    })
     .join("");
 }
 
-// ============================================================
-// Detail / Edit / Hapus peserta
-// ============================================================
-const FIELD_LABELS = {
-  qr_token: "ID Tiket",
-  full_name: "Nama Lengkap",
-  email: "Email",
-  whatsapp: "WhatsApp",
-  gender: "Jenis Kelamin",
-  institution: "Instansi / Perguruan Tinggi",
-  job: "Pekerjaan / Jabatan",
-  linkedin: "LinkedIn",
-  github: "GitHub / Portfolio",
-  level: "Level Keahlian",
-  focus: "Bidang Minat",
-  tools: "Tools / Framework",
-  source: "Sumber Info",
-  expectation: "Ekspektasi",
-  question: "Pertanyaan",
-  status: "Status",
-  checkin_time: "Waktu Check-in",
-  created_at: "Terdaftar",
-};
+// Table Action Events
+document.getElementById("table-body")?.addEventListener("click", (e) => {
+  // Copy ticket
+  const copyBtn = e.target.closest("[data-copy]");
+  if (copyBtn) {
+    const code = copyBtn.dataset.copy;
+    navigator.clipboard.writeText(code).then(() => {
+      const originalText = copyBtn.innerHTML;
+      copyBtn.innerHTML = `<span>Disalin!</span>`;
+      setTimeout(() => { copyBtn.innerHTML = originalText; }, 1200);
+    });
+    return;
+  }
 
-const DETAIL_FIELDS = [
-  "qr_token", "full_name", "email", "whatsapp", "gender",
-  "institution", "job", "linkedin", "github", "level",
-  "focus", "tools", "source", "expectation", "question",
-  "status", "checkin_time", "created_at",
-];
-
-const EDITABLE_FIELDS = [
-  "full_name", "gender", "institution", "job", "linkedin", "github",
-  "level", "focus", "tools", "source", "expectation", "question", "status",
-];
-
-const SELECT_OPTIONS = {
-  gender: { L: "Laki-laki", P: "Perempuan" },
-  level: { beginner: "Beginner", intermediate: "Intermediate", expert: "Expert" },
-  status: { pending: "Pending", hadir: "Hadir" },
-};
-
-const TEXTAREA_FIELDS = new Set(["expectation", "question"]);
-const participantModal = document.getElementById("participant-modal");
-const participantModalCard = participantModal.querySelector(".modal-card");
-const modalDescription = document.getElementById("modal-description");
-const modalStatus = document.getElementById("modal-status");
-const dashboardRoot = document.getElementById("dashboard");
-const MODAL_FOCUSABLE = [
-  "button:not([disabled])",
-  "input:not([disabled])",
-  "select:not([disabled])",
-  "textarea:not([disabled])",
-  "[href]",
-  '[tabindex]:not([tabindex="-1"])',
-].join(",");
-let modalReturnFocus = null;
-let modalBusy = false;
-
-function findParticipant(id) {
-  return participants.find((p) => p.id === id);
-}
-
-document.getElementById("table-body").addEventListener("click", (e) => {
+  // Row actions
   const btn = e.target.closest("[data-action]");
   if (!btn) return;
-  const p = findParticipant(btn.dataset.id);
+  const p = participants.find((item) => item.id === btn.dataset.id);
   if (!p) return;
-  modalReturnFocus = btn;
-  if (btn.dataset.action === "view") openModal("view", p);
-  else if (btn.dataset.action === "edit") openModal("edit", p);
-  else if (btn.dataset.action === "delete") openModal("delete", p);
-});
 
-function openModal(mode, p) {
-  const title = document.getElementById("modal-title");
-  const body = document.getElementById("modal-body");
-  const footer = document.getElementById("modal-footer");
-  let initialFocusSelector = "#btn-modal-close";
-
-  modalBusy = false;
-  participantModal.removeAttribute("aria-busy");
-  participantModal.dataset.mode = mode;
-  document.getElementById("btn-modal-close").disabled = false;
-  setModalStatus("", "");
-
-  if (mode === "view") {
-    title.textContent = "Detail Peserta";
-    modalDescription.textContent = `Data pendaftaran ${p.full_name}.`;
-    body.innerHTML = renderDetail(p);
-    footer.innerHTML = `
-      <button type="button" class="btn btn-secondary" id="modal-edit-btn">Edit Peserta</button>
-      <button type="button" class="btn btn-ghost" id="modal-close-btn">Tutup</button>`;
-    document.getElementById("modal-edit-btn").addEventListener("click", () => openModal("edit", p));
-    document.getElementById("modal-close-btn").addEventListener("click", closeModal);
-  } else if (mode === "edit") {
-    title.textContent = "Edit Peserta";
-    modalDescription.textContent = `Perbarui data yang diizinkan untuk ${p.full_name}.`;
-    body.innerHTML = renderEditForm(p);
-    footer.innerHTML = `
-      <button type="button" class="btn btn-ghost" id="modal-cancel-btn">Batal</button>
-      <button type="button" class="btn btn-primary" id="modal-save-btn">Simpan Perubahan</button>`;
-    document.getElementById("modal-cancel-btn").addEventListener("click", () => openModal("view", p));
-    document.getElementById("modal-save-btn").addEventListener("click", () => saveEdit(p));
-    initialFocusSelector = "[data-field]";
-  } else {
-    title.textContent = "Hapus Peserta?";
-    modalDescription.textContent = "Konfirmasi tindakan penghapusan data peserta.";
-    body.innerHTML = `
-      <div class="delete-confirmation">
-        <span class="delete-confirmation-label">Delete / Participant</span>
-        <strong>${esc(p.full_name)}</strong>
-        <code>${esc(p.qr_token)}</code>
-        <p>Tindakan ini akan menghapus data peserta dari sistem dan tidak dapat dibatalkan.</p>
-      </div>`;
-    footer.innerHTML = `
-      <button type="button" class="btn btn-ghost" id="modal-delete-cancel-btn">Batal</button>
-      <button type="button" class="btn btn-danger" id="modal-delete-confirm-btn">Hapus Peserta</button>`;
-    document.getElementById("modal-delete-cancel-btn").addEventListener("click", closeModal);
-    document.getElementById("modal-delete-confirm-btn").addEventListener("click", () => deleteParticipant(p));
-    initialFocusSelector = "#modal-delete-cancel-btn";
-  }
-
-  dashboardRoot.inert = true;
-  dashboardRoot.setAttribute("aria-hidden", "true");
-  document.body.classList.add("modal-open");
-  participantModal.classList.remove("hidden");
-  requestAnimationFrame(() => {
-    const initialFocus = participantModal.querySelector(initialFocusSelector) || participantModalCard;
-    initialFocus.focus();
-  });
-}
-
-function closeModal(options = {}) {
-  if (modalBusy) return;
-  const { restoreFocus = true } = options;
-  participantModal.classList.add("hidden");
-  participantModal.removeAttribute("data-mode");
-  participantModal.removeAttribute("aria-busy");
-  dashboardRoot.inert = false;
-  dashboardRoot.removeAttribute("aria-hidden");
-  document.body.classList.remove("modal-open");
-
-  if (restoreFocus) {
-    const target = modalReturnFocus?.isConnected
-      ? modalReturnFocus
-      : document.getElementById("search-input");
-    target?.focus();
-  }
-  modalReturnFocus = null;
-}
-
-function setModalStatus(state, message) {
-  modalStatus.textContent = message;
-  if (state) modalStatus.dataset.state = state;
-  else modalStatus.removeAttribute("data-state");
-}
-
-function setModalBusy(busy, busyLabel) {
-  modalBusy = busy;
-  const closeButton = document.getElementById("btn-modal-close");
-  const actionButton = document.getElementById("modal-save-btn") ||
-    document.getElementById("modal-delete-confirm-btn");
-  const secondaryButtons = participantModal.querySelectorAll(".modal-footer button:not(#modal-save-btn):not(#modal-delete-confirm-btn)");
-
-  closeButton.disabled = busy;
-  secondaryButtons.forEach((button) => { button.disabled = busy; });
-  if (actionButton) {
-    if (!actionButton.dataset.idleLabel) actionButton.dataset.idleLabel = actionButton.textContent;
-    actionButton.disabled = busy;
-    actionButton.textContent = busy ? busyLabel : actionButton.dataset.idleLabel;
-    if (busy) actionButton.setAttribute("aria-busy", "true");
-    else actionButton.removeAttribute("aria-busy");
-  }
-
-  if (busy) participantModal.setAttribute("aria-busy", "true");
-  else participantModal.removeAttribute("aria-busy");
-}
-
-function formatValue(f, v) {
-  if (v == null || v === "") return "-";
-  if (f === "checkin_time" || f === "created_at") return new Date(v).toLocaleString("id-ID");
-  const opts = SELECT_OPTIONS[f];
-  if (opts && opts[v]) return opts[v];
-  return v;
-}
-
-function renderDetail(p) {
-  const rows = DETAIL_FIELDS.map((f) => {
-    const full = f === "expectation" || f === "question";
-    const value = formatValue(f, p[f]);
-    const valueMarkup = f === "status"
-      ? `<span class="badge ${p.status === "hadir" ? "badge-hadir" : "badge-pending"}">${esc(value)}</span>`
-      : `<span class="d-value ${f === "qr_token" ? "detail-ticket-id" : ""}">${esc(value)}</span>`;
-    return `<div class="detail-item ${full ? "detail-full" : ""}">
-      <span class="d-label">${esc(FIELD_LABELS[f] || f)}</span>
-      ${valueMarkup}
-    </div>`;
-  }).join("");
-  return `<div class="detail-grid">${rows}</div>`;
-}
-
-function renderEditForm(p) {
-  const controls = EDITABLE_FIELDS.map((f) => {
-    const label = FIELD_LABELS[f];
-    const val = p[f] ?? "";
-    const opts = SELECT_OPTIONS[f];
-    const full = opts || TEXTAREA_FIELDS.has(f);
-    let input;
-    if (opts) {
-      input = `<select id="edit-${f}" data-field="${f}">` +
-        Object.entries(opts)
-          .map(([v, l]) => `<option value="${esc(v)}" ${v === val ? "selected" : ""}>${esc(l)}</option>`)
-          .join("") +
-        `</select>`;
-    } else if (TEXTAREA_FIELDS.has(f)) {
-      input = `<textarea id="edit-${f}" data-field="${f}" rows="2">${esc(val)}</textarea>`;
-    } else {
-      input = `<input type="text" id="edit-${f}" data-field="${f}" value="${esc(val)}" />`;
-    }
-    return `<div class="form-group ${full ? "detail-full" : ""}"><label for="edit-${f}">${esc(label)}</label>${input}</div>`;
-  }).join("");
-  return `<div class="form-row">${controls}</div>`;
-}
-
-async function saveEdit(p) {
-  if (modalBusy) return;
-  const updates = {};
-  EDITABLE_FIELDS.forEach((f) => {
-    const el = document.querySelector(`[data-field="${f}"]`);
-    if (el) updates[f] = el.value.trim();
-  });
-
-  if (updates.status === "hadir" && !p.checkin_time) {
-    updates.checkin_time = new Date().toISOString();
-  } else if (updates.status !== "hadir" && p.status === "hadir") {
-    updates.checkin_time = null;
-  }
-
-  setModalStatus("loading", "Menyimpan perubahan peserta...");
-  setModalBusy(true, "Menyimpan...");
-  try {
-    await window.SOGA_API.updateParticipant(p.id, updates);
-    setModalBusy(false);
-    closeModal({ restoreFocus: false });
-    await loadParticipants();
-    document.getElementById("search-input").focus();
-  } catch (e) {
-    setModalBusy(false);
-    setModalStatus("error", "Perubahan belum dapat disimpan. Periksa data dan coba kembali.");
-    modalStatus.focus();
-  }
-}
-
-async function deleteParticipant(p) {
-  if (modalBusy) return;
-  setModalStatus("loading", "Menghapus data peserta...");
-  setModalBusy(true, "Menghapus...");
-  try {
-    await window.SOGA_API.deleteParticipant(p.id);
-    setModalBusy(false);
-    closeModal({ restoreFocus: false });
-    await loadParticipants();
-    document.getElementById("search-input").focus();
-  } catch (e) {
-    setModalBusy(false);
-    setModalStatus("error", "Data peserta belum dapat dihapus. Silakan coba kembali.");
-    modalStatus.focus();
-  }
-}
-
-document.getElementById("btn-modal-close").addEventListener("click", closeModal);
-participantModal.addEventListener("click", (e) => {
-  if (e.target === e.currentTarget) closeModal();
-});
-
-document.addEventListener("keydown", (e) => {
-  if (participantModal.classList.contains("hidden")) return;
-
-  if (e.key === "Escape") {
-    e.preventDefault();
-    closeModal();
-    return;
-  }
-
-  if (e.key !== "Tab") return;
-  const focusable = [...participantModal.querySelectorAll(MODAL_FOCUSABLE)]
-    .filter((element) => element.getClientRects().length > 0);
-  if (!focusable.length) {
-    e.preventDefault();
-    participantModalCard.focus();
-    return;
-  }
-
-  const first = focusable[0];
-  const last = focusable[focusable.length - 1];
-  if (e.shiftKey && document.activeElement === first) {
-    e.preventDefault();
-    last.focus();
-  } else if (!e.shiftKey && document.activeElement === last) {
-    e.preventDefault();
-    first.focus();
+  if (btn.dataset.action === "view") {
+    openTicketDrawer(p);
+  } else if (btn.dataset.action === "edit") {
+    openEditModal(p);
+  } else if (btn.dataset.action === "delete") {
+    openDeleteModal(p);
   }
 });
 
-document.getElementById("search-input").addEventListener("input", (e) => {
-  renderTable(document.getElementById("filter-status").value, e.target.value);
+// Search & Filter Events
+document.getElementById("search-input")?.addEventListener("input", (e) => {
+  renderTable(document.getElementById("filter-status")?.value || "all", e.target.value);
 });
-document.getElementById("filter-status").addEventListener("change", (e) => {
-  renderTable(e.target.value, document.getElementById("search-input").value);
+
+document.getElementById("filter-status")?.addEventListener("change", (e) => {
+  renderTable(e.target.value, document.getElementById("search-input")?.value || "");
 });
-document.getElementById("btn-refresh").addEventListener("click", loadParticipants);
+
+document.getElementById("btn-refresh")?.addEventListener("click", loadParticipants);
 
 // ============================================================
-// Check-in
+// Slide-over Drawer: "Detail Tiket"
+// ============================================================
+const ticketDrawer = document.getElementById("ticket-drawer");
+const drawerBackdrop = document.getElementById("drawer-backdrop");
+const btnDrawerClose = document.getElementById("btn-drawer-close");
+const drawerBody = document.getElementById("drawer-body");
+const drawerFooter = document.getElementById("drawer-footer");
+
+function openTicketDrawer(p) {
+  if (!ticketDrawer || !drawerBody || !drawerFooter) return;
+  currentViewingParticipant = p;
+
+  const isHadir = p.status === "hadir";
+  const checkinTimeFormatted = p.checkin_time
+    ? new Date(p.checkin_time).toLocaleString("id-ID")
+    : "Belum check-in";
+  const createdAtFormatted = p.created_at
+    ? new Date(p.created_at).toLocaleString("id-ID")
+    : "-";
+
+  // Render Credential Preview Card
+  drawerBody.innerHTML = `
+    <div class="credential-preview-card">
+      <svg class="credential-bg-geometry" viewBox="0 0 520 760" aria-hidden="true">
+        <path d="M26 152 102 92 176 142 266 58 358 120 492 44M102 92l42 188 118 58 96-218 82 226M144 280 70 440l156 92 214-186M226 532l-48 174M358 120l-92-62" />
+        <circle cx="26" cy="152" r="3" />
+        <circle cx="102" cy="92" r="5" />
+        <circle cx="176" cy="142" r="3" />
+        <circle cx="266" cy="58" r="4" />
+        <circle cx="358" cy="120" r="6" fill="#7c3aed" />
+        <circle cx="492" cy="44" r="3" />
+        <circle cx="226" cy="532" r="4" fill="#d9ba91" />
+      </svg>
+
+      <div class="credential-card-top">
+        <div class="credential-brand-flex">
+          <img src="assets/logo-web.png" alt="Data Sorcerers" />
+          <strong>Data Sorcerers</strong>
+        </div>
+        <span class="credential-badge-edition">SOGA / 011</span>
+      </div>
+
+      <div class="credential-card-title">
+        <small>Participant Credential</small>
+        <h3>${esc(p.full_name)}</h3>
+      </div>
+
+      <div class="credential-qr-wrap" id="drawer-qr-container"></div>
+
+      <div class="credential-ticket-pill" id="drawer-ticket-pill" title="Klik untuk salin kode tiket">
+        <span>${esc(p.qr_token)}</span>
+        ${ICON_COPY}
+      </div>
+
+      <div class="credential-card-footer">
+        <span>25 OKT 2026 • YOGYAKARTA</span>
+        <span class="credential-status-pill ${isHadir ? "is-valid" : "is-pending"}">
+          ${isHadir ? "✔ VALID TICKET" : "⏱ BELUM HADIR"}
+        </span>
+      </div>
+    </div>
+
+    <div class="drawer-details-box">
+      <h4>Data Lengkap Peserta</h4>
+      <dl class="detail-grid">
+        <div class="detail-item">
+          <dt>Nama Lengkap</dt>
+          <dd>${esc(p.full_name)}</dd>
+        </div>
+        <div class="detail-item">
+          <dt>Email</dt>
+          <dd><a href="mailto:${esc(p.email)}">${esc(p.email || "-")}</a></dd>
+        </div>
+        <div class="detail-item">
+          <dt>Nomor WhatsApp</dt>
+          <dd>
+            ${p.whatsapp ? `<a href="https://wa.me/${p.whatsapp.replace(/\D/g, '')}" target="_blank" rel="noopener">📱 ${esc(p.whatsapp)}</a>` : "-"}
+          </dd>
+        </div>
+        <div class="detail-item">
+          <dt>Jenis Kelamin</dt>
+          <dd>${p.gender === "L" ? "Laki-laki" : p.gender === "P" ? "Perempuan" : "-"}</dd>
+        </div>
+        <div class="detail-item full-width">
+          <dt>Instansi / Kampus</dt>
+          <dd>${esc(p.institution || "-")}</dd>
+        </div>
+        <div class="detail-item">
+          <dt>Pekerjaan / Posisi</dt>
+          <dd>${esc(p.job || "-")}</dd>
+        </div>
+        <div class="detail-item">
+          <dt>Level Keahlian</dt>
+          <dd>${esc(p.level || "-")}</dd>
+        </div>
+        <div class="detail-item full-width">
+          <dt>Bidang Minat</dt>
+          <dd>${esc(p.focus || "-")}</dd>
+        </div>
+        <div class="detail-item full-width">
+          <dt>Tools / Framework</dt>
+          <dd>${esc(p.tools || "-")}</dd>
+        </div>
+        <div class="detail-item">
+          <dt>Waktu Check-in</dt>
+          <dd>${checkinTimeFormatted}</dd>
+        </div>
+        <div class="detail-item">
+          <dt>Terdaftar Pada</dt>
+          <dd>${createdAtFormatted}</dd>
+        </div>
+        ${p.expectation ? `<div class="detail-item full-width"><dt>Ekspektasi</dt><dd>${esc(p.expectation)}</dd></div>` : ""}
+        ${p.question ? `<div class="detail-item full-width"><dt>Pertanyaan</dt><dd>${esc(p.question)}</dd></div>` : ""}
+      </dl>
+    </div>
+  `;
+
+  // Render QR Code inside drawer
+  const qrContainer = document.getElementById("drawer-qr-container");
+  if (qrContainer && typeof QRCode !== "undefined") {
+    try {
+      new QRCode(qrContainer, {
+        text: p.qr_token,
+        width: 138,
+        height: 138,
+        colorDark: "#21152f",
+        colorLight: "#ffffff",
+      });
+    } catch (e) {
+      qrContainer.innerHTML = `<span style="font-family:monospace;font-size:12px;color:#746b80;">${esc(p.qr_token)}</span>`;
+    }
+  }
+
+  // Copy Ticket Pill click
+  document.getElementById("drawer-ticket-pill")?.addEventListener("click", () => {
+    navigator.clipboard.writeText(p.qr_token).then(() => {
+      const pill = document.getElementById("drawer-ticket-pill");
+      if (pill) {
+        const orig = pill.innerHTML;
+        pill.innerHTML = `<span>Kode Disalin!</span>`;
+        setTimeout(() => { pill.innerHTML = orig; }, 1200);
+      }
+    });
+  });
+
+  // Render Drawer Action Buttons
+  drawerFooter.innerHTML = `
+    <button type="button" class="btn btn-ghost" id="drawer-btn-close">Tutup</button>
+    <button type="button" class="btn btn-secondary" id="drawer-btn-edit">Edit Data</button>
+    <button type="button" class="btn ${isHadir ? "btn-secondary" : "btn-primary"}" id="drawer-btn-toggle-checkin">
+      ${isHadir ? "Batalkan Check-in" : "✔ Check-in Sekarang"}
+    </button>
+  `;
+
+  document.getElementById("drawer-btn-close")?.addEventListener("click", closeTicketDrawer);
+  document.getElementById("drawer-btn-edit")?.addEventListener("click", () => {
+    closeTicketDrawer();
+    openEditModal(p);
+  });
+  document.getElementById("drawer-btn-toggle-checkin")?.addEventListener("click", async () => {
+    if (isHadir) {
+      await undoCheckin(p);
+    } else {
+      await doCheckin(p.qr_token);
+      const updated = participants.find((item) => item.id === p.id);
+      if (updated) openTicketDrawer(updated);
+    }
+  });
+
+  ticketDrawer.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+}
+
+function closeTicketDrawer() {
+  if (!ticketDrawer) return;
+  ticketDrawer.classList.add("hidden");
+  document.body.classList.remove("modal-open");
+  currentViewingParticipant = null;
+}
+
+btnDrawerClose?.addEventListener("click", closeTicketDrawer);
+drawerBackdrop?.addEventListener("click", closeTicketDrawer);
+
+async function undoCheckin(p) {
+  if (!confirm(`Batalkan status check-in untuk ${p.full_name}?`)) return;
+  try {
+    await window.SOGA_API.updateParticipant(p.id, {
+      status: "pending",
+      checkin_time: null,
+    });
+    await loadParticipants();
+    const updated = participants.find((item) => item.id === p.id);
+    if (updated) openTicketDrawer(updated);
+  } catch (e) {
+    alert("Gagal membatalkan check-in: " + (e.message || "terjadi kesalahan"));
+  }
+}
+
+// ============================================================
+// Check-in Operations (Manual & Scanner)
 // ============================================================
 function renderCheckinStatus(state, message) {
   const status = document.getElementById("checkin-status");
+  if (!status) return;
   const icons = {
     success: ICON_CHECK,
     warning: ICON_WARNING,
@@ -583,9 +705,7 @@ function renderCheckinStatus(state, message) {
     error: ICON_X,
   };
 
-  status.innerHTML = icons[state] || "";
-  status.appendChild(document.createTextNode(message));
-  status.className = "submit-status";
+  status.innerHTML = (icons[state] || "") + `<span>${esc(message)}</span>`;
   status.dataset.state = state;
 }
 
@@ -595,10 +715,12 @@ async function doCheckin(token) {
     renderCheckinStatus("invalid", "Format Ticket ID belum sesuai. Contoh: SGN11-ABC123.");
     return;
   }
+
   try {
     await window.SOGA_API.checkInParticipant(token);
-    renderCheckinStatus("success", `${token} berhasil diverifikasi dan check-in.`);
-    document.getElementById("checkin-input").value = "";
+    renderCheckinStatus("success", `Tiket ${token} berhasil diverifikasi dan check-in tercatat.`);
+    const input = document.getElementById("checkin-input");
+    if (input) input.value = "";
     await loadParticipants();
   } catch (e) {
     renderCheckinStatus(
@@ -608,19 +730,30 @@ async function doCheckin(token) {
   }
 }
 
-document.getElementById("btn-checkin").addEventListener("click", () => {
-  doCheckin(document.getElementById("checkin-input").value);
+document.getElementById("btn-checkin")?.addEventListener("click", () => {
+  const input = document.getElementById("checkin-input");
+  if (input) doCheckin(input.value);
 });
-document.getElementById("checkin-input").addEventListener("keypress", (e) => {
+
+document.getElementById("checkin-input")?.addEventListener("keypress", (e) => {
   if (e.key === "Enter") doCheckin(e.target.value);
 });
 
-// QR scanner (html5-qrcode)
-document.getElementById("btn-scan-toggle").addEventListener("click", () => {
-  const box = document.getElementById("scanner-box");
-  if (box.classList.contains("hidden")) {
-    box.classList.remove("hidden");
-    if (!scanner) {
+// QR Scanner via Camera
+const btnScanToggle = document.getElementById("btn-scan-toggle");
+const scanToggleLabel = document.getElementById("scan-toggle-label");
+const scannerBox = document.getElementById("scanner-box");
+const scannerPlaceholder = document.getElementById("scanner-placeholder");
+
+btnScanToggle?.addEventListener("click", () => {
+  if (!scannerBox) return;
+
+  if (scannerBox.classList.contains("hidden")) {
+    scannerBox.classList.remove("hidden");
+    scannerPlaceholder?.classList.add("hidden");
+    if (scanToggleLabel) scanToggleLabel.textContent = "Tutup Kamera";
+
+    if (!scanner && typeof Html5Qrcode !== "undefined") {
       scanner = new Html5Qrcode("scanner-box");
       scanner.start(
         { facingMode: "environment" },
@@ -629,10 +762,10 @@ document.getElementById("btn-scan-toggle").addEventListener("click", () => {
           doCheckin(text);
           stopScanner();
         }
-      ).catch(() => renderCheckinStatus(
-        "error",
-        "Kamera tidak tersedia. Gunakan input Ticket ID manual."
-      ));
+      ).catch(() => {
+        renderCheckinStatus("error", "Kamera tidak dapat diakses. Gunakan input manual Ticket ID.");
+        stopScanner();
+      });
     }
   } else {
     stopScanner();
@@ -640,8 +773,9 @@ document.getElementById("btn-scan-toggle").addEventListener("click", () => {
 });
 
 function stopScanner() {
-  const box = document.getElementById("scanner-box");
-  box.classList.add("hidden");
+  if (scannerBox) scannerBox.classList.add("hidden");
+  if (scannerPlaceholder) scannerPlaceholder.classList.remove("hidden");
+  if (scanToggleLabel) scanToggleLabel.textContent = "Buka Kamera Scanner";
   if (scanner) {
     scanner.stop().then(() => scanner.clear()).catch(() => {});
     scanner = null;
@@ -649,7 +783,7 @@ function stopScanner() {
 }
 
 // ============================================================
-// Export CSV (bisa dibuka di Excel)
+// Export CSV
 // ============================================================
 const CSV_HEADERS = [
   "qr_token", "full_name", "email", "whatsapp", "gender",
@@ -669,24 +803,24 @@ function quoteCsvCell(value) {
 }
 
 function buildParticipantsCsv(data = participants) {
-  const rows = data.map((participant) =>
-    CSV_HEADERS.map((header) => quoteCsvCell(participant[header] ?? "")).join(",")
+  const rows = data.map((p) =>
+    CSV_HEADERS.map((header) => quoteCsvCell(p[header] ?? "")).join(",")
   );
   return [CSV_HEADERS.join(","), ...rows].join("\n");
 }
 
-document.getElementById("btn-export").addEventListener("click", () => {
+document.getElementById("btn-export")?.addEventListener("click", () => {
   const csv = buildParticipantsCsv();
   const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "soga11_peserta.csv";
+  a.download = `soga11_peserta_${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
   URL.revokeObjectURL(a.href);
 });
 
 // ============================================================
-// Registration toggle
+// Registration Status Control
 // ============================================================
 async function loadRegistrationStatus() {
   if (registrationStatusLoading) return;
@@ -710,58 +844,67 @@ function renderRegistrationToggle() {
   const txt = document.getElementById("reg-status-text");
   const btn = document.getElementById("btn-toggle-registration");
   const badge = document.getElementById("reg-status-badge");
+  const settingsTitle = document.getElementById("settings-reg-status-title");
+  const settingsDesc = document.getElementById("settings-reg-status-desc");
+  const settingsBtn = document.getElementById("btn-settings-toggle-reg");
+
   if (!txt || !btn || !badge) return;
 
   if (registrationStatusLoading) {
-    txt.textContent = "Memuat status pendaftaran...";
+    txt.textContent = "Memuat status...";
     badge.textContent = "Loading";
     badge.dataset.state = "loading";
-    btn.textContent = "Memuat Status...";
-    btn.className = "btn btn-secondary admin-registration-action";
+    btn.textContent = "Memuat...";
     btn.disabled = true;
-    btn.setAttribute("aria-busy", "true");
-    btn.setAttribute("aria-label", "Memuat status pendaftaran");
     return;
   }
 
   if (typeof registrationOpen !== "boolean") {
-    txt.textContent = "Status pendaftaran belum dapat dimuat.";
-    badge.textContent = "Unavailable";
-    badge.dataset.state = "error";
+    txt.textContent = "Status gagal dimuat.";
+    badge.textContent = "Error";
+    badge.dataset.state = "closed";
     btn.textContent = "Coba Lagi";
-    btn.className = "btn btn-secondary admin-registration-action";
     btn.disabled = false;
-    btn.removeAttribute("aria-busy");
-    btn.setAttribute("aria-label", "Coba muat ulang status pendaftaran");
     return;
   }
 
-  txt.textContent = registrationOpen ? "Pendaftaran terbuka" : "Pendaftaran ditutup";
+  txt.textContent = registrationOpen ? "Pendaftaran dibuka untuk publik" : "Pendaftaran ditutup";
   badge.textContent = registrationOpen ? "Open" : "Closed";
   badge.dataset.state = registrationOpen ? "open" : "closed";
   btn.textContent = registrationToggleBusy
     ? "Menyimpan..."
     : registrationOpen ? "Tutup Pendaftaran" : "Buka Pendaftaran";
   btn.className = registrationOpen
-    ? "btn btn-secondary admin-registration-action is-close"
-    : "btn btn-primary admin-registration-action";
+    ? "btn btn-sm btn-outline-danger"
+    : "btn btn-sm btn-primary";
   btn.disabled = registrationToggleBusy;
-  if (registrationToggleBusy) btn.setAttribute("aria-busy", "true");
-  else btn.removeAttribute("aria-busy");
-  btn.setAttribute(
-    "aria-label",
-    registrationToggleBusy
-      ? "Menyimpan status pendaftaran"
-      : registrationOpen ? "Tutup pendaftaran peserta" : "Buka pendaftaran peserta"
-  );
+
+  if (settingsTitle) {
+    settingsTitle.textContent = registrationOpen ? "Status Pendaftaran: Buka (Open)" : "Status Pendaftaran: Ditutup (Closed)";
+  }
+  if (settingsDesc) {
+    settingsDesc.textContent = registrationOpen
+      ? "Formulir pendaftaran dapat diakses oleh publik secara terbuka di landing page."
+      : "Formulir pendaftaran dinonaktifkan. Publik tidak dapat mendaftar.";
+  }
+  if (settingsBtn) {
+    settingsBtn.textContent = registrationOpen ? "Tutup Pendaftaran" : "Buka Pendaftaran";
+    settingsBtn.className = registrationOpen ? "btn btn-outline-danger" : "btn btn-primary";
+    settingsBtn.disabled = registrationToggleBusy;
+  }
 }
 
-document.getElementById("btn-toggle-registration").addEventListener("click", async () => {
+async function handleToggleRegistration() {
   if (registrationStatusLoading || registrationToggleBusy) return;
   if (typeof registrationOpen !== "boolean") {
     await loadRegistrationStatus();
     return;
   }
+
+  const confirmMsg = registrationOpen
+    ? "Tutup pendaftaran sekarang? Calon peserta tidak akan dapat mendaftar lagi."
+    : "Buka kembali pendaftaran untuk publik?";
+  if (!confirm(confirmMsg)) return;
 
   registrationToggleBusy = true;
   renderRegistrationToggle();
@@ -774,7 +917,179 @@ document.getElementById("btn-toggle-registration").addEventListener("click", asy
     registrationToggleBusy = false;
     renderRegistrationToggle();
   }
-});
+}
+
+document.getElementById("btn-toggle-registration")?.addEventListener("click", handleToggleRegistration);
+document.getElementById("btn-settings-toggle-reg")?.addEventListener("click", handleToggleRegistration);
 
 // ============================================================
+// Edit & Delete Participant Modals
+// ============================================================
+const participantModal = document.getElementById("participant-modal");
+const modalTitle = document.getElementById("modal-title");
+const modalDescription = document.getElementById("modal-description");
+const modalBody = document.getElementById("modal-body");
+const modalFooter = document.getElementById("modal-footer");
+const modalStatus = document.getElementById("modal-status");
+let modalBusy = false;
+
+function openEditModal(p) {
+  if (!participantModal || !modalBody || !modalFooter) return;
+  modalBusy = false;
+  modalTitle.textContent = "Edit Peserta";
+  modalDescription.textContent = `Perbarui data untuk ${p.full_name} (${p.qr_token}).`;
+  modalStatus.textContent = "";
+
+  modalBody.innerHTML = `
+    <form id="form-edit-participant">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="edit-name">Nama Lengkap</label>
+          <input type="text" id="edit-name" value="${esc(p.full_name)}" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-gender">Jenis Kelamin</label>
+          <select id="edit-gender">
+            <option value="L" ${p.gender === "L" ? "selected" : ""}>Laki-laki</option>
+            <option value="P" ${p.gender === "P" ? "selected" : ""}>Perempuan</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="edit-institution">Instansi / Kampus</label>
+          <input type="text" id="edit-institution" value="${esc(p.institution || "")}" />
+        </div>
+        <div class="form-group">
+          <label for="edit-job">Pekerjaan / Jabatan</label>
+          <input type="text" id="edit-job" value="${esc(p.job || "")}" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="edit-level">Level Keahlian</label>
+          <select id="edit-level">
+            <option value="beginner" ${p.level === "beginner" ? "selected" : ""}>Beginner</option>
+            <option value="intermediate" ${p.level === "intermediate" ? "selected" : ""}>Intermediate</option>
+            <option value="expert" ${p.level === "expert" ? "selected" : ""}>Expert</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-status">Status Kehadiran</label>
+          <select id="edit-status">
+            <option value="pending" ${p.status === "pending" ? "selected" : ""}>Belum Hadir (Pending)</option>
+            <option value="hadir" ${p.status === "hadir" ? "selected" : ""}>Sudah Hadir (Hadir)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="edit-focus">Bidang Minat</label>
+        <input type="text" id="edit-focus" value="${esc(p.focus || "")}" />
+      </div>
+      <div class="form-group">
+        <label for="edit-tools">Tools / Framework</label>
+        <input type="text" id="edit-tools" value="${esc(p.tools || "")}" />
+      </div>
+    </form>
+  `;
+
+  modalFooter.innerHTML = `
+    <button type="button" class="btn btn-ghost" id="btn-modal-cancel">Batal</button>
+    <button type="button" class="btn btn-primary" id="btn-modal-save">Simpan Perubahan</button>
+  `;
+
+  document.getElementById("btn-modal-cancel")?.addEventListener("click", closeParticipantModal);
+  document.getElementById("btn-modal-save")?.addEventListener("click", async () => {
+    const name = document.getElementById("edit-name")?.value.trim();
+    if (!name) {
+      alert("Nama lengkap tidak boleh kosong");
+      return;
+    }
+    const updates = {
+      full_name: name,
+      gender: document.getElementById("edit-gender")?.value,
+      institution: document.getElementById("edit-institution")?.value.trim(),
+      job: document.getElementById("edit-job")?.value.trim(),
+      level: document.getElementById("edit-level")?.value,
+      focus: document.getElementById("edit-focus")?.value.trim(),
+      tools: document.getElementById("edit-tools")?.value.trim(),
+      status: document.getElementById("edit-status")?.value,
+    };
+    if (updates.status === "hadir" && !p.checkin_time) {
+      updates.checkin_time = new Date().toISOString();
+    } else if (updates.status === "pending") {
+      updates.checkin_time = null;
+    }
+
+    try {
+      await window.SOGA_API.updateParticipant(p.id, updates);
+      closeParticipantModal();
+      await loadParticipants();
+    } catch (e) {
+      alert("Gagal menyimpan perubahan: " + (e.message || "terjadi kesalahan"));
+    }
+  });
+
+  participantModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+}
+
+function openDeleteModal(p) {
+  if (!participantModal || !modalBody || !modalFooter) return;
+  modalBusy = false;
+  modalTitle.textContent = "Hapus Peserta?";
+  modalDescription.textContent = "Konfirmasi penghapusan data peserta dari database.";
+  modalStatus.textContent = "";
+
+  modalBody.innerHTML = `
+    <div class="delete-confirmation">
+      <span class="delete-confirmation-label">PERINGATAN HAPUS DATA</span>
+      <strong>${esc(p.full_name)}</strong>
+      <code>${esc(p.qr_token)}</code>
+      <p>Apakah kamu yakin ingin menghapus data peserta ini dari sistem? Tindakan ini tidak dapat dibatalkan.</p>
+    </div>
+  `;
+
+  modalFooter.innerHTML = `
+    <button type="button" class="btn btn-ghost" id="btn-modal-delete-cancel">Batal</button>
+    <button type="button" class="btn btn-danger" id="btn-modal-delete-confirm">Hapus Peserta</button>
+  `;
+
+  document.getElementById("btn-modal-delete-cancel")?.addEventListener("click", closeParticipantModal);
+  document.getElementById("btn-modal-delete-confirm")?.addEventListener("click", async () => {
+    try {
+      await window.SOGA_API.deleteParticipant(p.id);
+      closeParticipantModal();
+      await loadParticipants();
+    } catch (e) {
+      alert("Gagal menghapus peserta: " + (e.message || "terjadi kesalahan"));
+    }
+  });
+
+  participantModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+}
+
+function closeParticipantModal() {
+  if (!participantModal) return;
+  participantModal.classList.add("hidden");
+  document.body.classList.remove("modal-open");
+}
+
+document.getElementById("btn-modal-close")?.addEventListener("click", closeParticipantModal);
+participantModal?.addEventListener("click", (e) => {
+  if (e.target === participantModal) closeParticipantModal();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    if (ticketDrawer && !ticketDrawer.classList.contains("hidden")) {
+      closeTicketDrawer();
+    } else if (participantModal && !participantModal.classList.contains("hidden")) {
+      closeParticipantModal();
+    }
+  }
+});
+
+// Start application
 boot();
