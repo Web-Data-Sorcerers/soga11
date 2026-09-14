@@ -42,6 +42,17 @@ function getInitials(name, email) {
   return "DS";
 }
 
+function formatWhatsAppChatUrl(phone) {
+  if (!phone) return "";
+  let clean = String(phone).replace(/\D/g, "");
+  if (clean.startsWith("0")) {
+    clean = "62" + clean.slice(1);
+  } else if (!clean.startsWith("62")) {
+    clean = "62" + clean;
+  }
+  return "https://wa.me/" + clean;
+}
+
 // ============================================================
 // Auth & Initialization
 // ============================================================
@@ -530,14 +541,28 @@ function renderTable(filter = "all", query = "") {
   if (filter !== "all") list = list.filter((p) => p.status === filter);
   if (query) {
     const q = query.toLowerCase();
-    list = list.filter(
-      (p) =>
+    const qDigits = q.replace(/\D/g, "");
+    let qSub = qDigits;
+    if (qSub.startsWith("62")) qSub = qSub.slice(2);
+    else if (qSub.startsWith("0")) qSub = qSub.slice(1);
+    qSub = qSub.replace(/^0+/, "");
+
+    list = list.filter((p) => {
+      if (
         p.full_name?.toLowerCase().includes(q) ||
         p.qr_token?.toLowerCase().includes(q) ||
         p.institution?.toLowerCase().includes(q) ||
         p.email?.toLowerCase().includes(q) ||
         p.whatsapp?.toLowerCase().includes(q)
-    );
+      ) {
+        return true;
+      }
+      if (qSub.length >= 4 && p.whatsapp) {
+        const pDigits = p.whatsapp.replace(/\D/g, "");
+        return pDigits.includes(qSub);
+      }
+      return false;
+    });
   }
 
   if (paginationInfo) {
@@ -711,7 +736,7 @@ function openTicketDrawer(p) {
         <div class="detail-item">
           <dt>Nomor WhatsApp</dt>
           <dd>
-            ${p.whatsapp ? `<a href="https://wa.me/${p.whatsapp.replace(/\D/g, '')}" target="_blank" rel="noopener">${esc(p.whatsapp)}</a>` : "-"}
+            ${p.whatsapp ? `<a href="${formatWhatsAppChatUrl(p.whatsapp)}" target="_blank" rel="noopener">${esc(p.whatsapp)}</a>` : "-"}
           </dd>
         </div>
         <div class="detail-item">

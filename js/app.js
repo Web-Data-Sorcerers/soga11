@@ -636,6 +636,23 @@ async function downloadTicketQr(target, ticketId) {
   return true;
 }
 
+/**
+ * Normalisasi nomor WhatsApp Indonesia ke format kanonikal E.164 (+628...).
+ * @param {string} raw
+ * @returns {string}
+ */
+function normalizeIndonesianPhone(raw) {
+  if (!raw) return "";
+  let digits = String(raw).replace(/\D/g, "");
+  if (digits.startsWith("62")) {
+    digits = digits.slice(2);
+  } else if (digits.startsWith("0")) {
+    digits = digits.slice(1);
+  }
+  digits = digits.replace(/^0+/, "");
+  return digits ? "+62" + digits : "";
+}
+
 async function initRegister() {
   const form = document.getElementById("register-form");
   if (!form) return;
@@ -696,6 +713,19 @@ async function initRegister() {
     }
   }
 
+  const whatsappInput = document.getElementById("f-whatsapp");
+  if (whatsappInput) {
+    whatsappInput.addEventListener("input", () => {
+      let val = whatsappInput.value.replace(/[^\d+]/g, "");
+      if (val.startsWith("+62")) val = val.slice(3);
+      else if (val.startsWith("62")) val = val.slice(2);
+      else if (val.startsWith("0")) val = val.slice(1);
+      if (whatsappInput.value !== val) {
+        whatsappInput.value = val;
+      }
+    });
+  }
+
   retryButton?.addEventListener("click", checkRegistrationStatus);
 
   form.addEventListener("submit", async (e) => {
@@ -747,7 +777,7 @@ async function initRegister() {
       qr_token: qrToken,
       full_name: document.getElementById("f-name").value.trim(),
       email: document.getElementById("f-email").value.trim(),
-      whatsapp: document.getElementById("f-whatsapp").value.trim(),
+      whatsapp: normalizeIndonesianPhone(document.getElementById("f-whatsapp").value),
       gender: document.getElementById("f-gender").value,
       institution: document.getElementById("f-institution").value.trim(),
       job: document.getElementById("f-job").value.trim(),

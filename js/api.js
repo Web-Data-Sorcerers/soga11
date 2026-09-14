@@ -21,16 +21,78 @@
   }
 
   /**
-   * Klaim sertifikat — lookup by qr_token / whatsapp.
+   * Menghasilkan variasi format lookup (telepon, email, token)
+   * agar pencarian fleksibel terhadap data baru (+62...) maupun data lama (8... / 08...).
+   * @param {string} lookup
+   * @returns {string[]}
+   */
+  function buildLookupCandidates(lookup) {
+    const raw = String(lookup || "").trim();
+    if (!raw) return [];
+
+    // Jika format email
+    if (raw.includes("@")) {
+      return [raw.toLowerCase(), raw];
+    }
+
+    // Jika format Ticket ID (misal SGN11-XXXXXX)
+    if (/^sgn11-/i.test(raw)) {
+      return [raw.toUpperCase(), raw];
+    }
+
+    // Cek apakah input berupa digit nomor telepon
+    const digits = raw.replace(/\D/g, "");
+    if (digits.length >= 8 && digits.length <= 16) {
+      let sub = digits;
+      if (sub.startsWith("62")) {
+        sub = sub.slice(2);
+      } else if (sub.startsWith("0")) {
+        sub = sub.slice(1);
+      }
+      sub = sub.replace(/^0+/, "");
+
+      if (sub) {
+        return [
+          "+62" + sub, // Format standar internasional
+          sub,         // Format raw lokal (legacy database)
+          "0" + sub,   // Format 08...
+          "62" + sub,  // Format 62...
+          raw          // Input asli
+        ].filter((val, idx, self) => self.indexOf(val) === idx);
+      }
+    }
+
+    return [raw];
+  }
+
+  /**
+   * Klaim sertifikat — lookup by qr_token / whatsapp / email.
    * Hanya balikin nama + status (bukan PII lengkap).
-   * @param {string} lookup - ID (SGN11-XXX) atau nomor HP
+   * @param {string} lookup - ID (SGN11-XXX), nomor HP, atau email
    */
   async function claimCertificate(lookup) {
-    const { data, error } = await supabase.rpc("claim_certificate", {
-      p_lookup: lookup,
-    });
-    if (error) throw error;
-    return data && data.length ? data[0] : null;
+    const candidates = buildLookupCandidates(lookup);
+    let lastError = null;
+
+    for (const candidate of candidates) {
+      try {
+        const { data, error } = await supabase.rpc("claim_certificate", {
+          p_lookup: candidate,
+        });
+        if (error) {
+          lastError = error;
+          continue;
+        }
+        if (data && data.length > 0) {
+          return data[0];
+        }
+      } catch (err) {
+        lastError = err;
+      }
+    }
+
+    if (lastError && candidates.length === 1) throw lastError;
+    return null;
   }
 
   async function isRegistrationOpen() {
@@ -40,11 +102,28 @@
   }
 
   async function findTicket(lookup) {
-    const { data, error } = await supabase.rpc("find_ticket", {
-      p_lookup: lookup,
-    });
-    if (error) throw error;
-    return data && data.length ? data[0] : null;
+    const candidates = buildLookupCandidates(lookup);
+    let lastError = null;
+
+    for (const candidate of candidates) {
+      try {
+        const { data, error } = await supabase.rpc("find_ticket", {
+          p_lookup: candidate,
+        });
+        if (error) {
+          lastError = error;
+          continue;
+        }
+        if (data && data.length > 0) {
+          return data[0];
+        }
+      } catch (err) {
+        lastError = err;
+      }
+    }
+
+    if (lastError && candidates.length === 1) throw lastError;
+    return null;
   }
 
   // ============ Admin (butuh login) ============
