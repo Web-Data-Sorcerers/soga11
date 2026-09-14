@@ -9,7 +9,7 @@
   z-index: var(--z-sticky);
   padding: 18px 0 0;
   pointer-events: none;
-  transition: padding 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: padding 0.95s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .navbar.is-scrolled {
@@ -29,41 +29,73 @@
   margin: 0 auto;
   padding: 0 14px 0 0; /* Left padding 0 so dark wedge hugs the left chamfered edge */
   clip-path: polygon(
-    10px 0%,
-    calc(100% - 10px) 0%,
-    100% 10px,
-    100% calc(100% - 10px),
-    calc(100% - 10px) 100%,
-    10px 100%,
-    0% calc(100% - 10px),
-    0% 10px
+    14px 0%,
+    calc(100% - 14px) 0%,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    14px 100%,
+    0% calc(100% - 14px),
+    0% 14px
   );
   box-shadow: 
     0 10px 30px -4px rgba(45, 30, 65, 0.07),
     0 2px 6px rgba(45, 30, 65, 0.03);
   transform: translateZ(0);
   transition: 
-    max-width 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-    height 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-    gap 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+    gap 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.95s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: max-width, height, box-shadow;
 }
 
-/* Glass & Border Layer: Opacity fade prevents costly blur re-rasterization */
+/* Chamfered Outer Border Layer (1px stroke along all 8 perimeter sides) */
 .navbar-inner::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
+  background: rgba(214, 203, 184, 0.92);
+  clip-path: polygon(
+    14px 0%,
+    calc(100% - 14px) 0%,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    14px 100%,
+    0% calc(100% - 14px),
+    0% 14px
+  );
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity;
+}
+
+/* Glass & Frosted Background Fill Layer: Inset 1px exposing the 1px chamfered border */
+.navbar-inner::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
   background: rgba(250, 247, 242, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(214, 203, 184, 0.85);
-  clip-path: inherit;
+  clip-path: polygon(
+    13.4px 0%,
+    calc(100% - 13.4px) 0%,
+    100% 13.4px,
+    100% calc(100% - 13.4px),
+    calc(100% - 13.4px) 100%,
+    13.4px 100%,
+    0% calc(100% - 13.4px),
+    0% 13.4px
+  );
   opacity: 1;
   pointer-events: none;
-  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity;
 }
 
 .navbar-inner > * {
@@ -90,7 +122,8 @@
     box-shadow: 0 0 0 transparent;
   }
 
-  .navbar.is-transparent .navbar-inner::before {
+  .navbar.is-transparent .navbar-inner::before,
+  .navbar.is-transparent .navbar-inner::after {
     opacity: 0;
   }
 
@@ -104,12 +137,21 @@
   position: relative;
   display: flex;
   align-items: center;
-  height: 100%;
+  height: calc(100% - 2px);
+  margin: 1px 0 1px 1px;
   padding: 0 34px 0 22px;
   background: #111A38;
-  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 100%, 0 100%);
+  clip-path: polygon(
+    13.4px 0%,
+    calc(100% - 18px) 0%,
+    100% 100%,
+    13.4px 100%,
+    0% calc(100% - 13.4px),
+    0% 13.4px
+  );
   flex: 0 0 auto;
-  transition: padding 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: padding 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: padding;
 }
 
 .navbar.is-scrolled .navbar-brand-wedge {
@@ -154,7 +196,7 @@
   padding: 0 10px;
   flex: 0 0 auto;
   margin-left: 2px;
-  transition: padding 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: padding 0.95s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .navbar.is-scrolled .navbar-cartouche {
@@ -185,7 +227,7 @@
   color: #17113A;
   text-transform: uppercase;
   white-space: nowrap;
-  transition: font-size 0.65s cubic-bezier(0.16, 1, 0.3, 1), letter-spacing 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: font-size 0.95s cubic-bezier(0.22, 1, 0.36, 1), letter-spacing 0.95s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .navbar.is-scrolled .cartouche-text {
@@ -229,7 +271,7 @@
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  transition: gap 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: gap 0.95s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .navbar.is-scrolled .navbar-links {
@@ -246,7 +288,7 @@
   letter-spacing: 0.01em;
   white-space: nowrap;
   text-decoration: none;
-  transition: color var(--duration-fast) ease, font-size 0.65s cubic-bezier(0.16, 1, 0.3, 1), padding 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color var(--duration-fast) ease, font-size 0.95s cubic-bezier(0.22, 1, 0.36, 1), padding 0.95s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .navbar.is-scrolled .navbar-links a {
@@ -347,7 +389,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   white-space: nowrap;
-  transition: height 0.65s cubic-bezier(0.16, 1, 0.3, 1), padding 0.65s cubic-bezier(0.16, 1, 0.3, 1), font-size 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: height 0.95s cubic-bezier(0.22, 1, 0.36, 1), padding 0.95s cubic-bezier(0.22, 1, 0.36, 1), font-size 0.95s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .navbar.is-scrolled .cta-inner {
@@ -651,10 +693,18 @@
     box-shadow: 0 8px 24px -4px rgba(17, 26, 56, 0.35);
   }
 
+  .navbar-inner::before,
+  .navbar-inner::after {
+    display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+  }
+
   .navbar-brand-wedge {
     background: transparent;
     clip-path: none;
     padding: 0;
+    margin: 0;
     height: 100%;
     display: flex;
     align-items: center;
