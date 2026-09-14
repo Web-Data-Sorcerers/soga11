@@ -431,82 +431,99 @@
 }
 
 /* ============================================================
-   Royal Sorcerer Countdown Reliquary (Hitung Mundur Kerajaan Sihir)
+   Countdown Module — Premium Architectural Chronometer
+   Matches the high-editorial navbar aesthetic: Deep Navy Wedge (#111A38),
+   Crisp 1px Champagne Gold Trims (#C5A876), Barcode Telemetry, Solid Inset Tiles
    ============================================================ */
 .hero-countdown-box {
   margin-top: auto;
   padding-top: 24px;
   position: relative;
   width: 100%;
-  max-width: 320px;
+  max-width: 324px;
 }
 
-/* Royal Sigil Strip (Pita Maklumat Kerajaan) */
-.countdown-label-strip {
-  font-family: 'Cinzel', var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  color: #FDE047;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 4px 12px;
-  background: linear-gradient(135deg, rgba(26, 14, 48, 0.95), rgba(46, 20, 84, 0.95));
-  border: 1px solid rgba(220, 180, 75, 0.55);
-  border-radius: 999px;
-  box-shadow: 0 4px 16px rgba(18, 9, 36, 0.35), inset 0 1px 0 rgba(255, 235, 160, 0.3);
-  text-shadow: 0 0 8px rgba(250, 204, 21, 0.45);
+.countdown-module {
+  position: relative;
+  background: linear-gradient(165deg, #111A38 0%, #161D3D 50%, #0E142C 100%);
+  border: 1px solid rgba(214, 203, 184, 0.42);
+  border-radius: 14px;
+  padding: 12px 14px 14px;
+  box-shadow: 
+    0 14px 34px -6px rgba(17, 26, 56, 0.35),
+    0 4px 12px rgba(17, 26, 56, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
 }
 
-.countdown-label-strip .sorcery-glyph {
-  color: #FACC15;
-  font-size: 0.72rem;
-  filter: drop-shadow(0 0 4px #EAB308);
-}
-
-/* Royal Chronometer Frame */
-.hero-countdown-box .countdown {
+/* Header Bar inside the Module */
+.countdown-header-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 5px;
+  gap: 10px;
+  padding-bottom: 9px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(214, 203, 184, 0.18);
+}
+
+.countdown-title-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.countdown-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #C5A876;
+  box-shadow: 0 0 5px rgba(197, 168, 118, 0.6);
+  flex-shrink: 0;
+}
+
+.countdown-heading {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #E2D7BE;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Barcode Cartouche matching the Navbar */
+.countdown-barcode {
+  display: flex;
+  align-items: center;
+  gap: 2.5px;
+  height: 12px;
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+.countdown-barcode span {
+  display: inline-block;
+  height: 100%;
+  background: #C5A876;
+  width: 1px;
+}
+
+.countdown-barcode span:nth-child(2) { width: 2px; }
+.countdown-barcode span:nth-child(4) { width: 1.5px; }
+
+/* The 4-Column Time Display */
+.countdown-module .countdown {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
   width: 100%;
   box-sizing: border-box;
-  background: radial-gradient(130% 120% at 50% -10%, rgba(42, 20, 76, 0.96) 0%, rgba(20, 11, 40, 0.97) 60%, rgba(12, 6, 24, 0.99) 100%);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1.5px solid rgba(212, 175, 55, 0.58);
-  outline: 1px solid rgba(147, 51, 234, 0.25);
-  outline-offset: -4px;
-  border-radius: 16px;
-  padding: 12px 10px;
-  box-shadow: 
-    0 0 32px rgba(124, 58, 237, 0.26),
-    0 16px 36px -6px rgba(10, 5, 25, 0.5),
-    inset 0 1px 0 rgba(255, 240, 170, 0.4),
-    inset 0 0 22px rgba(91, 33, 182, 0.35);
-  position: relative;
-  animation: royal-relic-pulse 4.5s ease-in-out infinite;
 }
 
-/* Gilded Top Relic Beam */
-.hero-countdown-box .countdown::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 12%;
-  right: 12%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #FDE047 30%, #F59E0B 70%, transparent);
-  filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.85));
-  pointer-events: none;
-}
-
-/* Individual Arcane Pillar Tablet */
-.cd-col {
+/* Solid Architectural Time Tiles ("kotakannya mantap") */
+.countdown-module .cd-col {
   flex: 1 1 0;
   min-width: 0;
   box-sizing: border-box;
@@ -514,92 +531,54 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8px 4px 6px;
-  background: linear-gradient(180deg, rgba(34, 18, 64, 0.85) 0%, rgba(16, 9, 32, 0.96) 100%);
-  border: 1px solid rgba(212, 175, 55, 0.32);
-  border-top: 1.5px solid rgba(250, 204, 21, 0.75);
-  border-radius: 9px;
-  box-shadow: inset 0 1px 0 rgba(255, 245, 190, 0.18), 0 4px 12px rgba(0, 0, 0, 0.35);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+  padding: 8px 4px 7px;
+  background: rgba(7, 11, 26, 0.72);
+  border: 1px solid rgba(214, 203, 184, 0.22);
+  border-top: 1.5px solid rgba(197, 168, 118, 0.65);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.cd-col:hover {
-  transform: translateY(-2px);
-  border-color: rgba(250, 204, 21, 0.8);
-  box-shadow: 0 0 14px rgba(250, 204, 21, 0.4), inset 0 0 10px rgba(168, 85, 247, 0.25);
+.countdown-module .cd-col:hover {
+  transform: translateY(-1px);
+  border-color: rgba(197, 168, 118, 0.65);
+  background: rgba(13, 19, 44, 0.9);
 }
 
-/* Royal Enchanted Numerals */
-.cd-number {
+/* Crisp, Solid High-End Numerals (Zero Blur / Zero Toy Glow) */
+.countdown-module .cd-number {
   font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
   font-size: clamp(1.4rem, 1.8vw, 1.75rem);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
-  letter-spacing: 0.01em;
-  color: #FDE047;
-  background: linear-gradient(180deg, #FFFFFF 0%, #FFF3B8 25%, #FDE047 60%, #EAB308 85%, #CA8A04 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.5)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
 }
 
-/* Pulsing Sorcerer Rune Separator */
-.cd-sep {
+/* Refined Understated Separator */
+.countdown-module .cd-sep {
   flex-shrink: 0;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #D8B4FE;
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: rgba(197, 168, 118, 0.55);
   line-height: 1;
   align-self: center;
-  margin-top: -2px;
-  text-shadow: 0 0 8px rgba(192, 132, 252, 0.8), 0 0 14px rgba(168, 85, 247, 0.6);
-  animation: arcane-glyph-breathe 2s ease-in-out infinite alternate;
+  margin-top: -3px;
   user-select: none;
 }
 
-/* Indonesian Tag: HARI, JAM, MENIT, DETIK */
-.cd-tag {
-  margin-top: 4px;
-  font-family: 'Cinzel', var(--font-mono);
-  font-size: 0.54rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #F8E7AD;
+/* Sub-labels (HARI, JAM, MENIT, DETIK) */
+.countdown-module .cd-tag {
+  margin-top: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #C5A876;
   text-transform: uppercase;
-  text-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
   white-space: nowrap;
-}
-
-@keyframes royal-relic-pulse {
-  0%, 100% {
-    box-shadow: 
-      0 0 30px rgba(124, 58, 237, 0.25),
-      0 16px 36px -6px rgba(10, 5, 25, 0.5),
-      inset 0 1px 0 rgba(255, 240, 170, 0.4),
-      inset 0 0 20px rgba(91, 33, 182, 0.3);
-    border-color: rgba(212, 175, 55, 0.58);
-  }
-  50% {
-    box-shadow: 
-      0 0 46px rgba(168, 85, 247, 0.42),
-      0 16px 36px -6px rgba(10, 5, 25, 0.5),
-      inset 0 1px 0 rgba(255, 248, 210, 0.65),
-      inset 0 0 28px rgba(124, 58, 237, 0.45);
-    border-color: rgba(250, 204, 21, 0.78);
-  }
-}
-
-@keyframes arcane-glyph-breathe {
-  0% {
-    opacity: 0.4;
-    transform: scale(0.85);
-    filter: drop-shadow(0 0 3px #C084FC);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1.12);
-    filter: drop-shadow(0 0 10px #FDE047);
-  }
 }
 
 /* Bottom Telemetry Strip */
@@ -1051,30 +1030,32 @@
   .hero-countdown-box {
     margin-top: 0;
     padding-top: 0;
+    max-width: 100%;
   }
 
-  .hero-countdown-box .countdown {
-    padding: 12px 10px;
+  .countdown-module {
+    padding: 10px 12px 12px;
+  }
+
+  .countdown-module .countdown {
     gap: 4px;
-    justify-content: space-around;
   }
 
-  .hero-countdown-box .cd-col {
-    min-width: 44px;
-    padding: 6px 8px 5px;
+  .countdown-module .cd-col {
+    padding: 7px 3px 6px;
   }
 
-  .hero-countdown-box .cd-number {
-    font-size: 1.55rem;
+  .countdown-module .cd-number {
+    font-size: 1.45rem;
   }
 
-  .hero-countdown-box .cd-sep {
-    font-size: 0.8rem;
+  .countdown-module .cd-sep {
+    font-size: 0.95rem;
   }
 
-  .hero-countdown-box .cd-tag {
-    font-size: 0.58rem;
-    letter-spacing: 0.12em;
+  .countdown-module .cd-tag {
+    font-size: 0.52rem;
+    letter-spacing: 0.1em;
   }
 
   .hero-bottom-telemetry {
