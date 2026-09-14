@@ -623,63 +623,185 @@ body.admin-page {
 .sidebar-atmosphere {
   padding: 16px 14px 20px 14px;
   border-top: 1px solid var(--admin-border-subtle);
+  position: relative;
 }
 
+/* Luxury Frosted Card (Homage to Landing Page Navbar Dock) */
 .atmosphere-card {
   position: relative;
-  background: #21152f;
-  border-radius: 14px;
-  padding: 16px;
-  color: #faf8f5;
+  min-height: 116px;
+  padding: 16px 16px 14px 16px;
+  color: var(--admin-text-main);
   overflow: hidden;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 245, 255, 0.92) 50%, rgba(239, 233, 255, 0.85) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(124, 58, 237, 0.18);
+  border-radius: 18px;
+  box-shadow:
+    0 10px 28px -6px rgba(33, 21, 47, 0.07),
+    0 2px 8px rgba(124, 58, 237, 0.04),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
 }
 
-.atmosphere-tag {
-  font-size: 0.65rem;
-  font-weight: 800;
-  color: #d9ba91;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  position: relative;
-  z-index: 2;
+.atmosphere-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(124, 58, 237, 0.32);
+  box-shadow:
+    0 14px 34px -6px rgba(124, 58, 237, 0.14),
+    0 4px 12px rgba(33, 21, 47, 0.06),
+    inset 0 1px 1px rgba(255, 255, 255, 1);
 }
 
-.atmosphere-monument {
+/* Ambient Purple Glow */
+.atmosphere-glow {
   position: absolute;
-  right: -10px;
-  bottom: -15px;
-  width: 90px;
-  height: 90px;
-  opacity: 0.35;
+  top: -25px;
+  right: -25px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.22) 0%, rgba(124, 58, 237, 0.08) 50%, transparent 70%);
   pointer-events: none;
   z-index: 1;
 }
 
-.atmosphere-monument img {
+/* Top Kicker Pill Header */
+.atmosphere-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 3;
+}
+
+.atmosphere-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  background: rgba(124, 58, 237, 0.07);
+  border: 1px solid rgba(124, 58, 237, 0.16);
+  border-radius: 999px;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--admin-purple-primary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.atmosphere-tag-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--admin-purple-primary);
+  box-shadow: 0 0 6px rgba(124, 58, 237, 0.7);
+  flex-shrink: 0;
+}
+
+.atmosphere-edition {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #a39cb0;
+  letter-spacing: 0.06em;
+}
+
+/* Monument Visual: Uncropped Natural Silhouette */
+.atmosphere-monument {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  width: 135px;
+  height: 105px;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.atmosphere-monument-img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  filter: contrast(1.2);
+  object-fit: contain;
+  object-position: right bottom;
+  mix-blend-mode: multiply;
+  opacity: 0.75;
+  filter: contrast(1.15) saturate(1.1);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
+.atmosphere-card:hover .atmosphere-monument-img {
+  transform: scale(1.06) translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Footer Content */
 .atmosphere-footer {
   position: relative;
-  z-index: 2;
-  margin-top: 24px;
+  z-index: 3;
 }
 
-.atmosphere-footer strong {
-  display: block;
-  font-size: 0.88rem;
+.atmosphere-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.atmosphere-title {
+  font-family: var(--font-sans, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.98rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #21152F;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 
-.atmosphere-footer small {
-  display: block;
+.atmosphere-live-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  background: rgba(22, 163, 74, 0.1);
+  border: 1px solid rgba(22, 163, 74, 0.25);
+  border-radius: 999px;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #15803d;
+  letter-spacing: 0.04em;
+}
+
+.atmosphere-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.73rem;
+  color: #746b80;
+  font-weight: 500;
+}
+
+.atmosphere-subtitle {
+  font-weight: 600;
+  color: #504461;
+}
+
+.atmosphere-sep {
+  color: #c4bcd0;
+  font-size: 0.65rem;
+}
+
+.atmosphere-version {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
   font-size: 0.7rem;
-  color: rgba(250, 248, 245, 0.6);
-  font-family: ui-monospace, monospace;
+  color: var(--admin-purple-primary);
+  font-weight: 600;
 }
 
 
@@ -1035,19 +1157,22 @@ body.admin-page {
 
 .stat-card {
   background: var(--admin-card-bg);
-  border: 1px solid var(--admin-border);
-  border-radius: 18px;
-  padding: 22px;
-  box-shadow: var(--admin-shadow-sm);
+  border: 1px solid rgba(45, 30, 65, 0.08);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 20px -2px rgba(33, 21, 47, 0.04), 0 1px 3px rgba(33, 21, 47, 0.02);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--admin-shadow-md);
+  border-color: rgba(124, 58, 237, 0.22);
+  box-shadow: 0 12px 30px -4px rgba(33, 21, 47, 0.08), 0 2px 8px rgba(124, 58, 237, 0.04);
 }
 
 .stat-card-header {
