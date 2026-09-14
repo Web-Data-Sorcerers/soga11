@@ -9,7 +9,7 @@
   z-index: var(--z-sticky);
   padding: 18px 0 0;
   pointer-events: none;
-  transition: padding 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: padding 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar.is-scrolled {
@@ -43,10 +43,10 @@
     0 2px 6px rgba(45, 30, 65, 0.03);
   transform: translateZ(0);
   transition: 
-    max-width 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-    height 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-    gap 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+    max-width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    gap 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: max-width, height, box-shadow;
 }
 
@@ -69,7 +69,7 @@
   );
   opacity: 1;
   pointer-events: none;
-  transition: opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity;
 }
 
@@ -80,8 +80,8 @@
   inset: 1px;
   z-index: 0;
   background: rgba(250, 247, 242, 0.94);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   clip-path: polygon(
     13.4px 0%,
     calc(100% - 13.4px) 0%,
@@ -94,7 +94,7 @@
   );
   opacity: 1;
   pointer-events: none;
-  transition: opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity;
 }
 
@@ -150,7 +150,7 @@
     0% 13.4px
   );
   flex: 0 0 auto;
-  transition: padding 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: padding 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: padding;
 }
 
@@ -196,7 +196,7 @@
   padding: 0 10px;
   flex: 0 0 auto;
   margin-left: 2px;
-  transition: padding 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: padding 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar.is-scrolled .navbar-cartouche {
@@ -227,7 +227,7 @@
   color: #17113A;
   text-transform: uppercase;
   white-space: nowrap;
-  transition: font-size 0.95s cubic-bezier(0.22, 1, 0.36, 1), letter-spacing 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: font-size 0.25s cubic-bezier(0.16, 1, 0.3, 1), letter-spacing 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar.is-scrolled .cartouche-text {
@@ -271,7 +271,7 @@
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  transition: gap 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: gap 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar.is-scrolled .navbar-links {
@@ -288,7 +288,7 @@
   letter-spacing: 0.01em;
   white-space: nowrap;
   text-decoration: none;
-  transition: color var(--duration-fast) ease, font-size 0.95s cubic-bezier(0.22, 1, 0.36, 1), padding 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: color var(--duration-fast) ease, font-size 0.25s cubic-bezier(0.16, 1, 0.3, 1), padding 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar.is-scrolled .navbar-links a {
@@ -389,7 +389,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   white-space: nowrap;
-  transition: height 0.95s cubic-bezier(0.22, 1, 0.36, 1), padding 0.95s cubic-bezier(0.22, 1, 0.36, 1), font-size 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: height 0.25s cubic-bezier(0.16, 1, 0.3, 1), padding 0.25s cubic-bezier(0.16, 1, 0.3, 1), font-size 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar.is-scrolled .cta-inner {

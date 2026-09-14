@@ -18,6 +18,7 @@ const routes = {
 };
 
 const ANCHORS = new Set(["agenda", "speakers", "legacy", "faq"]);
+const pageCache = new Map();
 
 async function route() {
   const requestId = ++routeRequestId;
@@ -44,8 +45,12 @@ async function loadPage(target, hash, requestId) {
   const app = document.getElementById("app");
   if (target !== routes.home) stopHomeCountdown();
   try {
-    const res = await fetch(target);
-    const markup = await res.text();
+    let markup = pageCache.get(target);
+    if (!markup) {
+      const res = await fetch(target);
+      markup = await res.text();
+      pageCache.set(target, markup);
+    }
     if (requestId !== routeRequestId) return false;
     app.innerHTML = markup;
     if (hash === "register") initRegister();
