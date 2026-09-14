@@ -68,10 +68,11 @@ function initNavbar() {
   const skipLink = document.querySelector(".skip-link");
   const burger = document.getElementById("hamburger");
   const menu = document.getElementById("mobile-menu");
-  const closeButton = document.getElementById("mobile-menu-close");
+  const backdrop = document.getElementById("mobile-menu-backdrop");
   const header = document.getElementById("site-header");
-  if (!burger || !menu || !closeButton || !header) return;
+  if (!burger || !menu || !header) return;
 
+  const burgerLabel = burger.querySelector(".menu-trigger-label");
   const focusableSelector = [
     "a[href]",
     "button:not([disabled])",
@@ -99,6 +100,19 @@ function initNavbar() {
     );
   }
 
+  function updateNavbarState() {
+    const requestedHash = location.hash.replace("#", "") || "home";
+    const isHomeOrAnchor = requestedHash === "home" || ANCHORS.has(requestedHash);
+    
+    // Hysteresis deadband: activate at >32px, release at <14px to prevent boundary jitter
+    const isCurrentlyScrolled = header.classList.contains("is-scrolled");
+    const threshold = isCurrentlyScrolled ? 14 : 32;
+    const isScrolled = window.scrollY > threshold;
+
+    header.classList.toggle("is-scrolled", isScrolled);
+    header.classList.toggle("is-transparent", isHomeOrAnchor && !isScrolled);
+  }
+
   function updateActiveNavigation() {
     const requestedHash = location.hash.replace("#", "") || "home";
     const isKnownHash = Boolean(routes[requestedHash]) || ANCHORS.has(requestedHash);
@@ -111,6 +125,8 @@ function initNavbar() {
       if (active) link.setAttribute("aria-current", "page");
       else link.removeAttribute("aria-current");
     });
+
+    updateNavbarState();
   }
 
   function openMenu() {
@@ -122,11 +138,12 @@ function initNavbar() {
     menu.setAttribute("aria-hidden", "false");
     burger.setAttribute("aria-expanded", "true");
     burger.setAttribute("aria-label", "Tutup menu navigasi");
-    document.body.classList.add("mobile-menu-open");
+    burger.classList.add("is-active");
+    if (burgerLabel) burgerLabel.textContent = "Close";
+    if (backdrop) backdrop.classList.add("is-open");
 
     requestAnimationFrame(() => {
       menu.classList.add("is-open");
-      closeButton.focus();
     });
   }
 
@@ -138,7 +155,9 @@ function initNavbar() {
     menu.setAttribute("aria-hidden", "true");
     burger.setAttribute("aria-expanded", "false");
     burger.setAttribute("aria-label", "Buka menu navigasi");
-    document.body.classList.remove("mobile-menu-open");
+    burger.classList.remove("is-active");
+    if (burgerLabel) burgerLabel.textContent = "Menu";
+    if (backdrop) backdrop.classList.remove("is-open");
 
     if (restoreFocus && !desktopNavigation.matches) burger.focus();
     closeTimer = window.setTimeout(() => {
@@ -150,7 +169,17 @@ function initNavbar() {
     if (menuOpen) closeMenu();
     else openMenu();
   });
-  closeButton.addEventListener("click", () => closeMenu());
+
+  if (backdrop) {
+    backdrop.addEventListener("click", () => closeMenu());
+  }
+
+  document.addEventListener("click", (event) => {
+    if (!menuOpen) return;
+    if (!menu.contains(event.target) && !burger.contains(event.target) && (!backdrop || !backdrop.contains(event.target))) {
+      closeMenu();
+    }
+  });
 
   menu.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
@@ -174,16 +203,48 @@ function initNavbar() {
     }
   });
 
+  // Mobile menu links routing and smooth scroll
   menu.querySelectorAll("a[href]").forEach((link) => {
-    link.addEventListener("click", () => closeMenu());
+    link.addEventListener("click", (event) => {
+      const href = link.getAttribute("href");
+      closeMenu();
+      if (!href || !href.startsWith("#")) return;
+
+      const targetHash = href.replace("#", "");
+      if (ANCHORS.has(targetHash) || targetHash === "home") {
+        const currentHash = location.hash.replace("#", "") || "home";
+        if (currentHash === "home" || ANCHORS.has(currentHash)) {
+          // Already on home/anchor view: scroll directly!
+          event.preventDefault();
+          history.replaceState(null, "", href);
+          updateActiveNavigation();
+          if (targetHash === "home") {
+            window.scrollTo({ top: 0, behavior: reducedMotion.matches ? "auto" : "smooth" });
+          } else {
+            const el = document.getElementById(targetHash);
+            if (el) {
+              el.scrollIntoView({ behavior: reducedMotion.matches ? "auto" : "smooth" });
+            }
+          }
+        }
+      }
+    });
   });
 
   window.addEventListener("hashchange", () => {
     updateActiveNavigation();
     closeMenu();
   });
+
+  let scrollTicking = false;
   window.addEventListener("scroll", () => {
-    header.classList.toggle("is-scrolled", window.scrollY > 16);
+    if (!scrollTicking) {
+      requestAnimationFrame(() => {
+        updateNavbarState();
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
   }, { passive: true });
 
   const handleDesktopChange = (event) => {
@@ -192,7 +253,7 @@ function initNavbar() {
   desktopNavigation.addEventListener("change", handleDesktopChange);
 
   updateActiveNavigation();
-  header.classList.toggle("is-scrolled", window.scrollY > 16);
+  updateNavbarState();
 }
 
 // ============================================================
@@ -240,10 +301,123 @@ function stopHomeCountdown() {
   homeCountdownTimer = null;
 }
 
+// ============================================================
+// Agenda Interactive Smart Progress Tracker & Dynamic Nodes
+// ============================================================
+function initAgendaInteractivity() {
+  const ledgerList = document.querySelector(".agenda-ledger-list");
+  if (!ledgerList) return;
+
+  const items = Array.from(ledgerList.querySelectorAll(".agenda-item"));
+  const activeTrack = ledgerList.querySelector(".timeline-active-track");
+  const tracerBeacon = ledgerList.querySelector(".timeline-tracer-beacon");
+
+  if (!items.length) return;
+
+  function getNodeCenterOffset(item) {
+    const node = item.querySelector(".timeline-axis-node");
+    if (!node) return 0;
+    const listRect = ledgerList.getBoundingClientRect();
+    const nodeRect = node.getBoundingClientRect();
+    return nodeRect.top + nodeRect.height / 2 - listRect.top;
+  }
+
+  function getBaseTopOffset() {
+    const firstNode = items[0].querySelector(".timeline-axis-node");
+    if (!firstNode) return 36;
+    const listRect = ledgerList.getBoundingClientRect();
+    const nodeRect = firstNode.getBoundingClientRect();
+    return nodeRect.top + nodeRect.height / 2 - listRect.top;
+  }
+
+  let currentActiveItem = items.find((item) => item.hasAttribute("open")) || items[0];
+
+  function updateTracker(targetItem) {
+    if (!targetItem || !ledgerList.contains(targetItem)) return;
+    const targetIndex = items.indexOf(targetItem);
+    if (targetIndex === -1) return;
+
+    const baseTop = getBaseTopOffset();
+    const targetOffset = getNodeCenterOffset(targetItem);
+    const trackHeight = Math.max(0, targetOffset - baseTop);
+
+    if (activeTrack) {
+      activeTrack.style.top = `${baseTop}px`;
+      activeTrack.style.height = `${trackHeight}px`;
+    }
+
+    if (tracerBeacon) {
+      tracerBeacon.classList.add("is-visible");
+      tracerBeacon.style.top = `${targetOffset}px`;
+    }
+
+    // Only nodes that have been reached/passed by the timeline get is-passed (bold ungu)
+    // Nodes ahead of the current active position remain clean and hollow (belum dilewati)
+    items.forEach((item, index) => {
+      if (index <= targetIndex) {
+        item.classList.add("is-passed");
+      } else {
+        item.classList.remove("is-passed");
+      }
+
+      if (index === targetIndex) {
+        item.classList.add("is-active");
+      } else {
+        item.classList.remove("is-active");
+      }
+    });
+  }
+
+  // Set initial position
+  requestAnimationFrame(() => updateTracker(currentActiveItem));
+
+  // Hover reactivity
+  items.forEach((item) => {
+    item.addEventListener("mouseenter", () => {
+      updateTracker(item);
+    });
+
+    item.addEventListener("mouseleave", () => {
+      const openItem = items.find((it) => it.hasAttribute("open")) || currentActiveItem;
+      updateTracker(openItem);
+    });
+
+    // Details disclosure state change
+    item.addEventListener("toggle", () => {
+      if (item.hasAttribute("open")) {
+        currentActiveItem = item;
+        requestAnimationFrame(() => updateTracker(item));
+      } else {
+        const stillOpen = items.find((it) => it.hasAttribute("open"));
+        currentActiveItem = stillOpen || items[0];
+        requestAnimationFrame(() => updateTracker(currentActiveItem));
+      }
+    });
+
+    // Tooltip and accessibility on node
+    const node = item.querySelector(".timeline-axis-node");
+    if (node) {
+      node.style.cursor = "pointer";
+      node.setAttribute("title", "Klik untuk melihat rincian sesi");
+    }
+  });
+
+  // Re-calculate on resize
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const openItem = items.find((it) => it.hasAttribute("open")) || currentActiveItem;
+      updateTracker(openItem);
+    }, 100);
+  });
+}
+
 function initHome() {
   stopHomeCountdown();
   initReveal();
   initHeroMotion();
+  initAgendaInteractivity();
   const cd = document.getElementById("countdown");
   if (!cd) return;
 
@@ -561,6 +735,53 @@ async function initRegister() {
     const el = document.getElementById(id);
     el.addEventListener("change", () => clearFieldError(el));
   });
+
+  // Stepper navigation and scroll spy
+  const sectionIds = [
+    "registration-section-01",
+    "registration-section-02",
+    "registration-section-03",
+    "registration-section-04",
+    "registration-section-05",
+  ];
+  const stepperItems = document.querySelectorAll(".stepper-item");
+  const progressBar = document.getElementById("reg-progress-bar");
+  const progressStatus = document.getElementById("reg-progress-status");
+
+  function updateActiveStep(stepIndex) {
+    stepperItems.forEach((item, idx) => {
+      item.classList.toggle("is-active", idx === stepIndex);
+    });
+    const stepNum = stepIndex + 1;
+    if (progressBar) progressBar.style.width = `${stepNum * 20}%`;
+    if (progressStatus) progressStatus.textContent = `0${stepNum} / 05 COMPLETE`;
+  }
+
+  stepperItems.forEach((item, idx) => {
+    const link = item.querySelector(".stepper-link");
+    link?.addEventListener("click", (e) => {
+      e.preventDefault();
+      const targetSec = document.getElementById(sectionIds[idx]);
+      if (targetSec) {
+        targetSec.scrollIntoView({ behavior: "smooth", block: "start" });
+        updateActiveStep(idx);
+      }
+    });
+  });
+
+  if ("IntersectionObserver" in window) {
+    const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const idx = sectionIds.indexOf(entry.target.id);
+          if (idx !== -1) updateActiveStep(idx);
+        }
+      });
+    }, { rootMargin: "-15% 0px -65% 0px" });
+
+    sections.forEach((sec) => observer.observe(sec));
+  }
 
   await checkRegistrationStatus();
 }

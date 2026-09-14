@@ -12,6 +12,12 @@
   color: var(--text-on-dark);
 }
 
+/* Collapse margin-top when preceded by the final registration callout to avoid whitespace gap */
+body:has(.final-registration-callout) .footer,
+#app:has(.final-registration-callout) ~ .footer {
+  margin-top: 0;
+}
+
 .footer-watermark {
   position: absolute;
   right: -0.04em;
