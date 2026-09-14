@@ -4,7 +4,55 @@ Dokumentasi resmi arsitektur sistem, basis data, panduan pengembangan lokal, dan
 
 ---
 
-## 1. Konteks dan Identitas Proyek
+## 1. Panduan Cepat Menjalankan Aplikasi (Quick Start)
+
+Aplikasi ini mengusung arsitektur web murni tanpa ketergantungan pada bundler Node.js yang rumit. Anda tidak perlu menjalankan `npm install`. Cukup gunakan web server statis lokal sederhana untuk menjalankan aplikasi.
+
+### 1.1. Prasyarat Sistem
+* Peramban web modern (Google Chrome, Mozilla Firefox, Microsoft Edge, atau Apple Safari).
+* Python 3 atau Node.js yang terpasang di sistem operasi Anda.
+
+### 1.2. Cara Menjalankan Kode Sumber (Mode Development)
+
+1. Buka terminal dan arahkan ke direktori proyek:
+   ```bash
+   cd /home/faiz/soga-11
+   ```
+
+2. Jalankan server lokal:
+
+   *Menggunakan Python 3 (Direkomendasikan):*
+   ```bash
+   python3 -m http.server 8080
+   ```
+
+   *Atau menggunakan Node.js:*
+   ```bash
+   npx serve -l 8080 .
+   ```
+
+3. Buka peramban dan akses alamat berikut:
+   * **Portal Publik (Landing, Pendaftaran, Cek Tiket)**: `http://localhost:8080/index.html`
+   * **Admin Command Center (Presensi, Registri, Statistik)**: `http://localhost:8080/dashboard.html`
+   * **Portal Sertifikat**: `http://localhost:8080/certificate.html`
+
+### 1.3. Cara Menjalankan Versi Rilis Produksi (`dist/`)
+
+Untuk menguji build rilis yang identik dengan server produksi Vercel:
+
+1. Eksekusi skrip kompilasi rilis:
+   ```bash
+   ./scripts/build-release.sh
+   ```
+
+2. Jalankan server lokal langsung dari folder distribusi `dist/`:
+   ```bash
+   python3 -m http.server 8080 --directory dist
+   ```
+
+---
+
+## 2. Konteks dan Identitas Proyek
 
 SOGA 11 (Sorcery Gathering #11) adalah situs web resmi untuk konferensi teknologi komunitas yang diselenggarakan oleh **Data Sorcerers Indonesia**. Platform ini mencakup landing page publik, sistem pendaftaran peserta satu halaman, portal pencarian tiket mandiri, sistem klaim sertifikat kehadiran, serta Command Center operasional admin untuk manajemen presensi pada hari pelaksanaan.
 
@@ -23,7 +71,7 @@ SOGA 11 (Sorcery Gathering #11) adalah situs web resmi untuk konferensi teknolog
 
 ---
 
-## 2. Arsitektur dan Tech Stack
+## 3. Arsitektur dan Tech Stack
 
 Sistem ini dibangun dengan pendekatan **Vanilla Web Architecture (Zero-Bundler)**. Keputusan arsitektur ini diambil untuk menjamin performa render maksimal, latensi nol, kesederhanaan pemeliharaan, serta kemandirian dari ekosistem dependensi Node.js yang berlebihan.
 
@@ -43,7 +91,7 @@ Sistem ini dibangun dengan pendekatan **Vanilla Web Architecture (Zero-Bundler)*
 
 ---
 
-## 3. Struktur Direktori Repositori
+## 4. Struktur Direktori Repositori
 
 ```text
 /home/faiz/soga-11/
@@ -93,17 +141,17 @@ Sistem ini dibangun dengan pendekatan **Vanilla Web Architecture (Zero-Bundler)*
 
 ---
 
-## 4. Alur Kerja Modul Aplikasi
+## 5. Alur Kerja Modul Aplikasi
 
 Aplikasi terbagi menjadi tiga modul utama yang melayani segmen pengguna berbeda:
 
-### 4.1. Portal Publik (`index.html`)
+### 5.1. Portal Publik (`index.html`)
 * **Arsitektur Hash Routing**: Navigasi menggunakan URL hash (`#home`, `#agenda`, `#speakers`, `#legacy`, `#faq`, `#register`, `#find-ticket`). Skrip `js/app.js` memuat fragmen HTML terkait dari folder `pages/` ke dalam kontainer `#app-root` menggunakan cache memori internal untuk transisi instan (0 milidetik).
 * **Formulir Registrasi (`#register`)**: Formulir komprehensif yang mengumpulkan identitas, preferensi bidang minat, level keahlian data, tautan profil (LinkedIn/GitHub), serta pertanyaan untuk pembicara. Setelah data tervalidasi dan berhasil disimpan di Supabase, sistem langsung menampilkan kartu tiket digital peserta lengkap dengan QR code.
 * **Portal Pencarian Tiket (`#find-ticket`)**: Memungkinkan peserta yang telah terdaftar mencari tiket mereka kembali menggunakan nomor WhatsApp atau kode tiket `SGN11-XXXXXX`.
 * **Section The Legacy**: Menampilkan arsip sejarah SOGA dari edisi 10 hingga edisi 01. Untuk menjaga efisiensi rendering, 10 edisi terdahulu dikelompokkan ke dalam arsip yang dapat dibuka-tutup (*expandable archive*) dengan akselerasi GPU.
 
-### 4.2. Admin Command Center (`dashboard.html`)
+### 5.2. Admin Command Center (`dashboard.html`)
 * **Autentikasi Mandiri**: Akses login admin menggunakan Supabase Auth dengan antarmuka split-screen modern dan fitur intip password.
 * **Bento Stat Cards**: Empat metrik utama yang menyajikan ringkasan real-time: Total Peserta, Jumlah Hadir, Jumlah Belum Hadir, dan Sakelar Buka/Tutup Pendaftaran.
 * **Sistem Tab Navigasi**:
@@ -113,16 +161,16 @@ Aplikasi terbagi menjadi tiga modul utama yang melayani segmen pengguna berbeda:
   4. *Pengaturan & Info*: Pengendali gerbang registrasi publik dan metadata teknis sistem.
 * **Slide-over Drawer ("Detail Tiket")**: Panel samping yang muncul saat admin memilih salah satu peserta. Menampilkan pratinjau kartu tiket kredensial ber-QR asli, biodata terperinci dengan pintasan langsung chat WhatsApp, serta tombol aksi cepat untuk menandai kehadiran peserta.
 
-### 4.3. Portal Sertifikat (`certificate.html`)
+### 5.3. Portal Sertifikat (`certificate.html`)
 Portal untuk validasi kehadiran pasca-acara. Peserta memasukkan nomor WhatsApp atau kode tiket; sistem memverifikasi bahwa status peserta adalah `hadir`, lalu merender sertifikat resmi bernomor seri unik yang siap dicetak atau disimpan sebagai PDF.
 
 ---
 
-## 5. Integrasi Basis Data dan Backend (Supabase)
+## 6. Integrasi Basis Data dan Backend (Supabase)
 
 Backend sistem berjalan di atas platform **Supabase** (PostgreSQL berkinerja tinggi). Seluruh komunikasi data dilakukan melalui pustaka resmi `@supabase/supabase-js` yang diabstraksikan di dalam berkas `js/api.js`.
 
-### 5.1. File Konfigurasi (`js/config.js`)
+### 6.1. File Konfigurasi (`js/config.js`)
 Berkas ini memuat kredensial publik Supabase:
 ```javascript
 window.SOGA_CONFIG = {
@@ -132,7 +180,7 @@ window.SOGA_CONFIG = {
 ```
 *Catatan Keamanan*: `SUPABASE_ANON_KEY` adalah kunci publik yang aman disertakan di sisi klien karena seluruh izin baca/tulis data dikontrol ketat oleh kebijakan **Row Level Security (RLS)** di level database PostgreSQL. Jangan pernah menyertakan `service_role` key pada kode front-end.
 
-### 5.2. Skema Tabel Utama
+### 6.2. Skema Tabel Utama
 
 #### Tabel `participants`
 Menyimpan seluruh data pendaftaran peserta:
@@ -156,7 +204,7 @@ Menyimpan seluruh data pendaftaran peserta:
 * `checkin_time` (Timestamp with Time Zone, Nullable): Waktu peserta melakukan check-in di lokasi.
 * `created_at` (Timestamp with Time Zone): Waktu pendaftaran pertama kali dibuat.
 
-### 5.3. Fungsi Tersimpan (Stored Procedures / RPC)
+### 6.3. Fungsi Tersimpan (Stored Procedures / RPC)
 Untuk menjaga keamanan data pribadi (PII) dari ekspos publik yang tidak disengaja, pencarian tiket dan klaim sertifikat menggunakan stored procedure PostgreSQL:
 
 1. `rpc/find_ticket(p_lookup)`:
@@ -167,38 +215,6 @@ Untuk menjaga keamanan data pribadi (PII) dari ekspos publik yang tidak disengaj
    Memeriksa apakah kuota pendaftaran publik di tabel pengaturan masih aktif (`true`) atau telah ditutup (`false`).
 4. `rpc/checkin_participant(p_qr_token)`:
    Prosedur operasional yang mengubah status tiket dari `pending` menjadi `hadir` dan membubuhkan timestamp server `NOW()` ke kolom `checkin_time`.
-
----
-
-## 6. Panduan Menjalankan Aplikasi Secara Lokal
-
-Aplikasi tidak memerlukan tahapan `npm install` atau kompilasi bundle yang rumit. Anda hanya memerlukan web server statis sederhana untuk menghindari batasan keamanan browser (*CORS* dan *file:// protocol origin*).
-
-### Prasyarat
-* Web Browser modern (Google Chrome, Mozilla Firefox, Microsoft Edge, atau Apple Safari).
-* Salah satu server lokal: Python 3, Node.js (`npx serve`), atau ekstensi VS Code Live Server.
-
-### Langkah Menjalankan Kode Sumber (Mode Development)
-
-1. Buka terminal dan arahkan ke direktori proyek:
-   ```bash
-   cd /home/faiz/soga-11
-   ```
-
-2. Jalankan server lokal menggunakan Python 3:
-   ```bash
-   python3 -m http.server 8080
-   ```
-
-   *Atau* jika Anda lebih menyukai Node.js:
-   ```bash
-   npx serve -l 8080 .
-   ```
-
-3. Buka peramban dan akses alamat berikut:
-   * **Situs Publik**: `http://localhost:8080/index.html`
-   * **Admin Command Center**: `http://localhost:8080/dashboard.html`
-   * **Portal Sertifikat**: `http://localhost:8080/certificate.html`
 
 ---
 
