@@ -418,11 +418,62 @@ function initAgendaInteractivity() {
   });
 }
 
+// ============================================================
+// Legacy Section: Archive Expansion Toggle & Chapter Linking
+// ============================================================
+function initLegacyArchiveToggle() {
+  const toggleBtn = document.getElementById("btn-toggle-legacy-archive");
+  const grid = document.querySelector(".legacy-editorial-grid");
+  if (!toggleBtn || !grid) return;
+
+  const labelEl = toggleBtn.querySelector(".expand-btn-text");
+  const badgeEl = toggleBtn.querySelector(".expand-btn-badge");
+
+  function setArchiveExpanded(expanded, shouldScroll = false) {
+    grid.classList.toggle("is-expanded", expanded);
+    toggleBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
+
+    if (labelEl) {
+      labelEl.textContent = expanded
+        ? "Sembunyikan Arsip Terdahulu"
+        : "Buka Arsip Lengkap (10 Edisi Terdahulu: SOGA 01 – 06.2)";
+    }
+    if (badgeEl) {
+      badgeEl.textContent = expanded ? "Tutup ↑" : "10 Edisi ↓";
+    }
+
+    if (!expanded && shouldScroll) {
+      const controls = document.getElementById("legacy-archive-controls");
+      controls?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    const isCurrentlyExpanded = grid.classList.contains("is-expanded");
+    setArchiveExpanded(!isCurrentlyExpanded, isCurrentlyExpanded);
+  });
+
+  // Chapter pill integration: if clicking chapter 01-06, auto-expand if needed
+  const chapterPills = document.querySelectorAll(".legacy-chapter-nav .chapter-pill");
+  chapterPills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      const href = pill.getAttribute("href");
+      if (!href || !href.startsWith("#soga-")) return;
+
+      const targetCard = document.querySelector(href);
+      if (targetCard && targetCard.classList.contains("legacy-card--archived")) {
+        setArchiveExpanded(true, false);
+      }
+    });
+  });
+}
+
 function initHome() {
   stopHomeCountdown();
   initReveal();
   initHeroMotion();
   initAgendaInteractivity();
+  initLegacyArchiveToggle();
   const cd = document.getElementById("countdown");
   if (!cd) return;
 
