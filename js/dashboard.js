@@ -120,6 +120,7 @@ function showDashboard(user) {
   const settingsEmail = document.getElementById("settings-admin-email");
   if (settingsEmail) settingsEmail.textContent = email;
 
+  initDashboardRouting();
   loadParticipants();
   loadRegistrationStatus();
 }
@@ -205,51 +206,191 @@ btnSidebarClose?.addEventListener("click", () => toggleSidebar(false));
 sidebarBackdrop?.addEventListener("click", () => toggleSidebar(false));
 
 // ============================================================
-// Tab Switching
+// Route Configuration & Tab Switching (Two-Way Sync + Hash)
 // ============================================================
-function switchTab(paneId) {
-  // Activate pane
+const ROUTE_CONFIG = {
+  dashboard: {
+    paneId: "pane-registry",
+    sidebarId: "nav-item-dashboard",
+    tabId: "tab-btn-registry",
+    bottomTabId: "bottom-nav-dashboard",
+  },
+  peserta: {
+    paneId: "pane-registry",
+    sidebarId: "nav-item-peserta",
+    tabId: "tab-btn-registry",
+    bottomTabId: "bottom-nav-peserta",
+    focusEl: "search-input",
+  },
+  checkin: {
+    paneId: "pane-checkin",
+    sidebarId: "nav-item-checkin",
+    tabId: "tab-btn-checkin",
+    bottomTabId: "bottom-nav-checkin",
+    focusEl: "checkin-input",
+  },
+  scan: {
+    paneId: "pane-checkin",
+    sidebarId: "nav-item-scan",
+    tabId: "tab-btn-checkin",
+    bottomTabId: "bottom-nav-checkin",
+    scrollToEl: "scanner-station-card",
+  },
+  analytics: {
+    paneId: "pane-analytics",
+    sidebarId: "nav-item-statistik",
+    tabId: "tab-btn-analytics",
+    bottomTabId: "bottom-nav-analytics",
+  },
+  settings: {
+    paneId: "pane-settings",
+    sidebarId: "nav-item-settings",
+    tabId: "tab-btn-settings",
+    bottomTabId: null,
+  },
+};
+
+const ROUTE_ALIASES = {
+  "#dashboard": "dashboard",
+  "#peserta": "peserta",
+  "#registry": "peserta",
+  "#checkin": "checkin",
+  "#scan": "scan",
+  "#scan-qr": "scan",
+  "#statistik": "analytics",
+  "#analytics": "analytics",
+  "#pengaturan": "settings",
+  "#settings": "settings",
+  "tab-registry": "peserta",
+  "tab-checkin": "checkin",
+  "tab-analytics": "analytics",
+  "tab-settings": "settings",
+  "pane-registry": "peserta",
+  "pane-checkin": "checkin",
+  "pane-analytics": "analytics",
+  "pane-settings": "settings",
+};
+
+let routingInitialized = false;
+
+function navigateToRoute(rawRoute, updateHash = true) {
+  const clean = String(rawRoute || "").trim().toLowerCase();
+  const resolvedKey = ROUTE_ALIASES[clean] || ROUTE_ALIASES[`#${clean.replace(/^#/, "")}`] || clean.replace(/^#/, "") || "dashboard";
+  const config = ROUTE_CONFIG[resolvedKey] || ROUTE_CONFIG.dashboard;
+
+  // 1. Activate Target Pane
   document.querySelectorAll(".dash-pane").forEach((p) => {
-    p.classList.toggle("is-active", p.id === paneId);
+    p.classList.toggle("is-active", p.id === config.paneId);
   });
 
-  // Sync tab buttons
-  document.querySelectorAll(".dash-tab-btn").forEach((b) => {
-    const active = b.dataset.target === paneId;
-    b.classList.toggle("is-active", active);
-    b.setAttribute("aria-selected", String(active));
-  });
-
-  // Sync sidebar items
+  // 2. Sync Sidebar Nav Items (EXACTLY 1 item gets is-active)
   document.querySelectorAll(".nav-item").forEach((item) => {
-    item.classList.toggle("is-active", item.dataset.tab === paneId);
+    const isActive = item.id === config.sidebarId;
+    item.classList.toggle("is-active", isActive);
+    if (isActive) {
+      item.setAttribute("aria-current", "page");
+    } else {
+      item.removeAttribute("aria-current");
+    }
   });
 
-  // Sync mobile bottom nav
-  document.querySelectorAll(".bottom-nav-item").forEach((item) => {
-    item.classList.toggle("is-active", item.dataset.bottomTab === paneId);
+  // 3. Sync Horizontal Tab Buttons
+  document.querySelectorAll(".dash-tab-btn").forEach((b) => {
+    const isActive = b.id === config.tabId;
+    b.classList.toggle("is-active", isActive);
+    b.setAttribute("aria-selected", String(isActive));
   });
 
-  // Close mobile sidebar
+  // 4. Sync Mobile Bottom Nav Items
+  document.querySelectorAll(".bottom-nav-item").forEach((b) => {
+    const isActive = b.id === config.bottomTabId;
+    b.classList.toggle("is-active", isActive);
+  });
+
+  // 5. Close Mobile Sidebar if open
   toggleSidebar(false);
 
-  // If opening analytics, resize charts
-  if (paneId === "pane-analytics") {
-    setTimeout(renderCharts, 50);
+  // 6. Update URL Hash cleanly without jumping
+  if (updateHash) {
+    const targetHash = `#${resolvedKey}`;
+    if (window.location.hash !== targetHash) {
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, "", targetHash);
+      } else {
+        window.location.hash = targetHash;
+      }
+    }
+  }
+
+  // 7. Contextual Auto-focus & Scrolling
+  if (config.focusEl) {
+    setTimeout(() => {
+      const el = document.getElementById(config.focusEl);
+      if (el && typeof el.focus === "function") {
+        el.focus();
+      }
+    }, 100);
+  }
+
+  if (config.scrollToEl) {
+    setTimeout(() => {
+      const el = document.querySelector(`.${config.scrollToEl}`) || document.getElementById(config.scrollToEl);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  }
+
+  // 8. Re-render Charts if entering analytics
+  if (config.paneId === "pane-analytics") {
+    setTimeout(renderCharts, 60);
   }
 }
 
-document.querySelectorAll(".dash-tab-btn").forEach((btn) => {
-  btn.addEventListener("click", () => switchTab(btn.dataset.target));
-});
+// Backward compatibility helper
+function switchTab(target) {
+  navigateToRoute(target, true);
+}
 
-document.querySelectorAll(".nav-item[data-tab]").forEach((btn) => {
-  btn.addEventListener("click", () => switchTab(btn.dataset.tab));
-});
+function initDashboardRouting() {
+  if (routingInitialized) return;
+  routingInitialized = true;
 
-document.querySelectorAll(".bottom-nav-item[data-bottom-tab]").forEach((btn) => {
-  btn.addEventListener("click", () => switchTab(btn.dataset.bottomTab));
-});
+  // Sidebar navigation click handlers
+  document.querySelectorAll(".nav-item[data-route]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      navigateToRoute(btn.dataset.route, true);
+    });
+  });
+
+  // Horizontal tab buttons click handlers
+  document.querySelectorAll(".dash-tab-btn[data-route]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      navigateToRoute(btn.dataset.route, true);
+    });
+  });
+
+  // Mobile bottom nav click handlers
+  document.querySelectorAll(".bottom-nav-item[data-route]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      navigateToRoute(btn.dataset.route, true);
+    });
+  });
+
+  // Browser back / forward buttons listener
+  window.addEventListener("hashchange", () => {
+    if (window.location.hash) {
+      navigateToRoute(window.location.hash, false);
+    }
+  });
+
+  // Handle initial page hash
+  if (window.location.hash) {
+    navigateToRoute(window.location.hash, false);
+  } else {
+    navigateToRoute("dashboard", false);
+  }
+}
 
 // ============================================================
 // Data Loading & Statistics
@@ -551,7 +692,7 @@ function openTicketDrawer(p) {
       <div class="credential-card-footer">
         <span>25 OKT 2026 • YOGYAKARTA</span>
         <span class="credential-status-pill ${isHadir ? "is-valid" : "is-pending"}">
-          ${isHadir ? "✔ VALID TICKET" : "⏱ BELUM HADIR"}
+          ${isHadir ? "VALID TICKET" : "BELUM HADIR"}
         </span>
       </div>
     </div>
@@ -570,7 +711,7 @@ function openTicketDrawer(p) {
         <div class="detail-item">
           <dt>Nomor WhatsApp</dt>
           <dd>
-            ${p.whatsapp ? `<a href="https://wa.me/${p.whatsapp.replace(/\D/g, '')}" target="_blank" rel="noopener">📱 ${esc(p.whatsapp)}</a>` : "-"}
+            ${p.whatsapp ? `<a href="https://wa.me/${p.whatsapp.replace(/\D/g, '')}" target="_blank" rel="noopener">${esc(p.whatsapp)}</a>` : "-"}
           </dd>
         </div>
         <div class="detail-item">
@@ -644,7 +785,7 @@ function openTicketDrawer(p) {
     <button type="button" class="btn btn-ghost" id="drawer-btn-close">Tutup</button>
     <button type="button" class="btn btn-secondary" id="drawer-btn-edit">Edit Data</button>
     <button type="button" class="btn ${isHadir ? "btn-secondary" : "btn-primary"}" id="drawer-btn-toggle-checkin">
-      ${isHadir ? "Batalkan Check-in" : "✔ Check-in Sekarang"}
+      ${isHadir ? "Batalkan Check-in" : "Check-in Sekarang"}
     </button>
   `;
 
