@@ -146,54 +146,12 @@
 }
 
 .hero-btn-chamfer-primary {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  flex-shrink: 0;
+}
+
+.hero-btn-chamfer-inner {
   height: 48px;
   padding: 0 28px;
-  background: linear-gradient(135deg, #181145 0%, #2A1762 50%, #171040 100%);
-  clip-path: polygon(
-    8px 0%,
-    calc(100% - 8px) 0%,
-    100% 8px,
-    100% calc(100% - 8px),
-    calc(100% - 8px) 100%,
-    8px 100%,
-    0% calc(100% - 8px),
-    0% 8px
-  );
-  color: #FFFFFF;
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  border: 1px solid rgba(216, 204, 168, 0.45);
-  outline: 1px solid rgba(197, 168, 118, 0.85);
-  outline-offset: -3px;
-  box-shadow: 0 6px 20px rgba(27, 17, 68, 0.32);
-  transition: all 0.22s ease;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.hero-btn-chamfer-primary:hover {
-  background: linear-gradient(135deg, #24175E 0%, #391E84 50%, #22145A 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(36, 23, 94, 0.42);
-  color: #FFFFFF;
-}
-
-.hero-btn-chamfer-primary .btn-arrow {
-  transition: transform 0.2s ease;
-  display: inline-block;
-  font-size: 0.95rem;
-}
-
-.hero-btn-chamfer-primary:hover .btn-arrow {
-  transform: translate(2px, -2px);
 }
 
 .hero-btn-chamfer-secondary {
@@ -376,60 +334,13 @@
   line-height: 1.35;
 }
 
-/* Right Column: Editorial Monograph & Countdown */
+/* Right Column: Realtime Countdown Chronometer */
 .hero-col-editorial {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   height: 100%;
-  min-height: 480px;
   padding-left: 8px;
-}
-
-.hero-monograph {
-  display: flex;
-  flex-direction: column;
-}
-
-.monograph-kicker-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.monograph-kicker {
-  display: flex;
-  flex-direction: column;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: #71697A;
-  line-height: 1.3;
-}
-
-.monograph-line {
-  flex: 1;
-  max-width: 65px;
-  height: 1px;
-  background: #D6CEBE;
-}
-
-.monograph-numeral {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(4.5rem, 6.5vw, 6.8rem);
-  font-weight: 700;
-  line-height: 0.92;
-  color: #17113A;
-  letter-spacing: -0.03em;
-  margin: 16px 0 14px;
-}
-
-.monograph-desc {
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: #4A4254;
-  max-width: 220px;
 }
 
 /* ============================================================
@@ -943,13 +854,12 @@
 
   .hero-col-editorial {
     grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 24px;
-    min-height: auto;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    padding-top: 24px;
-    border-top: 1px solid rgba(214, 203, 184, 0.6);
+    min-height: auto;
+    padding-top: 16px;
+    border-top: none;
   }
 
   .hero-countdown-box {
@@ -1017,17 +927,13 @@
   .hero-col-editorial {
     order: 3;
     min-height: auto;
-    padding: 20px;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    background: rgba(250, 247, 242, 0.82);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    transform: translateZ(0);
-    border: 1px solid rgba(216, 204, 168, 0.45);
-    border-radius: 18px;
-    box-shadow: 0 10px 30px -4px rgba(45, 30, 65, 0.08);
+    align-items: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
   }
 
   .hero-countdown-box {
@@ -2674,65 +2580,17 @@
   line-height: var(--type-body-leading);
 }
 
-/* Luxury Champagne Gold CTA Button */
+/* Chamfered Royal CTA Button */
 .final-register-btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-width: 200px;
+  min-width: 220px;
+  flex-shrink: 0;
+}
+
+.final-register-inner {
   height: 52px;
-  padding: 0 32px;
-  background: linear-gradient(135deg, #EAD7B0 0%, #C5A876 50%, #B08F52 100%);
-  border: 1px solid #F0DFBC;
-  border-radius: 8px;
-  color: #170C2D;
-  font-family: var(--font-sans);
+  padding: 0 36px;
   font-size: 0.875rem;
-  font-weight: 800;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  text-decoration: none;
-  box-shadow: 0 8px 24px -4px rgba(197, 168, 118, 0.35), 0 2px 6px rgba(197, 168, 118, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  cursor: pointer;
-  transition: transform var(--duration-fast) var(--ease-standard),
-              box-shadow var(--duration-fast) var(--ease-standard),
-              background var(--duration-fast) var(--ease-standard);
-}
-
-.final-register-btn:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, #F3E3C3 0%, #CEB282 50%, #B9995E 100%);
-  box-shadow: 0 14px 32px -4px rgba(197, 168, 118, 0.48), 0 4px 10px rgba(197, 168, 118, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  color: #120724;
-}
-
-.final-register-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 14px -2px rgba(197, 168, 118, 0.4);
-}
-
-.final-register-btn:focus-visible {
-  outline: 2px solid #EAD7B0;
-  outline-offset: 3px;
-}
-
-.final-register-btn .final-btn-arrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(23, 12, 45, 0.12);
-  transition: transform var(--duration-fast) var(--ease-standard),
-              background var(--duration-fast) var(--ease-standard);
-}
-
-.final-register-btn:hover .final-btn-arrow {
-  transform: translateX(3px);
-  background: rgba(23, 12, 45, 0.2);
+  letter-spacing: 0.12em;
 }
 
 /* Constellation Graphic */
@@ -2863,6 +2721,11 @@ body:has(.final-registration-callout) .footer,
 
   .final-register-btn {
     width: 100%;
+  }
+
+  .final-register-inner {
+    width: 100%;
+    justify-content: center;
   }
 
   .final-cta-constellation {

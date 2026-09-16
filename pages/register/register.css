@@ -885,37 +885,13 @@
 }
 
 .registration-submit-btn {
-  background: linear-gradient(135deg, #6929C4 0%, #4F1D96 100%);
-  color: #FFFFFF;
-  font-family: var(--font-mono, monospace);
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  padding: 14px 28px;
-  border-radius: 8px;
-  border: none;
-  box-shadow: 0 4px 18px rgba(105, 41, 196, 0.35);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
   flex-shrink: 0;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
-.registration-submit-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(105, 41, 196, 0.45);
-}
-
-.registration-submit-btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-.submit-btn-arrow {
-  font-size: 16px;
-  line-height: 1;
+.registration-submit-inner {
+  height: 48px;
+  padding: 0 28px;
+  font-size: 0.8125rem;
 }
 
 .submit-status {
@@ -1188,6 +1164,11 @@
   }
 
   .registration-submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .registration-submit-inner {
     width: 100%;
     justify-content: center;
   }

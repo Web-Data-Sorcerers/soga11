@@ -417,6 +417,98 @@ input[type="radio"] {
     opacity var(--duration-fast) ease;
 }
 
+/* ============================================================
+   Royal Chamfered Button (Navbar-Grade Architectural CTA)
+   ============================================================ */
+.btn-chamfer-gold {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5px;
+  background: linear-gradient(135deg, #D4C19C 0%, #A88F5E 50%, #D4C19C 100%);
+  clip-path: polygon(
+    8px 0%,
+    calc(100% - 8px) 0%,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0% calc(100% - 8px),
+    0% 8px
+  );
+  filter: drop-shadow(0 4px 14px rgba(25, 15, 60, 0.35));
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: transform var(--duration-fast) var(--ease-standard),
+              filter var(--duration-fast) var(--ease-standard);
+}
+
+.btn-chamfer-gold:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 8px 22px rgba(25, 15, 60, 0.55));
+}
+
+.btn-chamfer-gold:active:not(:disabled) {
+  transform: translateY(0);
+  filter: drop-shadow(0 3px 10px rgba(25, 15, 60, 0.4));
+}
+
+.btn-chamfer-gold:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
+}
+
+.btn-chamfer-gold .chamfer-inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  min-height: 48px;
+  padding: 0 24px;
+  background: linear-gradient(135deg, #181145 0%, #2A1762 50%, #171040 100%);
+  clip-path: polygon(
+    7px 0%,
+    calc(100% - 7px) 0%,
+    100% 7px,
+    100% calc(100% - 7px),
+    calc(100% - 7px) 100%,
+    7px 100%,
+    0% calc(100% - 7px),
+    0% 7px
+  );
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-sizing: border-box;
+  transition: background var(--duration-fast) ease;
+}
+
+.btn-chamfer-gold:hover:not(:disabled) .chamfer-inner {
+  background: linear-gradient(135deg, #23175E 0%, #381E83 50%, #211459 100%);
+}
+
+.btn-chamfer-gold .chamfer-arrow {
+  font-size: 1.05em;
+  line-height: 1;
+  display: inline-block;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.btn-chamfer-gold:hover:not(:disabled) .chamfer-arrow {
+  transform: translate(2px, -2px);
+}
+
 .btn-primary {
   background: var(--primary);
   color: var(--surface);

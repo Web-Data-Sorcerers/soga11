@@ -100,12 +100,14 @@
 
 .find-ticket-submit {
   width: 100%;
-  min-height: 52px;
-  justify-content: space-between;
 }
 
-.find-ticket-submit > span:last-child {
-  font-size: 1.15em;
+.find-ticket-submit-inner {
+  width: 100%;
+  min-height: 50px;
+  justify-content: space-between;
+  padding: 0 24px;
+  font-size: 0.875rem;
 }
 
 .find-ticket-live-status {
