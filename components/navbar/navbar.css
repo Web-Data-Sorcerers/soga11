@@ -541,6 +541,7 @@
     transform-origin: top center;
     opacity: 0;
     transform: translateY(-10px) scale(0.97);
+    will-change: transform, opacity;
     transition: 
       opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
       transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -583,7 +584,8 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 11px 12px;
+    min-height: 44px;
+    padding: 10px 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     color: #FAF7F2;
     font-size: 1.125rem;
@@ -591,6 +593,7 @@
     text-decoration: none;
     border-radius: 8px;
     pointer-events: auto;
+    touch-action: manipulation;
     transition: 
       color 0.15s ease,
       background-color 0.15s ease,
@@ -669,9 +672,19 @@
 /* ============================================================
    Media Queries: Mobile Dock & Breakpoint Adaptations
    ============================================================ */
-@media (max-width: 1199px) and (min-width: 1024px) {
+@media (max-width: 1279px) and (min-width: 1024px) {
+  .navbar-cartouche,
   .navbar-event-id {
-    display: none;
+    display: none !important;
+  }
+
+  .navbar-links {
+    gap: clamp(6px, 1.2vw, 14px);
+  }
+
+  .navbar-links a {
+    font-size: 0.875rem;
+    padding: 6px 4px;
   }
 }
 
@@ -737,6 +750,8 @@
 
   .menu-trigger {
     display: inline-flex;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 }
 
@@ -755,15 +770,15 @@
   }
 
   .navbar-brand-wedge .navbar-brand-name {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
   }
 
   .menu-trigger {
-    padding: 5px 10px;
+    padding: 6px 12px;
     gap: 6px;
   }
 
   .menu-trigger-label {
-    font-size: 0.62rem;
+    font-size: 0.65rem;
   }
 }
