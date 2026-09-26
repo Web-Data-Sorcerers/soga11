@@ -65,7 +65,7 @@ SOGA 11 (Sorcery Gathering #11) adalah situs web resmi untuk konferensi teknolog
 | Target Waktu Mulai | 08:00 WIB (Check-in dan pembukaan) |
 | Lokasi | Yogyakarta, Indonesia |
 | Format Acara | 100% Offline (Tatap Muka) |
-| Tema Acara | "Orkestrasi Kecerdasan untuk Masa Depan Nusantara" |
+| Tema Acara | "Navigasi AI Pendidikan: Menghubungkan Realita Lapangan dan Kebijakan" |
 | Bahasa Antarmuka | Bahasa Indonesia (Formal & Editorial) |
 | URL Produksi | https://soga11.vercel.app/ |
 

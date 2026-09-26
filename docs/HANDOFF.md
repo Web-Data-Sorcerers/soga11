@@ -15,7 +15,7 @@
 - Approved location specificity: **Yogyakarta only**.
 - Venue name/address: **not final**.
 - Event format: **offline**. Never call it hybrid.
-- Theme: **“Orkestrasi Kecerdasan untuk Masa Depan Nusantara.”**
+- Theme: **“Navigasi AI Pendidikan: Menghubungkan Realita Lapangan dan Kebijakan.”**
 - Public contact: `contact@data-sorcerers.com`.
 - Visual system: **Sorcery Editorial System**.
 
