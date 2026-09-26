@@ -468,11 +468,105 @@ function initLegacyArchiveToggle() {
   });
 }
 
+// ============================================================
+// Smooth Expand/Collapse for Native Disclosure Widgets (<details>)
+// FAQ (#faq) & Agenda (#agenda)
+// ============================================================
+function initSmoothDisclosure() {
+  const rootStyles = getComputedStyle(document.documentElement);
+  const cssDuration = parseFloat(rootStyles.getPropertyValue("--disclosure-duration"));
+  const cssEase = rootStyles.getPropertyValue("--disclosure-ease").trim();
+  const duration = Number.isFinite(cssDuration) ? cssDuration : 400;
+  const easing = cssEase || "cubic-bezier(0.4, 0, 0.2, 1)";
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const groups = [
+    { itemSelector: ".faq-item", panelSelector: ".faq-answer" },
+    { itemSelector: ".agenda-item", panelSelector: ".agenda-item-drawer" },
+  ];
+
+  groups.forEach(({ itemSelector, panelSelector }) => {
+    document.querySelectorAll(itemSelector).forEach((details) => {
+      const summary = details.querySelector("summary");
+      const panel = details.querySelector(panelSelector);
+      if (!summary || !panel) return;
+
+      details.classList.toggle("is-expanded", details.open);
+      const isAgendaItem = details.classList.contains("agenda-item");
+      let activeAnimation = null;
+
+      const clearInlineStyles = () => {
+        panel.style.height = "";
+        panel.style.overflow = "";
+        panel.style.willChange = "";
+      };
+
+      const refreshTimeline = () => {
+        if (isAgendaItem) {
+          requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
+        }
+      };
+
+      summary.addEventListener("click", (event) => {
+        event.preventDefault();
+        if (activeAnimation && activeAnimation.playState === "running") return;
+
+        const computed = getComputedStyle(panel);
+        const padTop = parseFloat(computed.paddingTop) || 0;
+        const padBottom = parseFloat(computed.paddingBottom) || 0;
+        const openedHeight = panel.scrollHeight;
+        const timing = {
+          duration: prefersReducedMotion ? 0 : duration,
+          easing,
+          fill: "forwards",
+        };
+        const expandedFrame = {
+          height: `${openedHeight}px`,
+          paddingTop: `${padTop}px`,
+          paddingBottom: `${padBottom}px`,
+          opacity: 1,
+        };
+        const collapsedFrame = {
+          height: "0px",
+          paddingTop: "0px",
+          paddingBottom: "0px",
+          opacity: 0,
+        };
+
+        panel.style.overflow = "hidden";
+        panel.style.willChange = "height, opacity";
+
+        if (!details.open) {
+          details.open = true;
+          details.classList.add("is-expanded");
+          activeAnimation = panel.animate([collapsedFrame, expandedFrame], timing);
+          activeAnimation.onfinish = () => {
+            clearInlineStyles();
+            activeAnimation.cancel();
+            refreshTimeline();
+            activeAnimation = null;
+          };
+        } else {
+          details.classList.remove("is-expanded");
+          activeAnimation = panel.animate([expandedFrame, collapsedFrame], timing);
+          activeAnimation.onfinish = () => {
+            details.open = false;
+            clearInlineStyles();
+            activeAnimation.cancel();
+            refreshTimeline();
+            activeAnimation = null;
+          };
+        }
+      });
+    });
+  });
+}
+
 function initHome() {
   stopHomeCountdown();
   initReveal();
   initHeroMotion();
   initAgendaInteractivity();
+  initSmoothDisclosure();
   initLegacyArchiveToggle();
   const cd = document.getElementById("countdown");
   if (!cd) return;
