@@ -1,129 +1,76 @@
 <!-- ===================== HOME / LANDING ===================== -->
 
 <!-- Hero -->
-<section class="hero" aria-labelledby="hero-title">
-  <!-- Cinematic Background Artwork Layer -->
-  <div class="hero-backdrop-artwork" aria-hidden="true"></div>
+<section class="hero hero--cinematic" aria-labelledby="hero-title">
+  <!-- Cinematic full-bleed backdrop layers (reuses assets/hero/bg.webp) -->
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="hero-watermark-soga" aria-hidden="true">SOGA</div>
+  <div class="hero-aura" aria-hidden="true"></div>
 
-  <div class="container hero-grid-triptych">
-    <!-- Left Column: Editorial Copy & CTA -->
-    <div class="hero-col-copy" data-hero-reveal="title">
+  <div class="container hero-inner">
+    <!-- Editorial copy (upper-left) -->
+    <div class="hero-copy" data-hero-reveal="title">
       <div class="hero-index-rail">
         <span class="hero-rail-item">SOGA / 011</span>
         <span class="hero-rail-line" aria-hidden="true"></span>
         <span class="hero-rail-item text-muted">SORCERY GATHERING #11</span>
       </div>
 
+      <p class="hero-eyebrow">NAVIGASI <b>AI PENDIDIKAN</b></p>
+
       <h1 class="hero-title" id="hero-title">
-        <span class="hero-title-line">ORKESTRASI <span class="hero-title-accent">KECERDASAN</span></span>
-        <span class="hero-title-line">MASA DEPAN PENDIDIKAN</span>
+        <span class="hero-title-line">REALITA LAPANGAN</span>
+        <span class="hero-title-line"><span class="hero-title-accent">BERTEMU KEBIJAKAN</span></span>
       </h1>
 
       <p class="hero-subtitle" data-hero-reveal="body">
-        Menyatukan kecerdasan artifisial, data, dan empati untuk mentransformasi cara bangsa belajar.
+        Menghubungkan praktik di ruang kelas dengan arah kebijakan, agar AI benar-benar memperkuat pendidikan Indonesia.
       </p>
-
-      <div class="hero-cta-group" data-hero-reveal="body">
-        <a href="#register" class="btn-chamfer-gold hero-btn-chamfer-primary" data-nav-link>
-          <span class="chamfer-inner hero-btn-chamfer-inner">
-            <span>REGISTER NOW</span>
-            <span class="chamfer-arrow" aria-hidden="true">↗</span>
-          </span>
-        </a>
-        <a href="#agenda" class="hero-btn-chamfer-secondary" data-nav-link>
-          LIHAT AGENDA
-        </a>
-      </div>
     </div>
 
-    <!-- Center Column: Open Stage for 3D Monument & Telemetry -->
-    <div class="hero-col-monument" data-hero-reveal="graphic">
-      <div class="hero-monument-stage">
-        <!-- Living Portal Beacon Glow -->
-        <div class="monument-beacon-glow" aria-hidden="true"></div>
+    <!-- Bottom bar: event scale, CTA, countdown, and archive preview -->
+    <div class="hero-bottom" data-hero-reveal="countdown">
+      <div class="hero-bottom-left">
+        <div class="hero-stats">
+          <div class="hero-stat"><strong class="tabular-nums">10+</strong><span>Edisi</span></div>
+          <div class="hero-stat"><strong class="tabular-nums">1000+</strong><span>Pelajar &amp; Edukator</span></div>
+          <div class="hero-stat"><strong class="tabular-nums">50+</strong><span>Pembicara</span></div>
+        </div>
 
-        <!-- Sorcerer Staff Crystal Orb Glow -->
-        <div class="sorcerer-staff-glow" aria-hidden="true"></div>
-      </div>
-    </div>
-
-    <!-- Right Column: Realtime Countdown Chronometer -->
-    <div class="hero-col-editorial" data-hero-reveal="countdown">
-      <!-- Realtime Countdown Box (Premium Navbar-Grade Architectural Module) -->
-      <div class="hero-countdown-box">
-        <div class="countdown-module">
-          <div class="countdown-header-bar">
-            <div class="countdown-title-wrap">
-              <span class="countdown-indicator-dot" aria-hidden="true"></span>
-              <span class="countdown-heading">HITUNG MUNDUR HARI-H</span>
-            </div>
-            <div class="countdown-barcode" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
+        <div class="hero-ctarow">
+          <a href="#register" class="hero-cta" data-nav-link>
+            <span>Daftar Sekarang</span>
+            <span class="hero-cta-arrow" aria-hidden="true">↗</span>
+          </a>
+          <div class="hero-meta">
+            <strong class="hero-meta-date" id="event-date">MINGGU, 25 OKTOBER 2026</strong>
+            <span class="hero-meta-place">· Yogyakarta</span>
+            <span
+              class="hero-countdown tabular-nums"
+              id="countdown"
+              role="timer"
+              aria-live="off"
+              aria-label="Hitung mundur menuju Sorcery Gathering 11"
+            >
+              <span class="hero-cd"><b id="cd-days">00</b><small>h</small></span>
+              <span class="hero-cd"><b id="cd-hours">00</b><small>j</small></span>
+              <span class="hero-cd"><b id="cd-mins">00</b><small>m</small></span>
+              <span class="hero-cd"><b id="cd-secs">00</b><small>d</small></span>
+            </span>
             <p id="countdown-text" class="sr-only">Menuju hari-H</p>
           </div>
-
-          <div
-            class="countdown tabular-nums"
-            id="countdown"
-            role="timer"
-            aria-live="off"
-            aria-label="Hitung mundur menuju Sorcery Gathering 11"
-          >
-            <div class="cd-col">
-              <span class="cd-number" id="cd-days">00</span>
-              <small class="cd-tag">HARI</small>
-            </div>
-            <span class="cd-sep" aria-hidden="true">:</span>
-            <div class="cd-col">
-              <span class="cd-number" id="cd-hours">00</span>
-              <small class="cd-tag">JAM</small>
-            </div>
-            <span class="cd-sep" aria-hidden="true">:</span>
-            <div class="cd-col">
-              <span class="cd-number" id="cd-mins">00</span>
-              <small class="cd-tag">MENIT</small>
-            </div>
-            <span class="cd-sep" aria-hidden="true">:</span>
-            <div class="cd-col">
-              <span class="cd-number" id="cd-secs">00</span>
-              <small class="cd-tag">DETIK</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom Telemetry Strip (Date, Location, Gathering Tag) -->
-  <div class="container">
-    <div class="hero-bottom-telemetry">
-      <div class="telemetry-meta-pair">
-        <div class="telemetry-meta-item">
-          <div class="telemetry-meta-text">
-            <span class="meta-label">TANGGAL</span>
-            <strong class="meta-value" id="event-date">MINGGU, 25 OKTOBER 2026</strong>
-          </div>
-        </div>
-
-        <span class="telemetry-vertical-rule" aria-hidden="true"></span>
-
-        <div class="telemetry-meta-item">
-          <div class="telemetry-meta-text">
-            <span class="meta-label">LOKASI</span>
-            <strong class="meta-value">YOGYAKARTA</strong>
-          </div>
         </div>
       </div>
 
-      <div class="telemetry-signature-track" aria-hidden="true">
-        <span class="signature-line"></span>
-        <span class="signature-tag">SORCERY GATHERING #11</span>
-      </div>
+      <a class="hero-card" href="#legacy" data-nav-link aria-label="Lihat arsip Sorcery Gathering">
+        <img src="assets/hero/impact-monument.webp" alt="Arsip Sorcery Gathering" loading="lazy" />
+        <span class="hero-card-tag">
+          <span>01/10</span>
+          <span class="hero-card-bar" aria-hidden="true"><i></i></span>
+          <span aria-hidden="true">→</span>
+        </span>
+      </a>
     </div>
   </div>
 </section>

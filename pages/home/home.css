@@ -4242,5 +4242,481 @@ body:has(.final-registration-callout) .footer,
   .timeline-tracer-beacon {
     transition: none;
   }
+
+  .expand-btn svg,
+  .faq-toggle-icon,
+  .timeline-axis-node,
+  .timeline-axis-node .node-ring,
+  .timeline-axis-node .node-dot,
+  .timeline-axis-node .node-glow {
+    transition: none;
+  }
+}
+
+/* ============================================================
+   HERO — Cinematic full-bleed (SOGA 11)
+   Hybrid approach: reuses assets/hero/bg.webp as a dramatic
+   backdrop with a plum scrim, giant watermark word, and a bottom
+   telemetry bar. Declared last so it deterministically overrides
+   the legacy triptych hero rules above.
+   ============================================================ */
+.hero.hero--cinematic {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  margin-top: -82px;
+  padding: calc(82px + clamp(24px, 4vh, 48px)) 0 clamp(28px, 4vh, 44px);
+  background-color: #120824;
+  color: #fff;
+}
+
+/* ---- Background layers ---- */
+.hero--cinematic .hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: url("../../assets/hero/bg.webp") center 30% / cover no-repeat;
+}
+
+.hero--cinematic .hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12, 6, 26, 0.78) 0%,
+      rgba(12, 6, 26, 0.34) 24%,
+      rgba(12, 6, 26, 0.1) 46%,
+      rgba(12, 6, 26, 0.55) 76%,
+      rgba(12, 6, 26, 0.94) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(12, 6, 26, 0.62) 0%,
+      rgba(12, 6, 26, 0.18) 42%,
+      rgba(12, 6, 26, 0) 60%
+    );
+}
+
+.hero--cinematic .hero-watermark-soga {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-family: "Cinzel", var(--font-sans);
+  font-weight: 800;
+  font-size: clamp(5rem, 19vw, 17rem);
+  line-height: 0.8;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.1);
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.14);
+  text-shadow: 0 0 90px rgba(139, 92, 246, 0.35);
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.hero--cinematic .hero-aura {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  width: min(620px, 60vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.42) 0%,
+    rgba(124, 58, 237, 0.14) 42%,
+    rgba(124, 58, 237, 0) 68%
+  );
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* ---- Layout shell ---- */
+.hero--cinematic .hero-inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(28px, 6vh, 72px);
+}
+
+.hero--cinematic .hero-copy {
+  max-width: 640px;
+  margin-bottom: auto;
+}
+
+/* ---- Editorial rail + eyebrow ---- */
+.hero--cinematic .hero-index-rail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.hero--cinematic .hero-rail-item {
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 700;
+  text-shadow: 0 1px 8px rgba(18, 8, 36, 0.7);
+}
+
+.hero--cinematic .hero-rail-item.text-muted {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.hero--cinematic .hero-rail-line {
+  width: 56px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.hero--cinematic .hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(139, 92, 246, 0.28);
+  border: 1px solid rgba(196, 181, 253, 0.4);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #e9defb;
+  text-shadow: 0 1px 8px rgba(18, 8, 36, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.hero--cinematic .hero-eyebrow b {
+  color: var(--ds-gold);
+}
+
+/* ---- Title + subtitle ---- */
+.hero--cinematic .hero-title {
+  color: #fff;
+  font-size: clamp(2.5rem, 6vw, 5.2rem);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.hero--cinematic .hero-title-accent {
+  display: inline-block;
+  color: #fff;
+  background: linear-gradient(120deg, #ffffff 0%, #d9c9ff 45%, #b79bff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+}
+
+.hero--cinematic .hero-subtitle {
+  max-width: 520px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* ---- Bottom telemetry bar ---- */
+.hero--cinematic .hero-bottom {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+}
+
+.hero--cinematic .hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(24px, 4vw, 56px);
+  margin-bottom: 22px;
+}
+
+.hero--cinematic .hero-stat strong {
+  display: block;
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.hero--cinematic .hero-stat span {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.hero--cinematic .hero-ctarow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.hero--cinematic .hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  border-radius: 999px;
+  background: #fff;
+  color: #1a1030;
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s var(--ease-standard),
+    box-shadow 0.2s var(--ease-standard);
+}
+
+.hero--cinematic .hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+}
+
+.hero--cinematic .hero-cta-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #2a1762;
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+.hero--cinematic .hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.hero--cinematic .hero-meta-date {
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.hero--cinematic .hero-meta-place {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.hero--cinematic .hero-countdown {
+  display: inline-flex;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.hero--cinematic .hero-cd {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  color: #fff;
+}
+
+.hero--cinematic .hero-cd small {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.62rem;
+}
+
+/* ---- Archive preview card ---- */
+.hero--cinematic .hero-card {
+  position: relative;
+  display: block;
+  width: 232px;
+  height: 150px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+  background:
+    radial-gradient(120% 130% at 32% 0%, rgba(139, 92, 246, 0.55), rgba(18, 8, 36, 0.92) 72%),
+    #120824;
+}
+
+.hero--cinematic .hero-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 52%;
+  display: block;
+  filter: brightness(0.82) contrast(1.22) saturate(1.18);
+}
+
+.hero--cinematic .hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(155deg, rgba(109, 40, 217, 0.34), rgba(18, 8, 36, 0.58));
+  mix-blend-mode: multiply;
+}
+
+.hero--cinematic .hero-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 42%, rgba(18, 8, 36, 0.92) 100%);
+}
+
+.hero--cinematic .hero-card-tag {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+.hero--cinematic .hero-card-bar {
+  flex: 1;
+  height: 3px;
+  margin: 0 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.hero--cinematic .hero-card-bar i {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: 999px;
+  background: #fff;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .hero.hero--cinematic {
+    min-height: auto;
+    padding-bottom: 32px;
+  }
+
+  .hero--cinematic .hero-scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(12, 6, 26, 0.82) 0%,
+      rgba(12, 6, 26, 0.52) 34%,
+      rgba(12, 6, 26, 0.72) 62%,
+      rgba(12, 6, 26, 0.96) 100%
+    );
+  }
+
+  .hero--cinematic .hero-watermark-soga {
+    font-size: 30vw;
+    top: 7%;
+    color: rgba(255, 255, 255, 0.07);
+  }
+
+  .hero--cinematic .hero-aura {
+    width: 78vw;
+    top: 52%;
+    opacity: 0.8;
+  }
+
+  .hero--cinematic .hero-inner {
+    gap: 32px;
+  }
+
+  .hero--cinematic .hero-copy {
+    max-width: 100%;
+  }
+
+  .hero--cinematic .hero-index-rail {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .hero--cinematic .hero-rail-item {
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+  }
+
+  .hero--cinematic .hero-rail-line {
+    width: 26px;
+  }
+
+  .hero--cinematic .hero-title {
+    font-size: clamp(1.9rem, 9.2vw, 2.9rem);
+    line-height: 1.02;
+    margin-bottom: 16px;
+  }
+
+  .hero--cinematic .hero-subtitle {
+    max-width: 100%;
+    font-size: 0.94rem;
+  }
+
+  .hero--cinematic .hero-bottom {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 20px;
+    padding-top: 20px;
+  }
+
+  .hero--cinematic .hero-card {
+    order: 3;
+    width: 100%;
+    height: 160px;
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero--cinematic .hero-stats {
+    gap: 18px 26px;
+    margin-bottom: 18px;
+  }
+
+  .hero--cinematic .hero-stat strong {
+    font-size: 1.5rem;
+  }
+
+  .hero--cinematic .hero-ctarow {
+    gap: 12px;
+  }
+
+  .hero--cinematic .hero-cta {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+
+  .hero--cinematic .hero-meta {
+    gap: 8px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero.hero--cinematic {
+    margin-top: -62px;
+    padding-top: calc(62px + 24px);
+    padding-bottom: 22px;
+  }
 }
 
