@@ -4244,3 +4244,188 @@ body:has(.final-registration-callout) .footer,
   }
 }
 
+
+/* Original artwork, unfiltered. The duplicate masked layer only occludes the wordmark. */
+.hero--cinematic {
+  --hero-ink: #fffaf5;
+  --hero-art-position: center top;
+  --hero-type-size: clamp(120px, 25vw, 420px);
+  --hero-art-top: calc(60px + var(--hero-type-size) * .68);
+  --hero-art-height: calc(100% - var(--hero-art-top));
+  min-height: clamp(780px, 100svh, 1080px);
+  margin-top: -82px;
+  padding: 490px 0 44px;
+  display: flex;
+  align-items: flex-end;
+  /* Reuse the clear upper-left sky of the original photo for the extra headroom. */
+  background: #c5bcd9 url('../../assets/hero/bg.webp') left top / 250% auto no-repeat;
+  color: var(--hero-ink);
+}
+.hero--cinematic .hero-backdrop-artwork,
+.hero--cinematic .hero-foreground {
+  position: absolute;
+  inset: 0;
+  top: var(--hero-art-top);
+  height: var(--hero-art-height);
+  background: url('../../assets/hero/bg.webp') var(--hero-art-position) / cover no-repeat;
+  filter: none;
+  transform: none;
+  pointer-events: none;
+}
+/* Only the upper sky edge blends into the extended sky; the scene keeps its original color. */
+.hero--cinematic .hero-backdrop-artwork { mask-image: linear-gradient(transparent, #000 80px); }
+.hero-wordmark {
+  position: absolute;
+  z-index: 1;
+  top: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-sans);
+  font-size: var(--hero-type-size);
+  font-weight: 800;
+  letter-spacing: -.055em;
+  line-height: 1;
+  color: #fffaf5;
+  opacity: 1;
+  text-shadow: none;
+  pointer-events: none;
+  user-select: none;
+}
+.hero-foreground {
+  z-index: 2;
+  mask-image: url('../../assets/hero/monument-mask.svg');
+  mask-size: cover;
+  mask-position: var(--hero-art-position);
+  mask-repeat: no-repeat;
+}
+.hero-event-layout {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(280px, 24vw, 350px);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: end;
+  max-width: 1560px;
+  padding-inline: clamp(24px, 5vw, 80px);
+}
+.hero--cinematic .hero-col-copy { order: 0; }
+.hero--cinematic .hero-edition {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0 0 16px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: var(--hero-ink);
+  text-shadow: 0 1px 2px #171020, 0 0 1px #171020;
+}
+.hero--cinematic .hero-edition::before {
+  content: '';
+  width: 42px;
+  height: 1px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.hero--cinematic .hero-title {
+  margin: 0 0 20px;
+  font-family: var(--font-sans);
+  color: var(--hero-ink);
+  text-transform: none;
+  letter-spacing: -.02em;
+  text-shadow: 0 2px 3px #171020, 0 0 1px #171020;
+  overflow-wrap: break-word;
+}
+.hero-theme-lead {
+  display: block;
+  font-size: clamp(30px, 3vw, 44px);
+  line-height: 1.2;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+.hero-theme-detail {
+  display: block;
+  font-size: clamp(21px, 2.1vw, 30px);
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: -.025em;
+}
+.hero-register { align-self: flex-start; max-width: 100%; }
+.hero-register .chamfer-inner { white-space: normal; text-align: center; }
+.hero-register:focus-visible .chamfer-inner { box-shadow: inset 0 0 0 3px #e4cfa1; }
+.hero--cinematic .hero-countdown-box { max-width: none; margin: 0; padding: 0; }
+.hero--cinematic .countdown-module {
+  background: #251a36ed;
+  backdrop-filter: none;
+  border-color: #dfcbee42;
+  border-radius: 0;
+  clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px);
+  box-shadow: none;
+  padding: 20px;
+}
+.hero-event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 0 0 22px;
+  font-size: 15px;
+  color: var(--hero-ink);
+  text-shadow: 0 1px 2px #171020, 0 0 1px #171020;
+}
+.hero-event-meta > div { display: flex; align-items: center; gap: 10px; }
+.hero-event-meta > div + div { border-left: 1px solid #ffffff99; padding-left: 24px; }
+.hero-event-meta svg { width: 23px; height: 23px; flex-shrink: 0; }
+.hero-event-layout > *, .hero-event-meta > * { min-width: 0; }
+.hero--cinematic .countdown-heading { white-space: normal; }
+@media (min-width: 1600px) {
+  .hero--cinematic { padding-top: 540px; }
+}
+@media (max-width: 1023px) {
+  .hero--cinematic { margin-top: -68px; }
+  .hero-event-layout { gap: 28px; grid-template-columns: minmax(0, 1fr) 280px; }
+}
+@media (max-width: 767px) {
+  .hero--cinematic {
+    --hero-type-size: 27vw;
+    --hero-art-top: calc(65px + var(--hero-type-size) * .65);
+    --hero-art-height: 470px;
+    --hero-art-position: 60% top;
+    margin-top: -64px;
+    min-height: 0;
+    padding: calc(var(--hero-art-top) + 500px) 0 32px;
+    background: #191329;
+  }
+  .hero--cinematic::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: calc(var(--hero-art-top) + 100px);
+    background: #c5bcd9 url('../../assets/hero/bg.webp') left top / 250% auto no-repeat;
+  }
+  .hero-wordmark { top: 92px; }
+  .hero-event-layout { grid-template-columns: 1fr; gap: 28px; }
+  .hero--cinematic .hero-title { margin-bottom: 18px; text-shadow: none; }
+  .hero--cinematic .hero-edition { font-size: 11px; margin-bottom: 16px; gap: 12px; }
+  .hero--cinematic .hero-edition::before { width: 24px; }
+  .hero-theme-lead { font-size: clamp(27px, 6.9vw, 36px); }
+  .hero-theme-detail { font-size: clamp(20px, 5vw, 26px); }
+  .hero-event-aside { max-width: 430px; width: 100%; }
+  .hero-event-meta { font-size: 13px; gap: 12px 16px; }
+  .hero-event-meta > div + div { padding-left: 16px; }
+}
+@media (max-width: 374px) {
+  .hero--cinematic .countdown-module { padding: 14px; }
+  .hero--cinematic .countdown-module .countdown { gap: 3px; }
+  .hero--cinematic .countdown-barcode { display: none; }
+  .hero-event-meta > div + div { padding-left: 0; border-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-register, .hero-register .chamfer-inner, .hero-register .chamfer-arrow { transition: none; transform: none; }
+}
+
+/* Four equal timer cells also accommodate enlarged user font settings. */
+.hero--cinematic .countdown { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.hero--cinematic .cd-sep { display: none; }
+.hero--cinematic .countdown-module .cd-number { font-size: clamp(1rem, 1.8vw, 1.75rem); }
