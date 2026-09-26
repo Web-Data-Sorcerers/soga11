@@ -2687,11 +2687,6 @@ body:has(.final-registration-callout) .footer,
     height: 28px;
   }
 
-  .faq-toggle::before,
-  .faq-toggle::after {
-    width: 10px;
-  }
-
   .faq-answer {
     padding: 14px 16px 18px 16px;
   }
