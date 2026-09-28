@@ -1,55 +1,35 @@
-<!-- ===================== HOME / LANDING ===================== -->
-
-<!-- Hero -->
-<section class="hero" aria-labelledby="hero-title">
-  <!-- Cinematic Background Artwork Layer -->
+<!-- Hero: layered landscape, wordmark, monument, then event information. -->
+<section class="hero hero--cinematic" aria-labelledby="hero-title">
   <div class="hero-backdrop-artwork" aria-hidden="true"></div>
+  <div class="hero-wordmark" aria-hidden="true">SOGA</div>
+  <!-- Same artwork, masked around its monument so SOGA passes behind it. -->
+  <div class="hero-foreground" aria-hidden="true"></div>
 
-  <div class="container hero-grid-triptych">
-    <!-- Left Column: Editorial Copy & CTA -->
-    <div class="hero-col-copy" data-hero-reveal="title">
-      <div class="hero-index-rail">
-        <span class="hero-rail-item">SOGA / 011</span>
-        <span class="hero-rail-line" aria-hidden="true"></span>
-        <span class="hero-rail-item text-muted">SORCERY GATHERING #11</span>
-      </div>
-
+  <div class="container hero-event-layout">
+    <div class="hero-col-copy">
+      <p class="hero-edition">SORCERY GATHERING #11</p>
       <h1 class="hero-title" id="hero-title">
-        <span class="hero-title-line">ORKESTRASI <span class="hero-title-accent">KECERDASAN</span></span>
-        <span class="hero-title-line">MASA DEPAN PENDIDIKAN</span>
+        <span class="hero-theme-lead">Navigasi AI Pendidikan:</span>
+        <span class="hero-theme-detail">Menghubungkan Realita Lapangan dan Kebijakan</span>
       </h1>
-
-      <p class="hero-subtitle" data-hero-reveal="body">
-        Menyatukan kecerdasan artifisial, data, dan empati untuk mentransformasi cara bangsa belajar.
-      </p>
-
-      <div class="hero-cta-group" data-hero-reveal="body">
-        <a href="#register" class="btn-chamfer-gold hero-btn-chamfer-primary" data-nav-link>
-          <span class="chamfer-inner hero-btn-chamfer-inner">
-            <span>REGISTER NOW</span>
-            <span class="chamfer-arrow" aria-hidden="true">↗</span>
-          </span>
-        </a>
-        <a href="#agenda" class="hero-btn-chamfer-secondary" data-nav-link>
-          LIHAT AGENDA
-        </a>
+      <div class="hero-event-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6m10-6v6M3 11h18M7 15h2m3 0h2m3 0h1M7 18h2m3 0h2"/></svg>
+          <time id="event-date" datetime="2026-10-25">25 Oktober 2026</time>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Yogyakarta</span>
+        </div>
       </div>
+      <a href="#register" class="navbar-cta-chamfer hero-register" data-nav-link>
+        <span class="cta-inner">
+          <span>REGISTER NOW</span>
+          <span class="cta-arrow" aria-hidden="true">↗</span>
+        </span>
+      </a>
     </div>
-
-    <!-- Center Column: Open Stage for 3D Monument & Telemetry -->
-    <div class="hero-col-monument" data-hero-reveal="graphic">
-      <div class="hero-monument-stage">
-        <!-- Living Portal Beacon Glow -->
-        <div class="monument-beacon-glow" aria-hidden="true"></div>
-
-        <!-- Sorcerer Staff Crystal Orb Glow -->
-        <div class="sorcerer-staff-glow" aria-hidden="true"></div>
-      </div>
-    </div>
-
-    <!-- Right Column: Realtime Countdown Chronometer -->
-    <div class="hero-col-editorial" data-hero-reveal="countdown">
-      <!-- Realtime Countdown Box (Premium Navbar-Grade Architectural Module) -->
+    <div class="hero-event-aside">
       <div class="hero-countdown-box">
         <div class="countdown-module">
           <div class="countdown-header-bar">
@@ -95,34 +75,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom Telemetry Strip (Date, Location, Gathering Tag) -->
-  <div class="container">
-    <div class="hero-bottom-telemetry">
-      <div class="telemetry-meta-pair">
-        <div class="telemetry-meta-item">
-          <div class="telemetry-meta-text">
-            <span class="meta-label">TANGGAL</span>
-            <strong class="meta-value" id="event-date">MINGGU, 25 OKTOBER 2026</strong>
-          </div>
-        </div>
-
-        <span class="telemetry-vertical-rule" aria-hidden="true"></span>
-
-        <div class="telemetry-meta-item">
-          <div class="telemetry-meta-text">
-            <span class="meta-label">LOKASI</span>
-            <strong class="meta-value">YOGYAKARTA</strong>
-          </div>
-        </div>
-      </div>
-
-      <div class="telemetry-signature-track" aria-hidden="true">
-        <span class="signature-line"></span>
-        <span class="signature-tag">SORCERY GATHERING #11</span>
       </div>
     </div>
   </div>
@@ -347,9 +299,8 @@
             </div>
             <div class="col-action">
               <span class="expand-btn" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-                  <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" />
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
                 </svg>
               </span>
             </div>
@@ -387,9 +338,8 @@
             </div>
             <div class="col-action">
               <span class="expand-btn" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-                  <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" />
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
                 </svg>
               </span>
             </div>
@@ -427,9 +377,8 @@
             </div>
             <div class="col-action">
               <span class="expand-btn" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-                  <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" />
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
                 </svg>
               </span>
             </div>
@@ -469,9 +418,8 @@
             </div>
             <div class="col-action">
               <span class="expand-btn" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-                  <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" />
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
                 </svg>
               </span>
             </div>
@@ -509,9 +457,8 @@
             </div>
             <div class="col-action">
               <span class="expand-btn" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-                  <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" />
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
                 </svg>
               </span>
             </div>
@@ -548,9 +495,8 @@
             </div>
             <div class="col-action">
               <span class="expand-btn" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-                  <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" />
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
                 </svg>
               </span>
             </div>
@@ -588,9 +534,8 @@
             </div>
             <div class="col-action">
               <span class="expand-btn" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-                  <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" />
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
                 </svg>
               </span>
             </div>
@@ -681,18 +626,18 @@
     <header class="legacy-masthead">
       <div class="legacy-masthead-title-col">
         <h2 id="legacy-masthead-title" class="legacy-masthead-heading">
-          <span class="masthead-the">THE</span>
-          <span class="masthead-legacy">LEGACY</span>
+          <span class="masthead-the">JEJAK</span>
+          <span class="masthead-legacy">SOGA</span>
         </h2>
       </div>
 
       <div class="legacy-masthead-middle-col">
         <p class="legacy-philosophy-text">
-          A journey through Sorcery Gathering, from local initiatives to a growing international community. Each edition is a milestone &mdash; shaped by people, ideas, and the belief in a more open and inclusive future.
+          Perjalanan Sorcery Gathering, dari inisiatif lokal hingga menjadi komunitas internasional yang terus berkembang. Setiap edisi menjadi tonggak perjalanan yang dibentuk oleh orang-orang, gagasan, dan keyakinan akan masa depan yang lebih terbuka dan inklusif.
         </p>
         <div class="legacy-philosophy-motto">
-          <span>SAME SPIRIT.</span>
-          <span>BIGGER TOMORROWS.</span>
+          <span>SEMANGAT YANG SAMA.</span>
+          <span>MASA DEPAN YANG LEBIH BESAR.</span>
         </div>
       </div>
 
@@ -1386,7 +1331,9 @@
         <summary>
           <span class="faq-number tabular-nums">01</span>
           <span class="faq-question">Apa visi utama dari Sorcery Gathering #11?</span>
-          <span class="faq-toggle" aria-hidden="true"></span>
+          <span class="faq-toggle" aria-hidden="true">
+            <svg class="faq-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
         </summary>
         <div class="faq-answer">
           <p>Sorcery Gathering #11 mengusung tema <strong>"Orkestrasi Kecerdasan"</strong> — menjembatani inovasi AI dan data dengan kebutuhan nyata transformasi pendidikan Indonesia, dari ruang kelas hingga perguruan tinggi.</p>
@@ -1396,7 +1343,9 @@
         <summary>
           <span class="faq-number tabular-nums">02</span>
           <span class="faq-question">Kapan, di mana, dan bagaimana rundown singkatnya?</span>
-          <span class="faq-toggle" aria-hidden="true"></span>
+          <span class="faq-toggle" aria-hidden="true">
+            <svg class="faq-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
         </summary>
         <div class="faq-answer">
           <p>Acara diselenggarakan secara <strong>offline</strong> pada <strong>Minggu, 25 Oktober 2026</strong> di <strong>Yogyakarta</strong>. Registrasi &amp; check-in dibuka mulai pukul <strong>08.00 WIB</strong>.</p>
@@ -1407,7 +1356,9 @@
         <summary>
           <span class="faq-number tabular-nums">03</span>
           <span class="faq-question">Siapa saja yang cocok dan wajib hadir di acara ini?</span>
-          <span class="faq-toggle" aria-hidden="true"></span>
+          <span class="faq-toggle" aria-hidden="true">
+            <svg class="faq-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
         </summary>
         <div class="faq-answer">
           <p>Empat pilar utama ekosistem yang menjadi fokus konferensi ini:</p>
@@ -1423,7 +1374,9 @@
         <summary>
           <span class="faq-number tabular-nums">04</span>
           <span class="faq-question">Bagaimana mekanisme pendaftaran dan tiketnya?</span>
-          <span class="faq-toggle" aria-hidden="true"></span>
+          <span class="faq-toggle" aria-hidden="true">
+            <svg class="faq-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
         </summary>
         <div class="faq-answer">
           <p>Acara ini <strong>100% gratis</strong> dengan kuota terbatas. Kamu cukup klik "Register Now" dan isi data diri secara lengkap.</p>
@@ -1434,7 +1387,9 @@
         <summary>
           <span class="faq-number tabular-nums">05</span>
           <span class="faq-question">Fasilitas apa saja yang akan saya dapatkan?</span>
-          <span class="faq-toggle" aria-hidden="true"></span>
+          <span class="faq-toggle" aria-hidden="true">
+            <svg class="faq-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
         </summary>
         <div class="faq-answer">
           <p>Selain wawasan mendalam dan relasi lintas sektor, seluruh peserta yang tervalidasi kehadirannya akan mendapatkan:</p>
@@ -1449,7 +1404,9 @@
         <summary>
           <span class="faq-number tabular-nums">06</span>
           <span class="faq-question">Apakah ada peluang kolaborasi atau rekrutmen di Data Sorcerers?</span>
-          <span class="faq-toggle" aria-hidden="true"></span>
+          <span class="faq-toggle" aria-hidden="true">
+            <svg class="faq-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
         </summary>
         <div class="faq-answer">
           <p>Sangat terbuka. Kami membuka peluang bagi kontributor inisiatif open-source dan talenta AI. Peserta dipersilakan membawa portofolio digital atau profil LinkedIn untuk berjejaring langsung di lokasi.</p>

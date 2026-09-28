@@ -39,9 +39,9 @@
   <!-- CSS -->
   <link rel="stylesheet" href="css/variables.css?v=10" />
   <link rel="stylesheet" href="css/global.css?v=12" />
-  <link rel="stylesheet" href="components/navbar/navbar.css?v=25" />
+  <link rel="stylesheet" href="components/navbar/navbar.css?v=27" />
   <link rel="stylesheet" href="components/footer/footer.css?v=11" />
-  <link rel="stylesheet" href="pages/home/home.css?v=28" />
+  <link rel="stylesheet" href="pages/home/home.css?v=40" />
   <link rel="stylesheet" href="pages/register/register.css?v=13" />
   <link rel="stylesheet" href="pages/find-ticket/find-ticket.css?v=10" />
 </head>
@@ -104,7 +104,6 @@
         aria-expanded="false"
         aria-controls="mobile-menu"
       >
-        <span class="menu-trigger-label">Menu</span>
         <span class="menu-trigger-icon" aria-hidden="true"><span></span><span></span></span>
       </button>
     </div>
@@ -135,9 +134,11 @@
         </nav>
 
         <div class="mobile-menu-footer">
-          <a href="#register" class="mobile-menu-cta" data-nav-link>
-            <span>REGISTER NOW</span>
-            <span class="cta-arrow" aria-hidden="true">↗</span>
+          <a href="#register" class="navbar-cta-chamfer mobile-menu-cta" data-nav-link>
+            <span class="cta-inner">
+              <span class="cta-text">REGISTER NOW</span>
+              <span class="cta-arrow" aria-hidden="true">↗</span>
+            </span>
           </a>
         </div>
       </div>
@@ -305,6 +306,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="js/config.js?v=10" defer></script>
   <script src="js/api.js?v=10" defer></script>
-  <script src="js/app.js?v=22" defer></script>
+  <script src="js/app.js?v=23" defer></script>
 </body>
 </html>
