@@ -15,6 +15,7 @@ assets/hero/impact-monument.png
 assets/hero/impact-monument.webp
 assets/hero/bg.png
 assets/hero/bg.webp
+assets/hero/finalbg.webp
 assets/hero/monument-mask.svg
 assets/agenda/prambanan-etching.png
 assets/agenda/prambanan-etching.webp

@@ -77,7 +77,6 @@ function initNavbar() {
   const header = document.getElementById("site-header");
   if (!burger || !menu || !header) return;
 
-  const burgerLabel = burger.querySelector(".menu-trigger-label");
   const focusableSelector = [
     "a[href]",
     "button:not([disabled])",
@@ -144,7 +143,6 @@ function initNavbar() {
     burger.setAttribute("aria-expanded", "true");
     burger.setAttribute("aria-label", "Tutup menu navigasi");
     burger.classList.add("is-active");
-    if (burgerLabel) burgerLabel.textContent = "Close";
     if (backdrop) backdrop.classList.add("is-open");
 
     requestAnimationFrame(() => {
@@ -161,7 +159,6 @@ function initNavbar() {
     burger.setAttribute("aria-expanded", "false");
     burger.setAttribute("aria-label", "Buka menu navigasi");
     burger.classList.remove("is-active");
-    if (burgerLabel) burgerLabel.textContent = "Menu";
     if (backdrop) backdrop.classList.remove("is-open");
 
     if (restoreFocus && !desktopNavigation.matches) burger.focus();

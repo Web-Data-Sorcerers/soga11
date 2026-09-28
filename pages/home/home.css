@@ -4245,48 +4245,46 @@ body:has(.final-registration-callout) .footer,
 }
 
 
-/* Original artwork, unfiltered. The duplicate masked layer only occludes the wordmark. */
+/* Final supplied artwork. Matching image/mask geometry preserves the full desktop composition. */
 .hero--cinematic {
   --hero-ink: #fffaf5;
-  --hero-art-position: center top;
-  --hero-type-size: clamp(120px, 25vw, 420px);
-  --hero-art-top: calc(60px + var(--hero-type-size) * .68);
-  --hero-art-height: calc(100% - var(--hero-art-top));
-  min-height: clamp(780px, 100svh, 1080px);
+  --hero-art-position: center;
+  --hero-art-height: 100%;
+  min-height: 0;
+  aspect-ratio: 1672 / 941;
   margin-top: -82px;
-  padding: 490px 0 44px;
-  display: flex;
-  align-items: flex-end;
-  /* Reuse the clear upper-left sky of the original photo for the extra headroom. */
-  background: #c5bcd9 url('../../assets/hero/bg.webp') left top / 250% auto no-repeat;
+  padding: 0;
+  display: block;
+  background: #191329;
   color: var(--hero-ink);
 }
 .hero--cinematic .hero-backdrop-artwork,
 .hero--cinematic .hero-foreground {
   position: absolute;
   inset: 0;
-  top: var(--hero-art-top);
   height: var(--hero-art-height);
-  background: url('../../assets/hero/bg.webp') var(--hero-art-position) / cover no-repeat;
+  background: url('../../assets/hero/finalbg.webp') var(--hero-art-position) / cover no-repeat;
   filter: none;
   transform: none;
   pointer-events: none;
 }
-/* Only the upper sky edge blends into the extended sky; the scene keeps its original color. */
-.hero--cinematic .hero-backdrop-artwork { mask-image: linear-gradient(transparent, #000 80px); }
 .hero-wordmark {
   position: absolute;
   z-index: 1;
-  top: 110px;
+  top: 14%;
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-sans);
-  font-size: var(--hero-type-size);
+  font-size: 23vw;
   font-weight: 800;
   letter-spacing: -.055em;
   line-height: 1;
   color: #fffaf5;
-  opacity: 1;
+  background: linear-gradient(180deg, #ffffff 12%, #f5edf8 55%, #cabbdc 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: .95;
   text-shadow: none;
   pointer-events: none;
   user-select: none;
@@ -4299,16 +4297,19 @@ body:has(.final-registration-callout) .footer,
   mask-repeat: no-repeat;
 }
 .hero-event-layout {
-  position: relative;
+  position: absolute;
+  bottom: 5%;
+  left: 0;
+  right: 0;
   z-index: 3;
   display: grid;
   grid-template-columns: minmax(0, 1fr) clamp(280px, 24vw, 350px);
   gap: clamp(28px, 4vw, 64px);
   align-items: end;
-  max-width: 1560px;
+  max-width: none;
   padding-inline: clamp(24px, 5vw, 80px);
 }
-.hero--cinematic .hero-col-copy { order: 0; }
+.hero--cinematic .hero-col-copy { order: 0; max-width: 100%; }
 .hero--cinematic .hero-edition {
   display: flex;
   align-items: center;
@@ -4338,23 +4339,22 @@ body:has(.final-registration-callout) .footer,
   overflow-wrap: break-word;
 }
 .hero-theme-lead {
-  display: block;
-  font-size: clamp(30px, 3vw, 44px);
+  display: inline;
+  font-size: clamp(26px, 2.3vw, 40px);
   line-height: 1.2;
   font-weight: 800;
   color: #ffffff;
-  margin-bottom: 10px;
 }
 .hero-theme-detail {
-  display: block;
-  font-size: clamp(21px, 2.1vw, 30px);
+  display: inline;
+  font-size: clamp(18px, 1.5vw, 26px);
   line-height: 1.4;
   font-weight: 600;
   letter-spacing: -.025em;
 }
-.hero-register { align-self: flex-start; max-width: 100%; }
-.hero-register .chamfer-inner { white-space: normal; text-align: center; }
-.hero-register:focus-visible .chamfer-inner { box-shadow: inset 0 0 0 3px #e4cfa1; }
+.hero-register { align-self: flex-start; max-width: 100%; flex-shrink: 0; }
+.hero-register .cta-inner { height: 48px; padding: 0 24px; gap: 10px; font-size: 0.8125rem; white-space: normal; text-align: center; justify-content: center; }
+.hero-register:focus-visible .cta-inner { box-shadow: inset 0 0 0 3px #e4cfa1; }
 .hero--cinematic .hero-countdown-box { max-width: none; margin: 0; padding: 0; }
 .hero--cinematic .countdown-module {
   background: #251a36ed;
@@ -4368,52 +4368,48 @@ body:has(.final-registration-callout) .footer,
 .hero-event-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 24px;
+  gap: 10px 16px;
   margin: 0 0 22px;
-  font-size: 15px;
+  font-size: 13px;
   color: var(--hero-ink);
   text-shadow: 0 1px 2px #171020, 0 0 1px #171020;
 }
 .hero-event-meta > div { display: flex; align-items: center; gap: 10px; }
-.hero-event-meta > div + div { border-left: 1px solid #ffffff99; padding-left: 24px; }
+.hero-event-meta > div + div { border-left: 1px solid #ffffff99; padding-left: 16px; }
 .hero-event-meta svg { width: 23px; height: 23px; flex-shrink: 0; }
 .hero-event-layout > *, .hero-event-meta > * { min-width: 0; }
 .hero--cinematic .countdown-heading { white-space: normal; }
-@media (min-width: 1600px) {
-  .hero--cinematic { padding-top: 540px; }
+/* Below desktop, preserve the scene above a separate readable information area. */
+@media (max-width: 1199px) {
+  .hero--cinematic {
+    --hero-art-height: max(460px, 56.28vw);
+    --hero-art-position: 49% center;
+    aspect-ratio: auto;
+    min-height: 0;
+    padding: calc(var(--hero-art-height) + 30px) 0 32px;
+  }
+  .hero-wordmark { top: clamp(105px, 10vw, 140px); font-size: 26vw; }
+  .hero-event-layout { position: relative; bottom: auto; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; }
+  .hero--cinematic .hero-col-copy { max-width: 100%; }
+  .hero--cinematic .hero-title { text-shadow: none; }
 }
 @media (max-width: 1023px) {
   .hero--cinematic { margin-top: -68px; }
-  .hero-event-layout { gap: 28px; grid-template-columns: minmax(0, 1fr) 280px; }
 }
 @media (max-width: 767px) {
   .hero--cinematic {
-    --hero-type-size: 27vw;
-    --hero-art-top: calc(65px + var(--hero-type-size) * .65);
-    --hero-art-height: 470px;
-    --hero-art-position: 60% top;
+    --hero-art-height: 460px;
     margin-top: -64px;
-    min-height: 0;
-    padding: calc(var(--hero-art-top) + 500px) 0 32px;
-    background: #191329;
   }
-  .hero--cinematic::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto;
-    height: calc(var(--hero-art-top) + 100px);
-    background: #c5bcd9 url('../../assets/hero/bg.webp') left top / 250% auto no-repeat;
-  }
-  .hero-wordmark { top: 92px; }
+  .hero-wordmark { top: 118px; font-size: 27vw; }
   .hero-event-layout { grid-template-columns: 1fr; gap: 28px; }
-  .hero--cinematic .hero-title { margin-bottom: 18px; text-shadow: none; }
+  .hero--cinematic .hero-title { margin-bottom: 18px; }
   .hero--cinematic .hero-edition { font-size: 11px; margin-bottom: 16px; gap: 12px; }
   .hero--cinematic .hero-edition::before { width: 24px; }
   .hero-theme-lead { font-size: clamp(27px, 6.9vw, 36px); }
   .hero-theme-detail { font-size: clamp(20px, 5vw, 26px); }
   .hero-event-aside { max-width: 430px; width: 100%; }
-  .hero-event-meta { font-size: 13px; gap: 12px 16px; }
-  .hero-event-meta > div + div { padding-left: 16px; }
+  .hero-event-meta { gap: 12px 16px; }
 }
 @media (max-width: 374px) {
   .hero--cinematic .countdown-module { padding: 14px; }
@@ -4422,10 +4418,14 @@ body:has(.final-registration-callout) .footer,
   .hero-event-meta > div + div { padding-left: 0; border-left: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-register, .hero-register .chamfer-inner, .hero-register .chamfer-arrow { transition: none; transform: none; }
+  .hero-register, .hero-register .cta-inner, .hero-register .cta-arrow { transition: none; transform: none; }
 }
 
 /* Four equal timer cells also accommodate enlarged user font settings. */
 .hero--cinematic .countdown { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .hero--cinematic .cd-sep { display: none; }
 .hero--cinematic .countdown-module .cd-number { font-size: clamp(1rem, 1.8vw, 1.75rem); }
+
+@media (max-width: 767px) {
+  .hero-register, .hero-register .cta-inner { width: 100%; }
+}
