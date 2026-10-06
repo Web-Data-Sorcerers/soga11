@@ -1113,5 +1113,19 @@ function initFindTicket() {
 // ============================================================
 // Boot
 // ============================================================
+// A page reload should always land on the hero. If the URL kept an in-page
+// section anchor (#agenda, #speakers, #legacy, #faq) from earlier navigation,
+// drop it so the hero is shown again. Deep links opened fresh are preserved.
+const navigationEntry = performance.getEntriesByType
+  ? performance.getEntriesByType("navigation")[0]
+  : null;
+if (
+  navigationEntry &&
+  navigationEntry.type === "reload" &&
+  ANCHORS.has(location.hash.replace("#", ""))
+) {
+  history.replaceState(null, "", location.pathname + location.search);
+}
+
 initNavbar();
 route();

@@ -4247,18 +4247,36 @@ body:has(.final-registration-callout) .footer,
 
 /* Final supplied artwork. Matching image/mask geometry preserves the full desktop composition. */
 .hero--cinematic {
-  --hero-ink: #fffaf5;
+  --hero-ink: var(--text-primary, #21152f);
   --hero-art-position: center;
   --hero-art-height: 100%;
-  min-height: 0;
-  aspect-ratio: 1672 / 941;
+  min-height: 100vh;
+  min-height: 100svh;
   margin-top: -82px;
   padding: 0;
   display: block;
-  background: #191329;
+  background: #FAF7F2;
   color: var(--hero-ink);
 }
-.hero--cinematic .hero-backdrop-artwork,
+/* Artwork stays visible; white behaves as an edge aura plus clean top/bottom
+   blends so the navbar and the copy sit on soft white without covering the scene. */
+.hero--cinematic .hero-backdrop-artwork {
+  position: absolute;
+  inset: 0;
+  height: var(--hero-art-height);
+  background:
+    /* clean white band behind the navbar, dissolving downward */
+    linear-gradient(180deg, #FAF7F2 0%, rgba(250, 247, 242, 0.6) 6%, rgba(250, 247, 242, 0.2) 13%, rgba(250, 247, 242, 0) 21%),
+    /* soft white bed under the copy, melting into the next section */
+    linear-gradient(0deg, #FAF7F2 0%, rgba(250, 247, 242, 0.72) 9%, rgba(250, 247, 242, 0) 28%),
+    /* pronounced white aura feathering the edges and corners; the centre keeps the scene awake */
+    radial-gradient(ellipse 70% 64% at 50% 45%, rgba(250, 247, 242, 0) 24%, rgba(250, 247, 242, 0.32) 56%, rgba(250, 247, 242, 0.82) 86%, #FAF7F2 100%),
+    url('../../assets/hero/finalbg.webp') var(--hero-art-position) / cover no-repeat;
+  filter: none;
+  transform: none;
+  pointer-events: none;
+}
+/* Foreground keeps the clean monument artwork so it stays crisp against the white field. */
 .hero--cinematic .hero-foreground {
   position: absolute;
   inset: 0;
@@ -4279,12 +4297,12 @@ body:has(.final-registration-callout) .footer,
   font-weight: 800;
   letter-spacing: -.055em;
   line-height: 1;
-  color: #fffaf5;
-  background: linear-gradient(180deg, #ffffff 12%, #f5edf8 55%, #cabbdc 100%);
+  color: #d8cdec;
+  background: linear-gradient(180deg, #ffffff 0%, #ece3f7 52%, #c9b8e4 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  opacity: .95;
+  opacity: .92;
   text-shadow: none;
   pointer-events: none;
   user-select: none;
@@ -4319,7 +4337,7 @@ body:has(.final-registration-callout) .footer,
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  background: radial-gradient(ellipse 85% 60% at 0% 100%, rgba(18, 12, 32, .86) 0%, rgba(18, 12, 32, .66) 40%, rgba(18, 12, 32, .28) 65%, transparent 100%);
+  display: none;
 }
 .hero--cinematic .hero-edition {
   display: flex;
@@ -4331,7 +4349,7 @@ body:has(.final-registration-callout) .footer,
   font-weight: 700;
   letter-spacing: .16em;
   color: var(--hero-ink);
-  text-shadow: 0 1px 2px #171020, 0 0 1px #171020;
+  text-shadow: none;
 }
 .hero--cinematic .hero-edition::before {
   content: '';
@@ -4350,7 +4368,7 @@ body:has(.final-registration-callout) .footer,
   color: var(--hero-ink);
   text-transform: none;
   letter-spacing: -.02em;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, .85);
+  text-shadow: none;
   overflow-wrap: break-word;
 }
 .hero-theme-lead {
@@ -4358,7 +4376,7 @@ body:has(.final-registration-callout) .footer,
   font-size: clamp(26px, 2.9vw, 48px);
   line-height: 1.2;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--hero-ink);
 }
 .hero-theme-detail {
   display: block;
@@ -4390,23 +4408,24 @@ body:has(.final-registration-callout) .footer,
   gap: 10px 16px;
   margin: 0 0 22px;
   font-size: 13px;
-  color: #ffffff;
+  color: var(--hero-ink);
   font-weight: 500;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, .9);
+  text-shadow: none;
 }
 .hero-event-meta > div { display: flex; align-items: center; gap: 10px; }
-.hero-event-meta > div + div { border-left: 1px solid #ffffff99; padding-left: 16px; }
+.hero-event-meta > div + div { border-left: 1px solid rgba(33, 21, 47, 0.28); padding-left: 16px; }
 .hero-event-meta svg { width: 23px; height: 23px; flex-shrink: 0; }
 .hero-event-layout > *, .hero-event-meta > * { min-width: 0; }
 .hero--cinematic .countdown-heading { white-space: normal; }
 /* Below desktop, preserve the scene above a separate readable information area. */
-@media (max-width: 1199px) {
+@media (max-width: 1023px) {
   .hero--cinematic::after { display: none; }
   .hero--cinematic {
     --hero-art-height: max(460px, 56.28vw);
     --hero-art-position: 49% center;
     aspect-ratio: auto;
-    min-height: 0;
+    min-height: 100vh;
+    min-height: 100svh;
     padding: calc(var(--hero-art-height) + 30px) 0 32px;
   }
   .hero-wordmark { top: clamp(105px, 10vw, 140px); font-size: 26vw; }
@@ -4449,4 +4468,34 @@ body:has(.final-registration-callout) .footer,
 
 @media (max-width: 767px) {
   .hero-register, .hero-register .cta-inner { width: 100%; }
+}
+
+/* ==========================================================================
+   Full-viewport sections
+   Every top-level home section fills at least one viewport height, spans the
+   available width, and centres its content when that content is shorter than
+   the viewport. `svh` keeps the height stable while mobile browser toolbars
+   appear and disappear; sections with longer content simply grow past it.
+   ========================================================================== */
+.hero--cinematic,
+.impact-section,
+.home-agenda,
+.home-speakers,
+.home-legacy,
+.home-faq,
+.final-registration-callout {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.impact-section,
+.home-agenda,
+.home-speakers,
+.home-legacy,
+.home-faq,
+.final-registration-callout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
