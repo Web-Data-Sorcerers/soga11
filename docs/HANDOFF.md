@@ -25,7 +25,7 @@ This is a working codebase, not a project to recreate. SOGA 10 is reference-only
 
 ## 2. Current one-line status
 
-The major frontend redesign, Admin, legal pages, release builder, Git security rewrite, manual Admin credential rotation, Vercel configuration, and the Vercel deployment are complete. Work is merged to **`master`** at **`c1a2c54`** (final CTA sized to content, on top of docs refresh `07478a4` and Merge PR #3 `900c69f`), and the live site serves the current build. The immediate next action is content finalization plus an optional online regression pass against the live URL.
+The major frontend redesign, Admin, legal pages, release builder, Git security rewrite, manual Admin credential rotation, Vercel configuration, and the Vercel deployment are complete. The current **code checkpoint** is **`c1a2c54`** (final CTA sized to content), built on `900c69f` (Merge PR #3); documentation commits may sit on top, so confirm the exact HEAD with `git log -1`. The live site serves the current build. The immediate next action is content finalization plus an optional online regression pass against the live URL.
 
 Release status: **release candidate with conditions**.
 
@@ -442,8 +442,8 @@ Current status: **live at https://soga11.vercel.app**, auto-deploying from `mast
 
 - Remote: `https://github.com/Web-Data-Sorcerers/soga11.git`
 - Canonical branch: **`master`**
-- Latest commit: **`c1a2c54`** (fix: size final CTA to its content instead of a full viewport)
-- Preceding commits: `07478a4` (docs refresh), `900c69f` (Merge pull request #3 from `feat/responsive-ui-faq-fix`)
+- Code checkpoint: **`c1a2c54`** (fix: size final CTA to its content instead of a full viewport)
+- Built on: `07478a4` (docs refresh), `900c69f` (Merge pull request #3 from `feat/responsive-ui-faq-fix`). Documentation commits may follow the code checkpoint; run `git log -1` for the exact HEAD.
 - Remote branches: `master`, `feat/responsive-ui-faq-fix` (merged), `experiment/redesign` (integrated), `backup/hero-theme-2026-09-27` (divergent — do not merge).
 - GitHub automation: `gh` CLI installed at `~/.local/bin/gh` and authenticated; merged work via PRs #2 and #3.
 - This clone is single-branch (`remote.origin.fetch` tracks only `feat/responsive-ui-faq-fix`). Refresh `master` explicitly with `git fetch origin '+refs/heads/*:refs/remotes/origin/*'`.
