@@ -4472,18 +4472,19 @@ body:has(.final-registration-callout) .footer,
 
 /* ==========================================================================
    Full-viewport sections
-   Every top-level home section fills at least one viewport height, spans the
-   available width, and centres its content when that content is shorter than
+   These top-level home sections fill at least one viewport height, span the
+   available width, and centre their content when that content is shorter than
    the viewport. `svh` keeps the height stable while mobile browser toolbars
    appear and disappear; sections with longer content simply grow past it.
+   The final registration callout is intentionally excluded so it sizes to its
+   own content instead of filling a full viewport.
    ========================================================================== */
 .hero--cinematic,
 .impact-section,
 .home-agenda,
 .home-speakers,
 .home-legacy,
-.home-faq,
-.final-registration-callout {
+.home-faq {
   width: 100%;
   min-height: 100vh;
   min-height: 100svh;
@@ -4493,8 +4494,7 @@ body:has(.final-registration-callout) .footer,
 .home-agenda,
 .home-speakers,
 .home-legacy,
-.home-faq,
-.final-registration-callout {
+.home-faq {
   display: flex;
   flex-direction: column;
   justify-content: center;
