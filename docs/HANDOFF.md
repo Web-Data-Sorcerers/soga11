@@ -25,7 +25,7 @@ This is a working codebase, not a project to recreate. SOGA 10 is reference-only
 
 ## 2. Current one-line status
 
-The major frontend redesign, Admin, legal pages, release builder, Git security rewrite, manual Admin credential rotation, Vercel configuration, and the Vercel deployment are complete. Work is merged to **`master`** at **`900c69f`** (Merge PR #3), and the live site serves the current build. The immediate next action is content finalization plus an optional online regression pass against the live URL.
+The major frontend redesign, Admin, legal pages, release builder, Git security rewrite, manual Admin credential rotation, Vercel configuration, and the Vercel deployment are complete. Work is merged to **`master`** at **`c1a2c54`** (final CTA sized to content, on top of docs refresh `07478a4` and Merge PR #3 `900c69f`), and the live site serves the current build. The immediate next action is content finalization plus an optional online regression pass against the live URL.
 
 Release status: **release candidate with conditions**.
 
@@ -442,7 +442,8 @@ Current status: **live at https://soga11.vercel.app**, auto-deploying from `mast
 
 - Remote: `https://github.com/Web-Data-Sorcerers/soga11.git`
 - Canonical branch: **`master`**
-- Latest commit: **`900c69f`** (Merge pull request #3 from `feat/responsive-ui-faq-fix`)
+- Latest commit: **`c1a2c54`** (fix: size final CTA to its content instead of a full viewport)
+- Preceding commits: `07478a4` (docs refresh), `900c69f` (Merge pull request #3 from `feat/responsive-ui-faq-fix`)
 - Remote branches: `master`, `feat/responsive-ui-faq-fix` (merged), `experiment/redesign` (integrated), `backup/hero-theme-2026-09-27` (divergent — do not merge).
 - GitHub automation: `gh` CLI installed at `~/.local/bin/gh` and authenticated; merged work via PRs #2 and #3.
 - This clone is single-branch (`remote.origin.fetch` tracks only `feat/responsive-ui-faq-fix`). Refresh `master` explicitly with `git fetch origin '+refs/heads/*:refs/remotes/origin/*'`.
@@ -487,6 +488,8 @@ aee32ef  Phase 10  Cinematic hero source PNG
 ff5fcb6  PR #2     Merge feat/responsive-ui-faq-fix into master
 de8cdcb  Phase 10  Full-viewport sections, white hero aura, reload-to-hero
 900c69f  PR #3     Merge feat/responsive-ui-faq-fix into master
+07478a4  Docs      Refresh handoff for current master state
+c1a2c54  Fix       Size final CTA to content (excluded from full-viewport sections)
 ```
 
 Phase 8.3B was read-only and has no commit. Use small focused commits; never include unrelated untracked files.

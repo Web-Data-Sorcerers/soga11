@@ -249,6 +249,12 @@ Reference-only path: `/home/faiz/clone/sorcery-gathering/`.
 - Divergence note: `backup/hero-theme-2026-09-27` is divergent and contains a revert of the cinematic hero — never merge it.
 - Rule: use the PR flow for `master`; never force-push; work from `master`; keep divergent branches out of merges.
 
+### 2026-10-06 — final CTA forced to full viewport (owner correction)
+
+- Error condition: the Phase 10C “Full-viewport sections” rule applied `min-height: 100vh/svh` plus vertical centering to every top-level home section, including `.final-registration-callout`, so the closing CTA filled a whole screen instead of sizing to its content.
+- Resolution: removed `.final-registration-callout` from both full-viewport selector groups in `pages/home/home.css`; the callout now derives its height from its own panels (`min-height: 420px` desktop, 360px tablet, 340–390px mobile). Other sections unchanged. Commit `c1a2c54`.
+- Rule: full-viewport treatment is per-section and opt-in. Do not blanket-apply it to compact closing/callout sections. An owner-requested visual correction is an approved change, not a “while I am here” redesign.
+
 ## 14. Required verification after every relevant change
 
 At minimum:

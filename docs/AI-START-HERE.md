@@ -25,14 +25,14 @@ Do not restart the project. Do not infer state from old chats, screenshots, or p
 - Git security rewrite: complete.
 - Admin credential rotation: complete; old `REJECTED`, new `ACCEPTED`, session invalidation confirmed.
 - **Live site:** https://soga11.vercel.app (HTTP 200, auto-deploys from `master`).
-- Canonical branch: **`master`**; latest commit **`900c69f`** (Merge PR #3).
+- Canonical branch: **`master`**; latest commit **`c1a2c54`** (final CTA sized to content). Prior: `07478a4` docs refresh, `900c69f` Merge PR #3.
 - GitHub automation: `gh` CLI installed at `~/.local/bin/gh`, authenticated; PRs #2 and #3 merged into `master`.
 
 ## Repository and branch state (verified 06 Oct 2026)
 
 | Ref | Commit | Meaning |
 |---|---|---|
-| `master` | `900c69f` | **Canonical.** Merge of PR #3; contains all current work. |
+| `master` | `c1a2c54` | **Canonical.** Final CTA sizing fix on top of PR #3; contains all current work. |
 | `feat/responsive-ui-faq-fix` | `de8cdcb` | Merged; tree identical to `master`. |
 | `experiment/redesign` | `8d9aa82` | Already integrated (ancestor of `master`). |
 | `backup/hero-theme-2026-09-27` | `bd0bad6` | **Divergent — do not merge.** Contains a revert of the cinematic hero. |

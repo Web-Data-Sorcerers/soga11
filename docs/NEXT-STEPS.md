@@ -5,7 +5,7 @@
 ## Current position
 
 - Canonical branch: `master`.
-- HEAD: `900c69f` (Merge PR #3).
+- HEAD: `c1a2c54` (final CTA sized to content).
 - Vercel: **live** at https://soga11.vercel.app — auto-deploys from `master`; verified serving the current build (`js/app.js?v=24`).
 - Build artifact: allowlisted `dist/`, **58 files** per `release-manifest.txt`.
 - Major UI: complete/frozen (full-viewport sections, white hero aura, FAQ chevron animation, responsive refinements, legacy asset archive).
@@ -28,7 +28,7 @@ No secrets are required. If a redeploy is needed, push to `master` (Vercel deplo
 
 ### Deployment integrity
 
-- confirm canonical branch (`master`) and HEAD commit (`900c69f`);
+- confirm canonical branch (`master`) and HEAD commit (`c1a2c54`);
 - confirm the live URL (https://soga11.vercel.app) serves the current build;
 - confirm build ran `scripts/build-release.sh`;
 - confirm only `dist/` is served;

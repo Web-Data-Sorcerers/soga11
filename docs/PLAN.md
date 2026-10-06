@@ -31,6 +31,8 @@ Deliver a production-ready static SOGA 11 site while preserving the existing Sup
 | 10B | Documentation refresh: branch, 58-file manifest, verified credentials | `aee32ef` descendant |
 | 10C | Full-viewport sections, white hero aura (artwork kept visible), reload-returns-to-hero router fix | `de8cdcb` |
 | 11 | PR flow into `master`: PRs #2 and #3 merged via `gh` CLI | `ff5fcb6`, `900c69f` |
+| 12 | Documentation refresh for current master state (live deploy, gh flow, branches) | `07478a4` |
+| 13 | Final registration callout sized to its content (excluded from full-viewport sections), owner-approved | `c1a2c54` |
 
 All major implemented visual surfaces are frozen.
 
