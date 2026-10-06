@@ -158,7 +158,7 @@ Never use “Hybrid Event”.
 
 - Never deploy repository root.
 - `release-manifest.txt` is the positive runtime allowlist.
-- `scripts/build-release.sh` must produce exactly 28 files until an approved manifest change.
+- `scripts/build-release.sh` must produce exactly the files listed in `release-manifest.txt` (currently **58 files**). Any manifest change requires separate approval.
 - Vercel output directory is `dist`.
 - `dist/` is generated/ignored; do not commit it.
 - Never include docs, design references, ZIPs, `.env*`, QA artifacts, internal notes, or unused source packages in deployment.
@@ -169,7 +169,7 @@ Never use “Hybrid Event”.
 ## 11. Security history state
 
 - Credential material was removed from tracked docs.
-- Git history was rewritten using `git-filter-repo` and remote `master` reconciled.
+- Git history was rewritten using `git-filter-repo` and remote reconciled (`origin/master`).
 - Pre-rewrite commit hashes are obsolete.
 - Product owner reported manual credential rotation complete.
 - Do not rotate again, rewrite again, or force-push again without explicit approval for a new objective defect.
@@ -211,7 +211,7 @@ Reference-only path: `/home/faiz/clone/sorcery-gathering/`.
 ### 2026-09-13 — Git history contained credential material
 
 - Error condition: tracked documentation and reachable Git history contained an Admin credential.
-- Resolution: sanitize current docs, exact history rewrite from current local history, verify zero matches, force-reconcile only audited `master`, rotate credential externally.
+- Resolution: sanitize current docs, exact history rewrite from current local history, verify zero matches, force-reconcile only audited `origin/master`, rotate credential externally.
 - Rule: credentials never enter documentation, commits, logs, screenshots, command output, or deployment artifacts.
 
 ### 2026-09-13 — false-positive secret scanning
@@ -229,6 +229,12 @@ Reference-only path: `/home/faiz/clone/sorcery-gathering/`.
 - Risk: Git repository contains documentation and local reference material not meant for hosting.
 - Resolution: positive allowlist builder and Vercel `outputDirectory: dist`.
 - Rule: deployment succeeds only from the verified generated artifact, never repository root.
+
+### 2026-09-16 to 2026-09-28 — cinematic hero, FAQ chevron, responsive UI, legacy localization
+
+- Work: added cinematic hero with layered background (`finalbg.webp`, `monument-mask.svg`), `impact-monument` assets, FAQ `<details>` chevron arrow animation, responsive navbar/hero refinements, legacy section localization, and 19 archival legacy images.
+- Impact: manifest grew from 28 to 58 files; branch diverged from `master` to `feat/responsive-ui-faq-fix`.
+- Rule: after manifest growth, update all docs referencing the old file count. Branch metadata in docs must reflect the active branch.
 
 ## 14. Required verification after every relevant change
 

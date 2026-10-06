@@ -1,16 +1,15 @@
 # SOGA 11 — Immediate Next Steps
 
-> Operational checklist as of 13 September 2026.
+> Operational checklist as of 06 October 2026.
 
 ## Current position
 
-- GitHub `master` includes Vercel configuration.
-- Canonical remote HEAD before this documentation update: `0c4ee9f`.
+- Active branch: `feat/responsive-ui-faq-fix`.
+- HEAD: `aee32ef`.
 - Vercel project: not connected/deployed yet.
-- Build artifact: allowlisted `dist/`, expected 28 files.
-- Major UI: complete/frozen.
-- Manual Admin credential rotation: reported complete.
-- Explicit old/new authentication and prior-session result: still needs recorded confirmation.
+- Build artifact: allowlisted `dist/`, **58 files** per `release-manifest.txt`.
+- Major UI: complete/frozen (includes cinematic hero background, FAQ chevron animation, responsive refinements, legacy asset archive).
+- Admin credential rotation: reported complete; old `REJECTED`, new `ACCEPTED`, session invalidation confirmed.
 
 ## Next action — product owner in Vercel
 
@@ -34,7 +33,7 @@ The initial URL is reachable by anyone who knows it. Do not announce it or conne
 
 ### Deployment integrity
 
-- confirm intended `master` commit;
+- confirm active branch (`feat/responsive-ui-faq-fix`) and HEAD commit (`aee32ef`);
 - confirm build ran `scripts/build-release.sh`;
 - confirm only `dist/` is served;
 - check `/`, `/dashboard.html`, `/certificate.html`, `/terms.html`, `/privacy.html`;
@@ -117,7 +116,7 @@ registration-toggle = 0
 ## Stop and ask owner when
 
 - Vercel serves repository root instead of `dist/`;
-- build count differs from 28 without approved manifest change;
+- build count differs from **58** (per `release-manifest.txt`) without approved manifest change;
 - a secret/environment variable appears necessary;
 - Admin verification cannot be performed privately;
 - anonymous participant rows become readable;

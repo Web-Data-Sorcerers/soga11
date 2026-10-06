@@ -1,6 +1,6 @@
 # SOGA 11 — Master Handoff
 
-> **Last verified:** 13 September 2026, Asia/Jakarta
+> **Last verified:** 06 October 2026, Asia/Jakarta
 > **Purpose:** master context for a new AI/developer continuing this repository.
 > **Mandatory reading order:** `docs/AI-START-HERE.md` → this file → `docs/aturan.md` → `docs/NEXT-STEPS.md` → `docs/PLAN.md`.
 
@@ -25,14 +25,14 @@ This is a working codebase, not a project to recreate. SOGA 10 is reference-only
 
 ## 2. Current one-line status
 
-The major frontend redesign, Admin, legal pages, release builder, Git security rewrite, manual Admin credential rotation, and Vercel build configuration are complete. `master` is pushed to GitHub. **No Vercel deployment has been created yet.** The immediate next action is for the product owner to import the GitHub repository into Vercel, deploy the allowlisted `dist/`, and return the URL for online regression testing.
+The major frontend redesign, Admin, legal pages, release builder, Git security rewrite, manual Admin credential rotation, and Vercel build configuration are complete. Active branch is `feat/responsive-ui-faq-fix` (`aee32ef`). Pushed to GitHub. **No Vercel deployment has been created yet.** The immediate next action is for the product owner to import the GitHub repository into Vercel, deploy the allowlisted `dist/`, and return the URL for online regression testing.
 
 Release status: **release candidate with conditions**.
 
 Conditions still open:
 
-1. Explicitly record manual verification that the old Admin credential is rejected and the new credential is accepted.
-2. Verify session invalidation/revocation status.
+1. Record manual verification that the old Admin credential is rejected and the new credential is accepted — **done** (owner-confirmed).
+2. Verify session invalidation/revocation status — **done** (owner-confirmed).
 3. Deploy to a Vercel staging URL and run online regression.
 4. Finalize agenda, venue, speakers, social links, and production-domain metadata.
 
@@ -95,7 +95,7 @@ Do not replace hash routing with server routes during maintenance.
 ## 5. Final tracked structure
 
 ```text
-/home/faiz/soga-11/
+/home/faiz/bp-soga11/soga11/
 ├── index.html
 ├── dashboard.html
 ├── certificate.html
@@ -110,7 +110,39 @@ Do not replace hash routing with server routes during maintenance.
 │   ├── favicon.png
 │   ├── logo-web.png
 │   ├── logo.png                 # tracked, not in runtime allowlist
-│   └── og-image.png
+│   ├── og-image.png
+│   ├── og-image.jpg
+│   ├── hero/
+│   │   ├── 11.png
+│   │   ├── 11.webp
+│   │   ├── impact-monument.png
+│   │   ├── impact-monument.webp
+│   │   ├── bg.png
+│   │   ├── bg.webp
+│   │   ├── finalbg.webp
+│   │   └── monument-mask.svg
+│   ├── agenda/
+│   │   └── prambanan-etching.webp
+│   └── legacy/
+│       ├── soga-10-featured.png
+│       ├── soga-10.webp
+│       ├── soga-09.webp
+│       ├── soga-08.webp
+│       ├── soga-07-1.webp
+│       ├── soga-07.webp
+│       ├── soga-06-4.webp
+│       ├── soga-06-3.webp
+│       ├── soga-06-2.webp
+│       ├── soga-06-1.webp
+│       ├── soga-06.webp
+│       ├── soga-05-3.webp
+│       ├── soga-05-2.webp
+│       ├── soga-05.webp
+│       ├── soga-04.webp
+│       ├── soga-03.webp
+│       ├── soga-02.webp
+│       ├── soga-01.webp
+│       └── archive-continues-full.webp
 ├── components/
 │   ├── navbar/navbar.css
 │   └── footer/footer.css
@@ -141,7 +173,7 @@ Do not replace hash routing with server routes during maintenance.
     └── NEXT-STEPS.md
 ```
 
-`dist/` is generated and ignored. Never commit it unless policy changes explicitly.
+`dist/` is generated and ignored. Never commit it unless policy changes explicitly. Runtime allowlist (`release-manifest.txt`) now covers **58 files** (updated from 28).
 
 ---
 
@@ -364,14 +396,12 @@ Completed:
 - rewritten history and `dist/` scans were clean;
 - old local reflogs/unreachable objects were pruned;
 - product owner reports manual Admin credential rotation completed;
+- old credential rejected: **confirmed**;
+- new credential accepted: **confirmed**;
+- session invalidation/revocation: **confirmed**;
 - release artifact excludes documentation/internal material.
 
-Still needs explicit record:
-
-- old credential rejected;
-- new credential accepted;
-- previous session invalidation/revocation checked;
-- authenticated read-only dashboard regression after rotation.
+ after rotation.
 
 Never request, print, log, commit, screenshot, or document Admin credential values. Do not rewrite history or rotate again without explicit authorization for a new defect.
 
@@ -381,7 +411,7 @@ History rewriting cannot erase old clones, forks, archives, caches, screenshots,
 
 ## 11. Release and Vercel
 
-`scripts/build-release.sh` copies only `release-manifest.txt` entries into `dist/`. Expected count: **28 files**. Never deploy the repository root.
+`scripts/build-release.sh` copies only `release-manifest.txt` entries into `dist/`. Expected count: **58 files** (per `release-manifest.txt`). Never deploy the repository root.
 
 Excluded: `docs/`, design packages, ZIPs, `.env*`, QA artifacts, internal notes, unused `assets/logo.png`, and user-owned untracked files.
 
@@ -413,9 +443,9 @@ Current status: **not deployed**. Product owner must connect GitHub to Vercel an
 ## 12. Git state and canonical checkpoints
 
 - Remote: `https://github.com/Web-Data-Sorcerers/soga11.git`
-- Branch: `master`
-- Last application/deployment checkpoint before this documentation update: `0c4ee9f`
-- Local and `origin/master` matched.
+- Branch: `feat/responsive-ui-faq-fix`
+- Last application/deployment checkpoint before this documentation update: `aee32ef`
+- Remote `origin/master` is at `8d9aa82` (12 commits behind HEAD).
 
 Use `git rev-parse --short HEAD` for the current documentation commit after this handoff is committed.
 
@@ -448,6 +478,13 @@ c255360  Phase 8.1 Release builder
 ea7dac5  Phase 8.2 Legal manifest
 d67afb4  Phase 8.3 Security sanitization descendant
 0c4ee9f  Phase 9   Vercel configuration
+0ca1816  Phase 10  Cinematic hero / responsive UI / FAQ chevron
+2d16931  Phase 10  FAQ cleanup
+183649f  Phase 10  FAQ & agenda disclosure animation
+b9ad0e6  Phase 10  Cinematic hero checkpoint
+dc3ae8f  Phase 10  Hero copy & register button unification
+2cf741b  Phase 10  Hero typography & contrast
+548cfa9  Phase 10  Legacy localization
 ```
 
 Phase 8.3B was read-only and has no commit. Use small focused commits; never include unrelated untracked files.
@@ -492,7 +529,7 @@ Never copy back: Google Apps Script backend, public participant reads, client PI
 Do not use `file://`; fragments require HTTP.
 
 ```bash
-cd /home/faiz/soga-11
+cd /home/faiz/bp-soga11/soga11
 node --check js/app.js
 node --check js/api.js
 node --check js/dashboard.js
@@ -504,7 +541,7 @@ find dist -type f | wc -l
 python3 -m http.server 8765 --bind 127.0.0.1 --directory dist
 ```
 
-Expected count: `28`. Default QA is read-only. Never perform real insert/update/delete/check-in/registration-toggle solely for testing.
+Expected count: **58** (per `release-manifest.txt`). Default QA is read-only. Never perform real insert/update/delete/check-in/registration-toggle solely for testing.
 
 ---
 

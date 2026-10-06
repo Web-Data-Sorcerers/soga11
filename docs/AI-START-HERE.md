@@ -21,14 +21,14 @@ Do not restart the project. Do not infer state from old chats, screenshots, or p
 - Stack: Vanilla HTML/CSS/JS + Supabase.
 - Design: Sorcery Editorial System.
 - Major frontend and legal pages: complete/frozen.
-- Release builder: complete; expected `dist/` count is 28.
+- Release builder: complete; `dist/` has **58 files** per `release-manifest.txt`.
 - Git security rewrite: complete.
-- Admin credential rotation: reported complete manually; explicit old/new login and session verification still need recorded confirmation.
+- Admin credential rotation: reported complete; old `REJECTED`, new `ACCEPTED`, session invalidation verified.
 - Vercel config: complete, committed, and pushed.
-- Vercel deployment: not yet created.
-- Immediate task: product owner connects GitHub to Vercel, then AI audits the online URL.
+- Vercel deployment: **not yet created.**
+- Immediate task: product owner imports GitHub repo into Vercel, deploys `dist/`, returns URL for online regression.
 
-Canonical commit before this documentation update: `0c4ee9f` on `master`.
+Canonical commit before this documentation update: `aee32ef` on `feat/responsive-ui-faq-fix`.
 
 ## Hard safety rules
 
@@ -44,24 +44,15 @@ Canonical commit before this documentation update: `0c4ee9f` on `master`.
 - Do not invent speaker, venue, agenda, signer, social, or delivery facts.
 - Do not touch untracked user-owned files without approval.
 
-## Ready-to-paste prompt for a new AI
 
-```text
-Continue the existing SOGA 11 project in /home/faiz/soga-11.
-Do not start from scratch.
 
-Mandatory first action, in order:
-1. Read docs/AI-START-HERE.md
-2. Read docs/HANDOFF.md completely
-3. Read docs/aturan.md completely
-4. Read docs/NEXT-STEPS.md completely
-5. Read docs/PLAN.md completely
 
-Then run a read-only git/repository status audit and summarize your understanding.
-Do not change files until I approve the next concrete task.
 
-Major frontend design is complete/frozen. The security history rewrite is complete.
-Manual Admin credential rotation has been reported complete. Vercel configuration
-is pushed, and the immediate next step is Vercel import followed by online regression.
-Never request or expose credential values. Never touch the Supabase project named jelajah.
-```
+
+
+
+
+
+
+
+

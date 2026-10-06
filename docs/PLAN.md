@@ -1,6 +1,6 @@
 # SOGA 11 — Delivery Plan and Completed Phases
 
-> Updated 13 September 2026. Phase-level record; use `docs/NEXT-STEPS.md` for immediate execution.
+> Updated 06 October 2026. Phase-level record; use `docs/NEXT-STEPS.md` for immediate execution.
 
 ## Goal
 
@@ -27,6 +27,8 @@ Deliver a production-ready static SOGA 11 site while preserving the existing Sup
 | 8.3 | Documentation sanitization/history purge/remote reconciliation | `d67afb4` descendant |
 | 8.3B | Read-only final security verification | no commit |
 | 9 | Vercel build/output configuration | `0c4ee9f` |
+| 10 | Cinematic hero background, FAQ chevron animation, responsive UI refinements, legacy asset archive (19 archival images) | `0ca1816`, `2d16931`, `183649f`, `b9ad0e6`, `dc3ae8f`, `2cf741b`, `548cfa9`, `aee32ef` |
+| 10B | Documentation update: refresh all 5 docs to reflect branch, commit, 58-file manifest | `aee32ef` descendant |
 
 All major implemented visual surfaces are frozen.
 
@@ -84,17 +86,17 @@ Each needs separate approval, impact audit, security/migration plan, tests, and 
 
 ### Technical
 
-- `master` matches remote.
-- build returns exactly 28 files unless manifest deliberately changes.
+- active branch (`feat/responsive-ui-faq-fix`) matches remote.
+- build returns exactly the files listed in `release-manifest.txt` (currently **58**) unless manifest deliberately changes.
 - no docs, ZIPs, reference packages, `.env*`, or notes in `dist/`.
 - JS checks and browser smoke pass.
 - public/backend contracts remain intact.
 
 ### Security
 
-- old Admin credential rejection recorded.
-- new Admin credential success recorded.
-- session invalidation reviewed.
+- old Admin credential rejection recorded — **confirmed**.
+- new Admin credential success recorded — **confirmed**.
+- session invalidation reviewed — **confirmed**.
 - anonymous participant reads expose zero rows.
 - authenticated Admin reads work.
 - release QA mutations remain zero.
