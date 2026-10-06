@@ -4,36 +4,32 @@
 
 ## Current position
 
-- Active branch: `feat/responsive-ui-faq-fix`.
-- HEAD: `aee32ef`.
-- Vercel project: not connected/deployed yet.
+- Canonical branch: `master`.
+- HEAD: `900c69f` (Merge PR #3).
+- Vercel: **live** at https://soga11.vercel.app — auto-deploys from `master`; verified serving the current build (`js/app.js?v=24`).
 - Build artifact: allowlisted `dist/`, **58 files** per `release-manifest.txt`.
-- Major UI: complete/frozen (includes cinematic hero background, FAQ chevron animation, responsive refinements, legacy asset archive).
-- Admin credential rotation: reported complete; old `REJECTED`, new `ACCEPTED`, session invalidation confirmed.
+- Major UI: complete/frozen (full-viewport sections, white hero aura, FAQ chevron animation, responsive refinements, legacy asset archive).
+- Admin credential rotation: complete; old `REJECTED`, new `ACCEPTED`, session invalidation confirmed.
 
-## Next action — product owner in Vercel
+## Deployment status
 
-1. Choose **Add New → Project** in Vercel.
-2. Connect GitHub if necessary.
-3. Import `Web-Data-Sorcerers/soga11`.
-4. Confirm:
-   - Framework Preset: `Other`;
-   - Root Directory: `.`;
-   - Build Command: `./scripts/build-release.sh`;
-   - Output Directory: `dist`;
-   - Install Command: blank;
-   - Environment Variables: none.
-5. Do not enter an Admin password, access token, or service-role key.
-6. Deploy and copy the generated `.vercel.app` URL.
-7. Send only the URL to the AI/developer.
+Vercel settings already applied (from `vercel.json` and the project dashboard):
 
-The initial URL is reachable by anyone who knows it. Do not announce it or connect the production domain before online QA.
+- Framework Preset: `Other`;
+- Root Directory: `.`;
+- Build Command: `./scripts/build-release.sh`;
+- Output Directory: `dist`;
+- Install Command: blank;
+- Environment Variables: none.
+
+No secrets are required. If a redeploy is needed, push to `master` (Vercel deploys automatically) or trigger a redeploy from the Vercel dashboard.
 
 ## Online QA — AI/developer
 
 ### Deployment integrity
 
-- confirm active branch (`feat/responsive-ui-faq-fix`) and HEAD commit (`aee32ef`);
+- confirm canonical branch (`master`) and HEAD commit (`900c69f`);
+- confirm the live URL (https://soga11.vercel.app) serves the current build;
 - confirm build ran `scripts/build-release.sh`;
 - confirm only `dist/` is served;
 - check `/`, `/dashboard.html`, `/certificate.html`, `/terms.html`, `/privacy.html`;

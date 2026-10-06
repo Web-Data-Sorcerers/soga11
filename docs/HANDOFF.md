@@ -25,15 +25,15 @@ This is a working codebase, not a project to recreate. SOGA 10 is reference-only
 
 ## 2. Current one-line status
 
-The major frontend redesign, Admin, legal pages, release builder, Git security rewrite, manual Admin credential rotation, and Vercel build configuration are complete. Active branch is `feat/responsive-ui-faq-fix` (`aee32ef`). Pushed to GitHub. **No Vercel deployment has been created yet.** The immediate next action is for the product owner to import the GitHub repository into Vercel, deploy the allowlisted `dist/`, and return the URL for online regression testing.
+The major frontend redesign, Admin, legal pages, release builder, Git security rewrite, manual Admin credential rotation, Vercel configuration, and the Vercel deployment are complete. Work is merged to **`master`** at **`900c69f`** (Merge PR #3), and the live site serves the current build. The immediate next action is content finalization plus an optional online regression pass against the live URL.
 
 Release status: **release candidate with conditions**.
 
-Conditions still open:
+Conditions:
 
-1. Record manual verification that the old Admin credential is rejected and the new credential is accepted — **done** (owner-confirmed).
-2. Verify session invalidation/revocation status — **done** (owner-confirmed).
-3. Deploy to a Vercel staging URL and run online regression.
+1. Old Admin credential rejected / new accepted — **done** (owner-confirmed).
+2. Session invalidation/revocation — **done** (owner-confirmed).
+3. Vercel deployment — **done**; live at https://soga11.vercel.app (HTTP 200, serving `js/app.js?v=24`).
 4. Finalize agenda, venue, speakers, social links, and production-domain metadata.
 
 ---
@@ -401,8 +401,6 @@ Completed:
 - session invalidation/revocation: **confirmed**;
 - release artifact excludes documentation/internal material.
 
- after rotation.
-
 Never request, print, log, commit, screenshot, or document Admin credential values. Do not rewrite history or rotate again without explicit authorization for a new defect.
 
 History rewriting cannot erase old clones, forks, archives, caches, screenshots, or external logs. Rotation—not rewrite alone—invalidates exposure.
@@ -436,18 +434,18 @@ Vercel settings:
 
 Never add Admin credentials or service-role keys to Vercel.
 
-Current status: **not deployed**. Product owner must connect GitHub to Vercel and send the generated URL for online QA.
+Current status: **live at https://soga11.vercel.app**, auto-deploying from `master`. Verified serving the current build (`index.html` references `js/app.js?v=24`). The URL is reachable by anyone who knows it; do not announce it publicly or attach a production domain before product-owner approval.
 
 ---
 
 ## 12. Git state and canonical checkpoints
 
 - Remote: `https://github.com/Web-Data-Sorcerers/soga11.git`
-- Branch: `feat/responsive-ui-faq-fix`
-- Last application/deployment checkpoint before this documentation update: `aee32ef`
-- Remote `origin/master` is at `8d9aa82` (12 commits behind HEAD).
-
-Use `git rev-parse --short HEAD` for the current documentation commit after this handoff is committed.
+- Canonical branch: **`master`**
+- Latest commit: **`900c69f`** (Merge pull request #3 from `feat/responsive-ui-faq-fix`)
+- Remote branches: `master`, `feat/responsive-ui-faq-fix` (merged), `experiment/redesign` (integrated), `backup/hero-theme-2026-09-27` (divergent — do not merge).
+- GitHub automation: `gh` CLI installed at `~/.local/bin/gh` and authenticated; merged work via PRs #2 and #3.
+- This clone is single-branch (`remote.origin.fetch` tracks only `feat/responsive-ui-faq-fix`). Refresh `master` explicitly with `git fetch origin '+refs/heads/*:refs/remotes/origin/*'`.
 
 Pre-rewrite hashes are obsolete. Canonical rewritten checkpoints:
 
@@ -485,6 +483,10 @@ b9ad0e6  Phase 10  Cinematic hero checkpoint
 dc3ae8f  Phase 10  Hero copy & register button unification
 2cf741b  Phase 10  Hero typography & contrast
 548cfa9  Phase 10  Legacy localization
+aee32ef  Phase 10  Cinematic hero source PNG
+ff5fcb6  PR #2     Merge feat/responsive-ui-faq-fix into master
+de8cdcb  Phase 10  Full-viewport sections, white hero aura, reload-to-hero
+900c69f  PR #3     Merge feat/responsive-ui-faq-fix into master
 ```
 
 Phase 8.3B was read-only and has no commit. Use small focused commits; never include unrelated untracked files.
@@ -577,9 +579,8 @@ Deferred/out of scope:
 
 Do not redesign anything.
 
-1. Product owner imports `Web-Data-Sorcerers/soga11` into Vercel.
-2. Confirm Framework Other, root `.`, build `./scripts/build-release.sh`, output `dist`.
-3. Add no secrets/environment variables.
-4. Deploy the first Vercel URL.
-5. Send the URL to the AI/developer.
-6. Run `docs/NEXT-STEPS.md` online QA before custom domain or announcement.
+1. Optional: run `docs/NEXT-STEPS.md` online QA against https://soga11.vercel.app (read-only).
+2. Supply final agenda, venue, speakers, and social/ecosystem URLs.
+3. Choose a production domain and update absolute `og:image` metadata.
+4. Connect the custom domain and re-run the final smoke test.
+5. Announce publicly only with explicit product-owner approval.

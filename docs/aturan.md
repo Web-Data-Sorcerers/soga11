@@ -164,6 +164,7 @@ Never use “Hybrid Event”.
 - Never include docs, design references, ZIPs, `.env*`, QA artifacts, internal notes, or unused source packages in deployment.
 - `vercel.json` must retain build `./scripts/build-release.sh` and output `dist` unless deployment architecture is explicitly changed.
 - No Vercel environment secret is required. Do not add Admin credentials or service-role material.
+- Current deployment: **live at https://soga11.vercel.app**, auto-deploying from `master`.
 - Connecting a repo/deploying/custom-domain work requires product-owner authority.
 
 ## 11. Security history state
@@ -235,6 +236,18 @@ Reference-only path: `/home/faiz/clone/sorcery-gathering/`.
 - Work: added cinematic hero with layered background (`finalbg.webp`, `monument-mask.svg`), `impact-monument` assets, FAQ `<details>` chevron arrow animation, responsive navbar/hero refinements, legacy section localization, and 19 archival legacy images.
 - Impact: manifest grew from 28 to 58 files; branch diverged from `master` to `feat/responsive-ui-faq-fix`.
 - Rule: after manifest growth, update all docs referencing the old file count. Branch metadata in docs must reflect the active branch.
+
+### 2026-10-06 — stale `origin/master` from a single-branch clone
+
+- Error condition: the clone's `remote.origin.fetch` tracked only `feat/responsive-ui-faq-fix`, so local `origin/master` was stuck at `8d9aa82`. Comparing against it wrongly suggested a clean fast-forward while the real `master` had already advanced.
+- Resolution: explicit `git fetch origin '+refs/heads/*:refs/remotes/origin/*'`, re-checked divergence, and proved the merge was safe with `git merge-tree --write-tree` (result tree hash equal to the feature tree) before merging.
+- Rule: never trust `origin/<branch>` without confirming the fetch refspec. Before merging to a shared branch, verify with `merge-tree` and confirm the resulting tree equals the intended commit's tree.
+
+### 2026-10-06 — merge to `master` via GitHub PR flow
+
+- Work: installed `gh` CLI (no root, `~/.local/bin/gh`), authenticated, and merged PR #3 (`feat/responsive-ui-faq-fix` → `master`), producing `master` = `900c69f`.
+- Divergence note: `backup/hero-theme-2026-09-27` is divergent and contains a revert of the cinematic hero — never merge it.
+- Rule: use the PR flow for `master`; never force-push; work from `master`; keep divergent branches out of merges.
 
 ## 14. Required verification after every relevant change
 

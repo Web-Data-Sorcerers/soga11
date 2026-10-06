@@ -23,12 +23,23 @@ Do not restart the project. Do not infer state from old chats, screenshots, or p
 - Major frontend and legal pages: complete/frozen.
 - Release builder: complete; `dist/` has **58 files** per `release-manifest.txt`.
 - Git security rewrite: complete.
-- Admin credential rotation: reported complete; old `REJECTED`, new `ACCEPTED`, session invalidation verified.
-- Vercel config: complete, committed, and pushed.
-- Vercel deployment: **not yet created.**
-- Immediate task: product owner imports GitHub repo into Vercel, deploys `dist/`, returns URL for online regression.
+- Admin credential rotation: complete; old `REJECTED`, new `ACCEPTED`, session invalidation confirmed.
+- **Live site:** https://soga11.vercel.app (HTTP 200, auto-deploys from `master`).
+- Canonical branch: **`master`**; latest commit **`900c69f`** (Merge PR #3).
+- GitHub automation: `gh` CLI installed at `~/.local/bin/gh`, authenticated; PRs #2 and #3 merged into `master`.
 
-Canonical commit before this documentation update: `aee32ef` on `feat/responsive-ui-faq-fix`.
+## Repository and branch state (verified 06 Oct 2026)
+
+| Ref | Commit | Meaning |
+|---|---|---|
+| `master` | `900c69f` | **Canonical.** Merge of PR #3; contains all current work. |
+| `feat/responsive-ui-faq-fix` | `de8cdcb` | Merged; tree identical to `master`. |
+| `experiment/redesign` | `8d9aa82` | Already integrated (ancestor of `master`). |
+| `backup/hero-theme-2026-09-27` | `bd0bad6` | **Divergent — do not merge.** Contains a revert of the cinematic hero. |
+
+Work from `master`. Do not merge the backup branch. This local clone is configured single-branch
+(`remote.origin.fetch` only tracks `feat/responsive-ui-faq-fix`); run
+`git fetch origin '+refs/heads/*:refs/remotes/origin/*'` if `origin/master` looks stale.
 
 ## Hard safety rules
 
@@ -43,16 +54,3 @@ Canonical commit before this documentation update: `aee32ef` on `feat/responsive
 - Do not modify frozen visuals without an objective defect or approval.
 - Do not invent speaker, venue, agenda, signer, social, or delivery facts.
 - Do not touch untracked user-owned files without approval.
-
-
-
-
-
-
-
-
-
-
-
-
-

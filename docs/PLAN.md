@@ -28,29 +28,21 @@ Deliver a production-ready static SOGA 11 site while preserving the existing Sup
 | 8.3B | Read-only final security verification | no commit |
 | 9 | Vercel build/output configuration | `0c4ee9f` |
 | 10 | Cinematic hero background, FAQ chevron animation, responsive UI refinements, legacy asset archive (19 archival images) | `0ca1816`, `2d16931`, `183649f`, `b9ad0e6`, `dc3ae8f`, `2cf741b`, `548cfa9`, `aee32ef` |
-| 10B | Documentation update: refresh all 5 docs to reflect branch, commit, 58-file manifest | `aee32ef` descendant |
+| 10B | Documentation refresh: branch, 58-file manifest, verified credentials | `aee32ef` descendant |
+| 10C | Full-viewport sections, white hero aura (artwork kept visible), reload-returns-to-hero router fix | `de8cdcb` |
+| 11 | PR flow into `master`: PRs #2 and #3 merged via `gh` CLI | `ff5fcb6`, `900c69f` |
 
 All major implemented visual surfaces are frozen.
 
-## Current release phase — Vercel staging
+## Current release phase — deployed, finalizing content
 
-Product-owner action:
+Live: **https://soga11.vercel.app** (auto-deploys from `master`). Remaining work is content and domain:
 
-1. Import `Web-Data-Sorcerers/soga11` into Vercel.
-2. Set Framework `Other`, Root `.`, Build `./scripts/build-release.sh`, Output `dist`.
-3. Add no secrets.
-4. Create the initial Vercel URL.
-5. Give the URL to the AI/developer.
-
-AI/developer action after URL exists:
-
-1. Verify deployed commit SHA and build output.
-2. Verify runtime assets/CDNs and all entry points.
-3. Exercise public hashes and standalone legal/Admin/Certificate pages.
-4. Confirm registration status/legal links, Find Ticket, QR, and Certificate export.
-5. Ask the owner to verify old/new Admin credential outcomes privately without sharing values.
-6. Run authenticated read-only Admin checks through the owner's browser/session.
-7. Record zero-mutation results.
+1. Optional read-only online regression against the live URL (`docs/NEXT-STEPS.md`).
+2. Supply final agenda, venue, speakers, and social/ecosystem URLs.
+3. Choose a production domain and update absolute `og:image` metadata.
+4. Connect the custom domain and re-run the smoke test.
+5. Public announcement only with explicit product-owner approval.
 
 ## Content finalization phase
 
@@ -86,7 +78,7 @@ Each needs separate approval, impact audit, security/migration plan, tests, and 
 
 ### Technical
 
-- active branch (`feat/responsive-ui-faq-fix`) matches remote.
+- canonical branch (`master`) matches remote and the live deployment.
 - build returns exactly the files listed in `release-manifest.txt` (currently **58**) unless manifest deliberately changes.
 - no docs, ZIPs, reference packages, `.env*`, or notes in `dist/`.
 - JS checks and browser smoke pass.
