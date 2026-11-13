@@ -19,6 +19,8 @@ assets/hero/finalbg.webp
 assets/hero/monument-mask.svg
 assets/agenda/prambanan-etching.png
 assets/agenda/prambanan-etching.webp
+assets/speakers/ananda-putra.webp
+assets/speakers/nina-nuraeni.webp
 assets/legacy/soga-10-featured.png
 assets/legacy/soga-10.webp
 assets/legacy/soga-09.webp

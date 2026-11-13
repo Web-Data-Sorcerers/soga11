@@ -1872,8 +1872,9 @@
 .speakers-grid {
   grid-column: 5 / -1;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-5);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-8);
+  max-width: 760px;
   align-items: start;
 }
 
@@ -1881,8 +1882,75 @@
   min-width: 0;
 }
 
-.speaker-card:nth-child(2) {
-  margin-top: var(--space-8);
+.speaker-portrait {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid rgba(250, 248, 245, 0.18);
+  border-radius: var(--radius-sm, 4px);
+  background: var(--purple-900);
+}
+
+.speaker-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  transition: transform var(--transition-medium, 0.3s ease);
+}
+
+.speaker-card:hover .speaker-portrait img {
+  transform: scale(1.03);
+}
+
+.speaker-portrait-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 18px 14px 14px;
+  background: linear-gradient(to top, rgba(20, 10, 35, 0.88) 0%, transparent 100%);
+  display: flex;
+  align-items: flex-end;
+}
+
+.speaker-session-pill {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-gold, #ECE0C4);
+  background: rgba(33, 21, 47, 0.85);
+  padding: 4px 8px;
+  border-radius: var(--radius-xs, 2px);
+  border: 1px solid rgba(236, 224, 196, 0.35);
+}
+
+.speaker-role {
+  color: var(--purple-300, #C4B5FD) !important;
+  font-weight: 600;
+  font-size: var(--type-small-size);
+  margin-top: 6px;
+}
+
+.speaker-cred {
+  color: rgba(250, 248, 245, 0.65) !important;
+  font-size: 0.8125rem;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+.speaker-topic {
+  color: var(--ds-gold, #ECE0C4) !important;
+  font-style: italic;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(250, 248, 245, 0.18);
 }
 
 .speaker-record-index {
@@ -3963,11 +4031,7 @@ body:has(.final-registration-callout) .footer,
   }
 
   .speaker-card:nth-child(2) {
-    margin-top: var(--space-8);
-  }
-
-  .speaker-card:nth-child(3) {
-    grid-column: 2;
+    margin-top: 0;
   }
 }
 
@@ -4214,14 +4278,9 @@ body:has(.final-registration-callout) .footer,
     gap: var(--space-8);
   }
 
-  .speaker-card:nth-child(2),
-  .speaker-card:nth-child(3) {
+  .speaker-card:nth-child(2) {
     grid-column: auto;
     margin-top: 0;
-  }
-
-  .speaker-card:nth-child(3) .speaker-placeholder {
-    transform: none;
   }
 
   .speaker-placeholder {

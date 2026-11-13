@@ -10,12 +10,11 @@
 
 **SOGA 11 — Sorcery Gathering #11** is an offline community event website for **Data Sorcerers**.
 
-- Event date: **Sunday, 25 October 2026**.
+- Event date: **Sunday, 15 November 2026**.
 - Countdown target: **08:00 WIB**, meaning the start of activity/check-in.
-- Approved location specificity: **Yogyakarta only**.
-- Venue name/address: **not final**.
+- Approved location specificity: **Garuda Spark Innovation Hub - Yogyakarta**.
 - Event format: **offline**. Never call it hybrid.
-- Theme: **“Orkestrasi Kecerdasan untuk Masa Depan Nusantara.”**
+- Theme: **“Pahlawan Pendidikan di Era Algoritma: Menjaga Karakter, Adab, dan Daya Juang di Tengah Kemudahan Teknologi.”**
 - Public contact: `contact@data-sorcerers.com`.
 - Visual system: **Sorcery Editorial System**.
 
@@ -173,7 +172,7 @@ Do not replace hash routing with server routes during maintenance.
     └── NEXT-STEPS.md
 ```
 
-`dist/` is generated and ignored. Never commit it unless policy changes explicitly. Runtime allowlist (`release-manifest.txt`) now covers **58 files** (updated from 28).
+`dist/` is generated and ignored. Never commit it unless policy changes explicitly. Runtime allowlist (`release-manifest.txt`) now covers **60 files** (updated from 58).
 
 ---
 
@@ -241,9 +240,10 @@ Source-of-truth order:
 - Focus trap, Escape close, focus restoration, body-scroll lock.
 - Deep-plum footer with real Terms/Privacy links.
 - Editorial Hero, decorative SOGA type, SVG constellation, real metadata.
-- Countdown: `2026-10-25T08:00:00+07:00`.
+- Countdown: `2026-11-15T08:00:00+07:00`.
 - Approved stats: `10+ Edisi`, `08 Chapter`, `1000+ Peserta`, `50+ Pembicara & Mitra`.
-- Current draft agenda; speakers remain explicit TBA where unknown.
+- Official agenda: 10 sesi rundown dari TOR SOGA #11.
+- Official speakers: Ananda Putra Akbarulloh (@masnandaguru) & Nina Nuraeni, S.Bns (@baninanin) dengan foto WebP teroptimasi.
 - 16 unique Instagram Legacy embeds.
 - Native `<details>` FAQ.
 - Approved claims: 100% gratis, kuota terbatas, akses materi, networking.
@@ -333,7 +333,7 @@ Do not add sidebar routes, staff, settings, Add Participant, exit tracking, or n
 
 - `terms.html`: bilingual Terms of Participation.
 - `privacy.html`: bilingual Privacy Notice.
-- Date: 25 October 2026 / 25 Oktober 2026.
+- Date: 15 November 2026 / 15 November 2026.
 - Organization: Data Sorcerers.
 - Contact: `contact@data-sorcerers.com`.
 - Registration legal links open in a new tab to preserve form state.
@@ -409,7 +409,7 @@ History rewriting cannot erase old clones, forks, archives, caches, screenshots,
 
 ## 11. Release and Vercel
 
-`scripts/build-release.sh` copies only `release-manifest.txt` entries into `dist/`. Expected count: **58 files** (per `release-manifest.txt`). Never deploy the repository root.
+`scripts/build-release.sh` copies only `release-manifest.txt` entries into `dist/`. Expected count: **60 files** (per `release-manifest.txt`). Never deploy the repository root.
 
 Excluded: `docs/`, design packages, ZIPs, `.env*`, QA artifacts, internal notes, unused `assets/logo.png`, and user-owned untracked files.
 
@@ -546,24 +546,25 @@ find dist -type f | wc -l
 python3 -m http.server 8765 --bind 127.0.0.1 --directory dist
 ```
 
-Expected count: **58** (per `release-manifest.txt`). Default QA is read-only. Never perform real insert/update/delete/check-in/registration-toggle solely for testing.
+Expected count: **60** (per `release-manifest.txt`). Default QA is read-only. Never perform real insert/update/delete/check-in/registration-toggle solely for testing.
 
 ---
 
 ## 16. Approved and open decisions
 
-Approved:
+Approved (Berdasarkan TOR SOGA #11 & Faktual Terverifikasi):
 
-- offline; Yogyakarta; 25 October 2026; 08:00 countdown;
+- offline; Garuda Spark Innovation Hub - Yogyakarta; 15 November 2026; 08:00 countdown;
+- tema resmi: "Pahlawan Pendidikan di Era Algoritma: Menjaga Karakter, Adab, dan Daya Juang di Tengah Kemudahan Teknologi";
+- pembicara resmi: Ananda Putra Akbarulloh (@masnandaguru) & Nina Nuraeni, S.Bns (@baninanin);
+- 10 sesi rundown terverifikasi;
+- kuota 50–100 peserta;
 - public statistics and FAQ claims currently shown;
 - unsigned Certificate;
 - bilingual local Terms/Privacy.
 
 Not final:
 
-- agenda details;
-- venue/address;
-- speakers/photos;
 - social/ecosystem URLs;
 - production domain and absolute `og:image`.
 

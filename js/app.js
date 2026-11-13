@@ -4,7 +4,7 @@
 // ============================================================
 
 // --- Konfigurasi event (ganti di sini) ---
-const EVENT_DATE = "2026-10-25T08:00:00+07:00"; // Minggu, 25 Oktober 2026 — check-in dimulai
+const EVENT_DATE = "2026-11-15T08:00:00+07:00"; // Minggu, 15 November 2026 — check-in dimulai
 let homeCountdownTimer = null;
 let routeRequestId = 0;
 
@@ -678,8 +678,8 @@ function renderParticipantCredential(target, participant) {
 
   name.textContent = fullName || "Nama peserta tidak tersedia";
   ticket.textContent = ticketId;
-  date.textContent = participant.date || "25 OCT 2026";
-  location.textContent = participant.location || "Yogyakarta";
+  date.textContent = participant.date || "15 NOV 2026";
+  location.textContent = participant.location || "Garuda Spark, Yogyakarta";
   status.textContent = participant.status || "Registration Recorded";
   credential.setAttribute(
     "aria-label",

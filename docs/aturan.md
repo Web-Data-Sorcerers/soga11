@@ -129,14 +129,17 @@ registration-toggle = 0
 
 ## 9. Content truth rules
 
-Approved:
+Approved (Berdasarkan TOR SOGA #11 & Faktual Terverifikasi):
 
 - offline event;
-- Yogyakarta only;
-- 25 October 2026;
-- countdown 08:00 WIB for check-in/activity start;
+- Yogyakarta (Garuda Spark Innovation Hub - Yogyakarta);
+- 15 November 2026;
+- countdown 08:00 WIB for check-in/activity start (08.00 - 12.30 WIB);
+- Tema resmi: "Pahlawan Pendidikan di Era Algoritma: Menjaga Karakter, Adab, dan Daya Juang di Tengah Kemudahan Teknologi";
+- Pembicara resmi: Ananda Putra Akbarulloh (@masnandaguru) & Nina Nuraeni, S.Bns (@baninanin);
+- 10 sesi rundown terverifikasi;
 - `10+`, `08`, `1000+`, `50+` public statistics;
-- 100% gratis, kuota terbatas, akses materi, networking;
+- 100% gratis, kuota 50–100 peserta, akses materi, networking;
 - organization Data Sorcerers;
 - contact `contact@data-sorcerers.com`;
 - bilingual local Terms/Privacy;
@@ -144,9 +147,6 @@ Approved:
 
 Not final—never invent:
 
-- venue/address/map;
-- agenda finality or new sessions;
-- speaker identities/photos;
 - social/ecosystem URLs;
 - production domain;
 - signer/signature;
@@ -158,7 +158,7 @@ Never use “Hybrid Event”.
 
 - Never deploy repository root.
 - `release-manifest.txt` is the positive runtime allowlist.
-- `scripts/build-release.sh` must produce exactly the files listed in `release-manifest.txt` (currently **58 files**). Any manifest change requires separate approval.
+- `scripts/build-release.sh` must produce exactly the files listed in `release-manifest.txt` (currently **60 files**). Any manifest change requires separate approval.
 - Vercel output directory is `dist`.
 - `dist/` is generated/ignored; do not commit it.
 - Never include docs, design references, ZIPs, `.env*`, QA artifacts, internal notes, or unused source packages in deployment.

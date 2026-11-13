@@ -61,11 +61,11 @@ SOGA 11 (Sorcery Gathering #11) adalah situs web resmi untuk konferensi teknolog
 | Parameter | Detail |
 |---|---|
 | Penyelenggara | Data Sorcerers Indonesia |
-| Tanggal Pelaksanaan | Minggu, 25 Oktober 2026 |
-| Target Waktu Mulai | 08:00 WIB (Check-in dan pembukaan) |
-| Lokasi | Yogyakarta, Indonesia |
+| Tanggal Pelaksanaan | Minggu, 15 November 2026 |
+| Target Waktu Mulai | 08:00 WIB (Check-in dan registrasi ulang) |
+| Lokasi | Garuda Spark Innovation Hub - Yogyakarta, Indonesia |
 | Format Acara | 100% Offline (Tatap Muka) |
-| Tema Acara | "Orkestrasi Kecerdasan untuk Masa Depan Nusantara" |
+| Tema Acara | "Pahlawan Pendidikan di Era Algoritma: Menjaga Karakter, Adab, dan Daya Juang di Tengah Kemudahan Teknologi" |
 | Bahasa Antarmuka | Bahasa Indonesia (Formal & Editorial) |
 | URL Produksi | https://soga11.vercel.app/ |
 
@@ -131,6 +131,7 @@ Sistem ini dibangun dengan pendekatan **Vanilla Web Architecture (Zero-Bundler)*
 │   ├── favicon.png              # Ikon browser
 │   ├── hero/                    # Grafis header (siluet monumen, tipografi 11)
 │   ├── agenda/                  # Etching visual agenda (Prambanan)
+│   ├── speakers/                # Foto teroptimasi WebP pembicara SOGA #11
 │   └── legacy/                  # Dokumentasi poster arsip SOGA edisi 01 s.d. 10
 │
 ├── scripts/                     # Perkakas automasi operasional
@@ -223,7 +224,7 @@ Untuk menjaga keamanan data pribadi (PII) dari ekspos publik yang tidak disengaj
 Repositori ini menerapkan standar build deterministik berbasis allowlist. Hal ini memastikan hanya berkas yang secara eksplisit disetujui yang dapat dipublikasikan ke server production, mencegah kebocoran berkas dokumentasi internal, skrip pengujian, berkas arsip zip, atau konfigurasi lokal.
 
 ### 7.1. Berkas Manifest (`release-manifest.txt`)
-Berkas teks baris-per-baris di root repositori yang mendaftarkan seluruh file runtime yang sah (saat ini berjumlah 56 berkas).
+Berkas teks baris-per-baris di root repositori yang mendaftarkan seluruh file runtime yang sah (saat ini berjumlah 60 berkas).
 
 ### 7.2. Menjalankan Kompilasi Rilis Lokal
 Sebelum melakukan push atau untuk menguji keabsahan struktur distribusi:

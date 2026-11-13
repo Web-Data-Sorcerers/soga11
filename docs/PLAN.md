@@ -33,6 +33,7 @@ Deliver a production-ready static SOGA 11 site while preserving the existing Sup
 | 11 | PR flow into `master`: PRs #2 and #3 merged via `gh` CLI | `ff5fcb6`, `900c69f` |
 | 12 | Documentation refresh for current master state (live deploy, gh flow, branches) | `07478a4` |
 | 13 | Final registration callout sized to its content (excluded from full-viewport sections), owner-approved | `c1a2c54` |
+| 14 | Synchronize official TOR SOGA #11 content (date: 15 Nov 2026, venue: Garuda Spark, theme, 10 sessions, 2 speakers WebP, 60-file manifest) | working tree |
 
 All major implemented visual surfaces are frozen.
 
@@ -81,7 +82,7 @@ Each needs separate approval, impact audit, security/migration plan, tests, and 
 ### Technical
 
 - canonical branch (`master`) matches remote and the live deployment.
-- build returns exactly the files listed in `release-manifest.txt` (currently **58**) unless manifest deliberately changes.
+- build returns exactly the files listed in `release-manifest.txt` (currently **60**) unless manifest deliberately changes.
 - no docs, ZIPs, reference packages, `.env*`, or notes in `dist/`.
 - JS checks and browser smoke pass.
 - public/backend contracts remain intact.

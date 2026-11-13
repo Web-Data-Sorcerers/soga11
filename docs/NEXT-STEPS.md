@@ -7,7 +7,7 @@
 - Canonical branch: `master`.
 - Code checkpoint: `c1a2c54` (final CTA sized to content). Documentation commits may follow; confirm the exact HEAD with `git log -1`.
 - Vercel: **live** at https://soga11.vercel.app — auto-deploys from `master`; verified serving the current build (`js/app.js?v=24`).
-- Build artifact: allowlisted `dist/`, **58 files** per `release-manifest.txt`.
+- Build artifact: allowlisted `dist/`, **60 files** per `release-manifest.txt`.
 - Major UI: complete/frozen (full-viewport sections, white hero aura, FAQ chevron animation, responsive refinements, legacy asset archive).
 - Admin credential rotation: complete; old `REJECTED`, new `ACCEPTED`, session invalidation confirmed.
 
@@ -112,7 +112,7 @@ registration-toggle = 0
 ## Stop and ask owner when
 
 - Vercel serves repository root instead of `dist/`;
-- build count differs from **58** (per `release-manifest.txt`) without approved manifest change;
+- build count differs from **60** (per `release-manifest.txt`) without approved manifest change;
 - a secret/environment variable appears necessary;
 - Admin verification cannot be performed privately;
 - anonymous participant rows become readable;

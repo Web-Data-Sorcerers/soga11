@@ -21,7 +21,7 @@ Do not restart the project. Do not infer state from old chats, screenshots, or p
 - Stack: Vanilla HTML/CSS/JS + Supabase.
 - Design: Sorcery Editorial System.
 - Major frontend and legal pages: complete/frozen.
-- Release builder: complete; `dist/` has **58 files** per `release-manifest.txt`.
+- Release builder: complete; `dist/` has **60 files** per `release-manifest.txt`.
 - Git security rewrite: complete.
 - Admin credential rotation: complete; old `REJECTED`, new `ACCEPTED`, session invalidation confirmed.
 - **Live site:** https://soga11.vercel.app (HTTP 200, auto-deploys from `master`).
