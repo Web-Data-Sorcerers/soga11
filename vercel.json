@@ -1,5 +1,18 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/register",
+      "destination": "/#register",
+      "permanent": false
+    },
+    {
+      "source": "/find-ticket",
+      "destination": "/#find-ticket",
+      "permanent": false
+    }
+  ],
   "buildCommand": "./scripts/build-release.sh",
   "outputDirectory": "dist"
 }
