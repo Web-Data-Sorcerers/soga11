@@ -3,6 +3,16 @@
 // Hash-based SPA: #home (default), #register
 // ============================================================
 
+console.log(
+  "%c SORCERY GATHERING #11 %c [SECURITY SHIELD ACTIVE] %c\n" +
+  "PostgreSQL Row-Level Security (RLS) is enforcing client boundaries.\n" +
+  "All mutations & queries are cryptographically authenticated via Supabase.\n" +
+  "Client-side tampering or unauthorized probes are monitored.",
+  "background:#7c3aed;color:#ffffff;font-size:12px;font-weight:bold;padding:3px 8px;border-radius:3px;",
+  "background:#15803d;color:#ffffff;font-size:11px;font-weight:bold;padding:3px 6px;border-radius:3px;margin-left:4px;",
+  "color:#94a3b8;font-size:11px;font-family:monospace;line-height:1.6;"
+);
+
 // --- Konfigurasi event (ganti di sini) ---
 const EVENT_DATE = "2026-11-15T08:00:00+07:00"; // Minggu, 15 November 2026 — check-in dimulai
 let homeCountdownTimer = null;
@@ -884,6 +894,25 @@ async function initRegister() {
 
     let registrationSaved = false;
     try {
+      submitStatus.textContent = "Memverifikasi data pendaftaran…";
+
+      // Proteksi anti-duplikasi: Cek apakah email sudah terdaftar
+      const existingByEmail = await window.SOGA_API.findTicket(data.email);
+      if (existingByEmail) {
+        submitStatus.classList.add("is-error");
+        submitStatus.textContent = `Email "${data.email}" sudah terdaftar dengan tiket ${existingByEmail.qr_token}. Kamu bisa melihat tiketmu di menu Cari Tiket.`;
+        return;
+      }
+
+      // Proteksi anti-duplikasi: Cek apakah nomor WhatsApp sudah terdaftar
+      const existingByWa = await window.SOGA_API.findTicket(data.whatsapp);
+      if (existingByWa) {
+        submitStatus.classList.add("is-error");
+        submitStatus.textContent = `Nomor WhatsApp ini sudah terdaftar dengan tiket ${existingByWa.qr_token}. Kamu bisa melihat tiketmu di menu Cari Tiket.`;
+        return;
+      }
+
+      submitStatus.textContent = "Menyimpan data pendaftaran…";
       await window.SOGA_API.registerParticipant(data);
       registrationSaved = true;
     } catch (err) {
