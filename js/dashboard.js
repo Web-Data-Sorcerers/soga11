@@ -54,6 +54,163 @@ function formatWhatsAppChatUrl(phone) {
 }
 
 // ============================================================
+// Premium Toast & Confirm Dialog Helpers
+// ============================================================
+function showToast(message, type = "info", title = "", duration = 4500) {
+  const container = document.getElementById("toast-container");
+  if (!container) {
+    if (type === "error") console.error(message);
+    return;
+  }
+
+  const defaultTitles = {
+    success: "Berhasil",
+    error: "Perhatian",
+    info: "Informasi",
+    warning: "Peringatan",
+  };
+
+  const finalTitle = title || defaultTitles[type] || "Pemberitahuan";
+
+  let iconSvg = ICON_CHECK;
+  if (type === "error") {
+    iconSvg = '<svg class="ico" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  } else if (type === "info") {
+    iconSvg = '<svg class="ico" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>';
+  } else if (type === "warning") {
+    iconSvg = ICON_WARNING;
+  }
+
+  const toast = document.createElement("div");
+  toast.className = `toast toast-${type}`;
+  toast.setAttribute("role", "alert");
+  toast.innerHTML = `
+    <div class="toast-icon-wrapper" aria-hidden="true">
+      ${iconSvg}
+    </div>
+    <div class="toast-content">
+      <div class="toast-title">${esc(finalTitle)}</div>
+      <div class="toast-message">${esc(message)}</div>
+    </div>
+    <button type="button" class="toast-close" aria-label="Tutup notifikasi">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  `;
+
+  let timer = null;
+  const dismiss = () => {
+    if (timer) clearTimeout(timer);
+    toast.classList.add("toast-hiding");
+    toast.addEventListener(
+      "transitionend",
+      () => {
+        toast.remove();
+      },
+      { once: true }
+    );
+  };
+
+  toast.querySelector(".toast-close")?.addEventListener("click", dismiss);
+
+  if (duration > 0) {
+    timer = setTimeout(dismiss, duration);
+  }
+
+  container.appendChild(toast);
+}
+
+let confirmDialogResolver = null;
+
+function showConfirmDialog({
+  title = "Konfirmasi Aksi",
+  message = "Apakah kamu yakin ingin melanjutkan tindakan ini?",
+  confirmText = "Lanjutkan",
+  cancelText = "Batal",
+  confirmStyle = "primary",
+  iconType = "primary",
+} = {}) {
+  const modal = document.getElementById("confirm-modal");
+  const titleEl = document.getElementById("confirm-modal-title");
+  const descEl = document.getElementById("confirm-modal-description");
+  const iconEl = document.getElementById("confirm-modal-icon");
+  const btnConfirm = document.getElementById("btn-confirm-action");
+  const btnCancel = document.getElementById("btn-confirm-cancel");
+  const btnClose = document.getElementById("btn-confirm-modal-close");
+
+  if (!modal || !btnConfirm || !btnCancel) {
+    return Promise.resolve(window.confirm(message));
+  }
+
+  if (confirmDialogResolver) {
+    confirmDialogResolver(false);
+    confirmDialogResolver = null;
+  }
+
+  return new Promise((resolve) => {
+    confirmDialogResolver = resolve;
+
+    if (titleEl) titleEl.textContent = title;
+    if (descEl) descEl.textContent = message;
+
+    if (iconEl) {
+      iconEl.className = `confirm-modal-header-icon icon-${iconType}`;
+      if (iconType === "danger") {
+        iconEl.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+      } else if (iconType === "warning") {
+        iconEl.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+      } else {
+        iconEl.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>';
+      }
+    }
+
+    btnConfirm.textContent = confirmText;
+    btnConfirm.className = `btn btn-${confirmStyle}`;
+    btnCancel.textContent = cancelText;
+
+    const cleanup = () => {
+      modal.classList.add("hidden");
+      document.body.classList.remove("modal-open");
+      document.removeEventListener("keydown", onKeyDown);
+      modal.removeEventListener("click", onBackdropClick);
+      btnConfirm.removeEventListener("click", onConfirm);
+      btnCancel.removeEventListener("click", onCancel);
+      btnClose?.removeEventListener("click", onCancel);
+    };
+
+    const finish = (result) => {
+      cleanup();
+      if (confirmDialogResolver) {
+        const res = confirmDialogResolver;
+        confirmDialogResolver = null;
+        res(result);
+      }
+    };
+
+    const onConfirm = () => finish(true);
+    const onCancel = () => finish(false);
+    const onBackdropClick = (e) => {
+      if (e.target === modal) finish(false);
+    };
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        finish(false);
+      }
+    };
+
+    btnConfirm.addEventListener("click", onConfirm);
+    btnCancel.addEventListener("click", onCancel);
+    btnClose?.addEventListener("click", onCancel);
+    modal.addEventListener("click", onBackdropClick);
+    document.addEventListener("keydown", onKeyDown);
+
+    modal.classList.remove("hidden");
+    document.body.classList.add("modal-open");
+    btnConfirm.focus();
+  });
+}
+
+// ============================================================
 // Auth & Initialization
 // ============================================================
 const loginForm = document.getElementById("login-form");
@@ -849,7 +1006,16 @@ btnDrawerClose?.addEventListener("click", closeTicketDrawer);
 drawerBackdrop?.addEventListener("click", closeTicketDrawer);
 
 async function undoCheckin(p) {
-  if (!confirm(`Batalkan status check-in untuk ${p.full_name}?`)) return;
+  const confirmed = await showConfirmDialog({
+    title: "Batalkan Status Check-In?",
+    message: `Batalkan status check-in untuk peserta "${p.full_name}" (${p.qr_token})? Status akan dikembalikan menjadi 'Belum Check-In'.`,
+    confirmText: "Ya, Batalkan Hadir",
+    cancelText: "Kembali",
+    confirmStyle: "danger",
+    iconType: "danger",
+  });
+  if (!confirmed) return;
+
   try {
     await window.SOGA_API.updateParticipant(p.id, {
       status: "pending",
@@ -858,8 +1024,17 @@ async function undoCheckin(p) {
     await loadParticipants();
     const updated = participants.find((item) => item.id === p.id);
     if (updated) openTicketDrawer(updated);
+    showToast(
+      `Status presensi "${p.full_name}" berhasil dikembalikan ke pending.`,
+      "success",
+      "Check-In Dibatalkan"
+    );
   } catch (e) {
-    alert("Gagal membatalkan check-in: " + (e.message || "terjadi kesalahan"));
+    showToast(
+      "Gagal membatalkan check-in: " + (e.message || "terjadi kesalahan"),
+      "error",
+      "Gagal Membatalkan"
+    );
   }
 }
 
@@ -1451,18 +1626,36 @@ async function handleToggleRegistration() {
     return;
   }
 
-  const confirmMsg = registrationOpen
-    ? "Tutup pendaftaran sekarang? Calon peserta tidak akan dapat mendaftar lagi."
-    : "Buka kembali pendaftaran untuk publik?";
-  if (!confirm(confirmMsg)) return;
+  const confirmed = await showConfirmDialog({
+    title: registrationOpen ? "Tutup Pendaftaran Peserta?" : "Buka Pendaftaran Peserta?",
+    message: registrationOpen
+      ? "Apakah kamu yakin ingin menutup pendaftaran? Formulir pendaftaran di landing page akan dinonaktifkan sehingga calon peserta tidak dapat mendaftar lagi."
+      : "Apakah kamu yakin ingin membuka kembali pendaftaran? Formulir pendaftaran akan dapat diakses secara terbuka oleh publik.",
+    confirmText: registrationOpen ? "Ya, Tutup Pendaftaran" : "Ya, Buka Pendaftaran",
+    cancelText: "Batal",
+    confirmStyle: registrationOpen ? "danger" : "primary",
+    iconType: registrationOpen ? "danger" : "primary",
+  });
+  if (!confirmed) return;
 
   registrationToggleBusy = true;
   renderRegistrationToggle();
   try {
     await window.SOGA_API.setRegistrationOpen(!registrationOpen);
     registrationOpen = !registrationOpen;
+    showToast(
+      registrationOpen
+        ? "Formulir pendaftaran sekarang aktif dan dapat diakses oleh publik."
+        : "Pendaftaran telah resmi ditutup untuk publik.",
+      "success",
+      registrationOpen ? "Pendaftaran Dibuka" : "Pendaftaran Ditutup"
+    );
   } catch (e) {
-    alert("Gagal mengubah status: " + (e.message || "terjadi kesalahan"));
+    showToast(
+      "Gagal mengubah status: " + (e.message || "terjadi kesalahan"),
+      "error",
+      "Gagal Mengubah Status"
+    );
   } finally {
     registrationToggleBusy = false;
     renderRegistrationToggle();
@@ -1552,7 +1745,7 @@ function openEditModal(p) {
   document.getElementById("btn-modal-save")?.addEventListener("click", async () => {
     const name = document.getElementById("edit-name")?.value.trim();
     if (!name) {
-      alert("Nama lengkap tidak boleh kosong");
+      showToast("Nama lengkap tidak boleh kosong.", "error", "Validasi Gagal");
       return;
     }
     const updates = {
@@ -1575,8 +1768,13 @@ function openEditModal(p) {
       await window.SOGA_API.updateParticipant(p.id, updates);
       closeParticipantModal();
       await loadParticipants();
+      showToast("Data peserta berhasil diperbarui.", "success", "Perubahan Disimpan");
     } catch (e) {
-      alert("Gagal menyimpan perubahan: " + (e.message || "terjadi kesalahan"));
+      showToast(
+        "Gagal menyimpan perubahan: " + (e.message || "terjadi kesalahan"),
+        "error",
+        "Gagal Menyimpan"
+      );
     }
   });
 
@@ -1611,8 +1809,13 @@ function openDeleteModal(p) {
       await window.SOGA_API.deleteParticipant(p.id);
       closeParticipantModal();
       await loadParticipants();
+      showToast("Data peserta berhasil dihapus dari sistem.", "success", "Peserta Dihapus");
     } catch (e) {
-      alert("Gagal menghapus peserta: " + (e.message || "terjadi kesalahan"));
+      showToast(
+        "Gagal menghapus peserta: " + (e.message || "terjadi kesalahan"),
+        "error",
+        "Gagal Menghapus"
+      );
     }
   });
 
