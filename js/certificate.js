@@ -175,20 +175,22 @@ const SPEAKER_PRESETS = {
   "speaker-nanda": {
     fullName: "Ananda Putra Akbarulloh",
     token: "SOGA11-SPK-NANDA",
-    eyebrow: "DISTINGUISHED KEYNOTE HONORS   SOGA 11",
+    eyebrow: "KEYNOTE SPEAKER &nbsp;&nbsp;&nbsp;&nbsp; DISTINGUISHED HONORS",
     title: "Certificate of Appreciation",
+    subtitle: "PEMBICARA UTAMA &nbsp;&nbsp;&nbsp;&nbsp; KEYNOTE SPEAKER",
     award: "Dengan penuh rasa hormat & apresiasi tertinggi dianugerahkan kepada:",
-    reason: "atas kontribusi, dedikasi, dan inspirasi luar biasa sebagai Pembicara Utama dalam membawakan materi:",
+    reason: 'atas kontribusi, dedikasi, dan inspirasi luar biasa sebagai <strong class="cert-speaker-highlight">Pembicara Utama</strong> dalam membawakan materi:',
     theme: "“Menjadi Pahlawan Pendidikan di Era AI & Algoritma: Menjaga Karakter, Adab, dan Daya Juang”",
     sealCaption: "HONORED KEYNOTE SPEAKER",
   },
   "speaker-anin": {
     fullName: "Nina Nuraeni, S.Bns",
     token: "SOGA11-SPK-ANIN",
-    eyebrow: "DISTINGUISHED KEYNOTE HONORS   SOGA 11",
+    eyebrow: "KEYNOTE SPEAKER &nbsp;&nbsp;&nbsp;&nbsp; DISTINGUISHED HONORS",
     title: "Certificate of Appreciation",
+    subtitle: "PEMBICARA UTAMA &nbsp;&nbsp;&nbsp;&nbsp; KEYNOTE SPEAKER",
     award: "Dengan penuh rasa hormat & apresiasi tertinggi dianugerahkan kepada:",
-    reason: "atas kontribusi, dedikasi, dan inspirasi luar biasa sebagai Pembicara Utama dalam membawakan materi:",
+    reason: 'atas kontribusi, dedikasi, dan inspirasi luar biasa sebagai <strong class="cert-speaker-highlight">Pembicara Utama</strong> dalam membawakan materi:',
     theme: "“Adab, Karakter, dan Daya Juang Generasi Digital di Tengah Kemudahan Teknologi”",
     sealCaption: "HONORED KEYNOTE SPEAKER",
   },
@@ -220,6 +222,7 @@ function setCertificateMode(mode) {
   });
 
   const certTitle = document.getElementById("cert-title");
+  const certSubtitle = document.getElementById("cert-subtitle");
   const certEyebrow = document.getElementById("cert-eyebrow");
   const certAward = document.getElementById("cert-award");
   const certReason = document.getElementById("cert-reason");
@@ -239,8 +242,12 @@ function setCertificateMode(mode) {
     if (certificateVerification) certificateVerification.textContent = participant.qr_token;
     renderCertificateQr(participant.qr_token);
 
-    if (certEyebrow) certEyebrow.textContent = "SORCERY GATHERING #11   OFFICIAL CREDENTIAL";
+    if (certEyebrow) certEyebrow.innerHTML = "SORCERY GATHERING #11 &nbsp;&nbsp;&nbsp;&nbsp; OFFICIAL CREDENTIAL";
     if (certTitle) certTitle.textContent = "Certificate of Participation";
+    if (certSubtitle) {
+      certSubtitle.hidden = true;
+      certSubtitle.innerHTML = "";
+    }
     if (certAward) certAward.textContent = "Dengan bangga dianugerahkan kepada:";
     if (certReason) certReason.textContent = "atas partisipasi aktif sebagai peserta dalam konferensi teknologi";
     if (certTheme) certTheme.textContent = "“Pahlawan Pendidikan di Era Algoritma: Menjaga Karakter, Adab, dan Daya Juang di Tengah Kemudahan Teknologi”";
@@ -254,10 +261,14 @@ function setCertificateMode(mode) {
     if (certificateVerification) certificateVerification.textContent = spk.token;
     renderCertificateQr(spk.token);
 
-    if (certEyebrow) certEyebrow.textContent = spk.eyebrow;
+    if (certEyebrow) certEyebrow.innerHTML = spk.eyebrow;
     if (certTitle) certTitle.textContent = spk.title;
+    if (certSubtitle) {
+      certSubtitle.hidden = false;
+      certSubtitle.innerHTML = spk.subtitle || "PEMBICARA UTAMA &nbsp;&nbsp;&nbsp;&nbsp; KEYNOTE SPEAKER";
+    }
     if (certAward) certAward.textContent = spk.award;
-    if (certReason) certReason.textContent = spk.reason;
+    if (certReason) certReason.innerHTML = spk.reason;
     if (certTheme) certTheme.textContent = spk.theme;
     if (certSealCaption) certSealCaption.textContent = spk.sealCaption;
   }
