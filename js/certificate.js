@@ -1,5 +1,5 @@
 // ============================================================
-// SOGA 11 — Certificate Claim Logic
+// SOGA 11 — Certificate Claim & Output Logic
 // ============================================================
 const claimForm = document.getElementById("certificate-claim-form");
 const claimInput = document.getElementById("claim-input");
@@ -35,6 +35,7 @@ const A4_LANDSCAPE_HEIGHT_MM = 210;
 let claimPending = false;
 let eligibleParticipant = null;
 let exportPending = false;
+let currentCertMode = "participant";
 
 const claimStates = {
   initial: {
@@ -102,7 +103,6 @@ function renderClaimState(stateName, result = null, options = {}) {
   }
 
   claimState.classList.remove("is-state-entering");
-  // Restart the restrained state-enter animation without hiding content by default.
   void claimState.offsetWidth;
   claimState.classList.add("is-state-entering");
 
@@ -168,6 +168,107 @@ resetClaimButton.addEventListener("click", () => {
   claimInput.focus();
 });
 
+// ============================================================
+// Speaker Presets & Dynamic Mode Switcher
+// ============================================================
+const SPEAKER_PRESETS = {
+  "speaker-nanda": {
+    fullName: "Ananda Putra Akbarulloh",
+    token: "SOGA11-SPK-NANDA",
+    eyebrow: "✦ DISTINGUISHED KEYNOTE HONORS • SOGA 11 ✦",
+    title: "Certificate of Appreciation",
+    award: "Dengan penuh rasa hormat & apresiasi tertinggi dianugerahkan kepada:",
+    reason: "atas kontribusi, dedikasi, dan inspirasi luar biasa sebagai Pembicara Utama dalam membawakan materi:",
+    theme: "“Menjadi Pahlawan Pendidikan di Era AI & Algoritma: Menjaga Karakter, Adab, dan Daya Juang”",
+    sealCaption: "HONORED KEYNOTE SPEAKER",
+  },
+  "speaker-anin": {
+    fullName: "Nina Nuraeni, S.Bns",
+    token: "SOGA11-SPK-ANIN",
+    eyebrow: "✦ DISTINGUISHED KEYNOTE HONORS • SOGA 11 ✦",
+    title: "Certificate of Appreciation",
+    award: "Dengan penuh rasa hormat & apresiasi tertinggi dianugerahkan kepada:",
+    reason: "atas kontribusi, dedikasi, dan inspirasi luar biasa sebagai Pembicara Utama dalam membawakan materi:",
+    theme: "“Adab, Karakter, dan Daya Juang Generasi Digital di Tengah Kemudahan Teknologi”",
+    sealCaption: "HONORED KEYNOTE SPEAKER",
+  },
+};
+
+function renderCertificateQr(token) {
+  const qrTarget = document.getElementById("cert-qr-target");
+  if (!qrTarget) return;
+  qrTarget.innerHTML = "";
+
+  if (typeof window.QRCode === "function") {
+    const verifyUrl = `https://soga.data-sorcerers.com/certificate.html?verify=${encodeURIComponent(token)}`;
+    new window.QRCode(qrTarget, {
+      text: verifyUrl,
+      width: 34,
+      height: 34,
+      colorDark: "#21152f",
+      colorLight: "#ffffff",
+      correctLevel: window.QRCode.CorrectLevel.M,
+    });
+  }
+}
+
+function setCertificateMode(mode) {
+  currentCertMode = mode;
+
+  document.querySelectorAll(".cert-mode-pill").forEach((pill) => {
+    pill.classList.toggle("is-active", pill.dataset.mode === mode);
+  });
+
+  const certTitle = document.getElementById("cert-title");
+  const certEyebrow = document.getElementById("cert-eyebrow");
+  const certAward = document.getElementById("cert-award");
+  const certReason = document.getElementById("cert-reason");
+  const certTheme = document.getElementById("cert-theme");
+  const certSealCaption = document.getElementById("cert-seal-caption");
+
+  if (mode === "participant") {
+    certificateNode.classList.remove("cert-theme--speaker");
+    certificateNode.classList.add("cert-theme--participant");
+
+    const participant = eligibleParticipant || {
+      full_name: "Nama Peserta",
+      qr_token: "SGN11-XXXXXX",
+    };
+
+    applyCertificateName(participant.full_name);
+    certificateVerification.textContent = participant.qr_token;
+    renderCertificateQr(participant.qr_token);
+
+    if (certEyebrow) certEyebrow.textContent = "✦ SORCERY GATHERING #11 • OFFICIAL CREDENTIAL ✦";
+    if (certTitle) certTitle.textContent = "Certificate of Participation";
+    if (certAward) certAward.textContent = "Dengan bangga dianugerahkan kepada:";
+    if (certReason) certReason.textContent = "atas partisipasi aktif sebagai peserta dalam konferensi teknologi";
+    if (certTheme) certTheme.textContent = "“Pahlawan Pendidikan di Era Algoritma: Menjaga Karakter, Adab, dan Daya Juang di Tengah Kemudahan Teknologi”";
+    if (certSealCaption) certSealCaption.textContent = "OFFICIAL VERIFIED ATTENDEE";
+  } else if (SPEAKER_PRESETS[mode]) {
+    const spk = SPEAKER_PRESETS[mode];
+    certificateNode.classList.remove("cert-theme--participant");
+    certificateNode.classList.add("cert-theme--speaker");
+
+    applyCertificateName(spk.fullName);
+    certificateVerification.textContent = spk.token;
+    renderCertificateQr(spk.token);
+
+    if (certEyebrow) certEyebrow.textContent = spk.eyebrow;
+    if (certTitle) certTitle.textContent = spk.title;
+    if (certAward) certAward.textContent = spk.award;
+    if (certReason) certReason.textContent = spk.reason;
+    if (certTheme) certTheme.textContent = spk.theme;
+    if (certSealCaption) certSealCaption.textContent = spk.sealCaption;
+  }
+}
+
+document.querySelectorAll(".cert-mode-pill").forEach((pill) => {
+  pill.addEventListener("click", () => {
+    setCertificateMode(pill.dataset.mode);
+  });
+});
+
 function applyCertificateName(name) {
   const safeName = name || "Peserta";
   const nameLength = Array.from(safeName.trim()).length;
@@ -202,8 +303,7 @@ if ("ResizeObserver" in window) {
 viewCertificateButton.addEventListener("click", () => {
   if (!eligibleParticipant) return;
 
-  applyCertificateName(eligibleParticipant.full_name);
-  certificateVerification.textContent = eligibleParticipant.qr_token;
+  setCertificateMode("participant");
   claimShell.classList.add("hidden");
   certificateArea.classList.remove("hidden");
   certificateArea.setAttribute("tabindex", "-1");
@@ -227,8 +327,10 @@ async function waitForCertificateAssets() {
   if (document.fonts) {
     await document.fonts.ready;
     await Promise.all([
-      document.fonts.load('600 71px "Cormorant Garamond"', certificateName.textContent),
-      document.fonts.load('600 67px "Cormorant Garamond"', "Certificate of Participation"),
+      document.fonts.load('600 64px "Cormorant Garamond"', certificateName.textContent),
+      document.fonts.load('700 60px "Cormorant Garamond"', "Certificate of Participation"),
+      document.fonts.load('400 40px "Alex Brush"', "Faiz Abdurrachman"),
+      document.fonts.load('400 40px "Alex Brush"', "M. Rizqy Ramadhan"),
     ]);
     await document.fonts.ready;
   }
@@ -315,17 +417,20 @@ function downloadDataUrl(dataUrl, filename) {
 }
 
 async function exportCertificate(type) {
-  if (exportPending || !eligibleParticipant) return;
+  if (exportPending) return;
+
+  const currentName = certificateName.textContent.trim() || "Peserta";
+  const safeName = sanitizeFilenamePart(currentName);
+  const prefix = currentCertMode.startsWith("speaker") ? "SOGA11-Speaker-" : "SOGA11-Certificate-";
 
   setExportPending(type, true);
   setExportStatus(type === "png" ? "Menyiapkan file PNG…" : "Menyiapkan file PDF A4…");
 
   try {
     const canvas = await captureCertificateCanvas();
-    const safeName = sanitizeFilenamePart(eligibleParticipant.full_name);
 
     if (type === "png") {
-      downloadDataUrl(canvas.toDataURL("image/png"), `SOGA11-Certificate-${safeName}.png`);
+      downloadDataUrl(canvas.toDataURL("image/png"), `${prefix}${safeName}.png`);
     } else {
       const image = canvas.toDataURL("image/png");
       const { jsPDF } = window.jspdf;
@@ -346,7 +451,7 @@ async function exportCertificate(type) {
       const offsetX = (pageWidth - renderWidth) / 2;
       const offsetY = (pageHeight - renderHeight) / 2;
       pdf.addImage(image, "PNG", offsetX, offsetY, renderWidth, renderHeight, undefined, "FAST");
-      pdf.save(`SOGA11-Certificate-${safeName}.pdf`);
+      pdf.save(`${prefix}${safeName}.pdf`);
     }
 
     setExportStatus(
@@ -362,3 +467,7 @@ async function exportCertificate(type) {
 
 pngButton.addEventListener("click", () => exportCertificate("png"));
 pdfButton.addEventListener("click", () => exportCertificate("pdf"));
+
+// Expose helpers for testing & external manipulation
+window.setCertificateMode = setCertificateMode;
+window.syncCertificatePreviewScale = syncCertificatePreviewScale;

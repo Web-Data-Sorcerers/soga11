@@ -510,6 +510,59 @@
   letter-spacing: 0.06em;
 }
 
+/* ============================================================
+   Mode Selector Bar
+   ============================================================ */
+.cert-mode-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: min(100%, 1188px);
+  margin: 0 auto 20px;
+  flex-wrap: wrap;
+}
+
+.cert-mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(217, 186, 145, 0.5);
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #3b2d4c;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(33, 21, 47, 0.05);
+}
+
+.cert-mode-pill:hover {
+  background: #ffffff;
+  border-color: #c59b27;
+  color: #1a0f26;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(33, 21, 47, 0.1);
+}
+
+.cert-mode-pill.is-active {
+  background: linear-gradient(135deg, #21152f 0%, #3b1d5c 100%);
+  border-color: #d4af37;
+  color: #ffffff;
+  box-shadow: 0 8px 24px -4px rgba(33, 21, 47, 0.35), 0 0 0 1px rgba(212, 175, 55, 0.5);
+}
+
+.cert-mode-pill .mode-icon {
+  font-size: 1.1rem;
+}
+
+/* ============================================================
+   Final Certificate Artwork Canvas (1188 × 840 px)
+   ============================================================ */
 .certificate-preview {
   --certificate-preview-scale: 1;
   position: relative;
@@ -517,8 +570,11 @@
   aspect-ratio: 297 / 210;
   margin-inline: auto;
   overflow: hidden;
-  background: #faf8f5;
-  box-shadow: var(--shadow-2);
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow:
+    0 25px 60px -15px rgba(33, 21, 47, 0.25),
+    0 0 0 1px rgba(217, 186, 145, 0.35);
 }
 
 .certificate {
@@ -530,390 +586,550 @@
   overflow: hidden;
   transform: scale(var(--certificate-preview-scale));
   transform-origin: top left;
-  background: #faf8f5;
+  background: radial-gradient(ellipse at 50% 45%, #ffffff 0%, #fbf8f2 55%, #f4ece0 100%);
   color: #21152f;
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
+  box-sizing: border-box;
 }
 
-.certificate__frame {
+/* Speaker Theme Variant */
+.certificate.cert-theme--speaker {
+  background: radial-gradient(ellipse at 50% 42%, #ffffff 0%, #faf6ee 50%, #f0e6d2 100%);
+}
+
+.certificate.cert-theme--speaker .certificate__frame--outer {
+  border-color: #12091d;
+  box-shadow: inset 0 0 0 3px rgba(212, 175, 55, 0.4);
+}
+
+.certificate.cert-theme--speaker .certificate__frame--inner {
+  border-color: #b8860b;
+}
+
+.certificate.cert-theme--speaker .certificate__title-rule {
+  color: #b8860b;
+}
+
+.certificate.cert-theme--speaker .cert-title {
+  color: #12091d;
+  text-shadow: 0 1px 2px rgba(184, 134, 11, 0.2);
+}
+
+.certificate.cert-theme--speaker .cert-theme {
+  color: #78350f;
+  font-weight: 600;
+}
+
+/* Background Artwork */
+.certificate__bg-glow {
   position: absolute;
-  z-index: 2;
+  inset: 50px;
+  background: radial-gradient(circle at 50% 40%, rgba(217, 186, 145, 0.08) 0%, transparent 70%);
   pointer-events: none;
+  z-index: 1;
 }
 
-.certificate__frame--outer {
-  inset: 40px;
-  border: 3px solid #21152f;
-}
-
-.certificate__frame--inner {
-  inset: 49px;
-  border: 1px solid #d9ba91;
-}
-
-.certificate__frame--inner::before,
-.certificate__frame--inner::after {
+.certificate__astrolabe {
   position: absolute;
   top: 50%;
-  width: 52px;
-  height: 1px;
-  background: #d9ba91;
-  content: "";
-}
-
-.certificate__frame--inner::before {
-  left: -1px;
-}
-
-.certificate__frame--inner::after {
-  right: -1px;
-}
-
-.certificate__corner {
-  position: absolute;
-  z-index: 4;
-  width: 28px;
-  height: 28px;
-  color: #21152f;
-  pointer-events: none;
-}
-
-.certificate__corner::before,
-.certificate__corner::after {
-  position: absolute;
-  inset: 50% auto auto 50%;
-  background: currentColor;
-  content: "";
+  left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.certificate__corner::before {
-  width: 28px;
-  height: 5px;
-}
-
-.certificate__corner::after {
-  width: 5px;
-  height: 28px;
-}
-
-.certificate__corner--tl {
-  top: 32px;
-  left: 32px;
-}
-
-.certificate__corner--tr {
-  top: 32px;
-  right: 32px;
-}
-
-.certificate__corner--bl {
-  bottom: 32px;
-  left: 32px;
-}
-
-.certificate__corner--br {
-  right: 32px;
-  bottom: 32px;
-}
-
-.certificate__constellation {
-  position: absolute;
-  z-index: 1;
-  width: 330px;
-  color: rgba(40, 78, 131, 0.13);
+  width: 540px;
+  height: 540px;
+  color: #c59b27;
+  opacity: 0.045;
   pointer-events: none;
-}
-
-.certificate__constellation--left {
-  left: 12px;
-  bottom: 74px;
-}
-
-.certificate__constellation--right {
-  top: 96px;
-  right: 18px;
-  width: 300px;
-  color: rgba(124, 58, 237, 0.09);
+  z-index: 1;
 }
 
 .certificate__tugu {
   position: absolute;
-  right: 78px;
-  bottom: 50px;
+  right: 68px;
+  bottom: 45px;
+  width: 140px;
+  height: auto;
+  fill: #7c3aed;
+  opacity: 0.035;
+  pointer-events: none;
   z-index: 1;
-  width: 124px;
-  fill: #284e83;
-  opacity: 0.045;
+}
+
+/* Frames & Borders */
+.certificate__frame {
+  position: absolute;
   pointer-events: none;
 }
 
+.certificate__frame--outer {
+  inset: 34px;
+  border: 4px solid #21152f;
+  z-index: 2;
+}
+
+.certificate__frame--guilloche {
+  inset: 41px;
+  border: 1px dashed rgba(217, 186, 145, 0.7);
+  outline: 1px solid rgba(33, 21, 47, 0.25);
+  outline-offset: 2px;
+  z-index: 2;
+}
+
+.certificate__frame--inner {
+  inset: 48px;
+  border: 2px solid #d4af37;
+  z-index: 2;
+}
+
+.certificate__frame--inner::before,
+.certificate__frame--inner::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 70px;
+  height: 1px;
+  background: #d4af37;
+}
+
+.certificate__frame--inner::before {
+  left: -2px;
+}
+
+.certificate__frame--inner::after {
+  right: -2px;
+}
+
+/* Ornate Filigree Corner Ornaments */
+.cert-corner-flourish {
+  position: absolute;
+  width: 76px;
+  height: 76px;
+  color: #c59b27;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.cert-corner--tl { top: 32px; left: 32px; }
+.cert-corner--tr { top: 32px; right: 32px; }
+.cert-corner--bl { bottom: 32px; left: 32px; }
+.cert-corner--br { bottom: 32px; right: 32px; }
+
+/* Certificate Content Grid */
 .certificate__content {
   position: absolute;
-  inset: 68px 76px 64px;
+  inset: 56px 68px 46px;
   z-index: 5;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   min-width: 0;
 }
 
+/* Header */
 .certificate__brand {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
+  padding: 0 40px 4px;
 }
 
-.certificate__organizer {
+.cert-brand-meta {
   display: flex;
-  align-items: center;
-  gap: 18px;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cert-brand-meta strong {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #21152f;
+}
+
+.cert-brand-meta span {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: #746b80;
+}
+
+.cert-brand-meta--right {
+  text-align: right;
+  align-items: flex-end;
 }
 
 .certificate__organizer img {
+  height: 54px;
   width: auto;
-  height: 70px;
   object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
 }
 
-.certificate__organizer div {
-  display: grid;
-  gap: 3px;
-}
-
-.certificate__organizer strong {
-  color: #284e83;
-  font-family: var(--font-sans);
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-}
-
-.certificate__organizer span {
-  color: #746b80;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-}
-
-.certificate__annotation {
-  color: #746b80;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  line-height: 1.65;
-}
-
-.certificate__annotation--right {
-  text-align: right;
-}
-
+/* Ceremony Body */
 .certificate__ceremony {
   align-self: center;
   width: 100%;
-  min-width: 0;
-  padding: 10px 70px 6px;
   text-align: center;
+  padding: 0 40px;
 }
 
 .certificate__eyebrow {
-  color: #7c3aed;
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.24em;
-}
-
-.cert-title,
-.cert-award,
-.cert-name,
-.cert-reason,
-.cert-event,
-.cert-theme {
-  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  letter-spacing: 0.28em;
+  color: #7c3aed;
+  text-transform: uppercase;
+  margin-bottom: 4px;
 }
 
 .cert-title {
-  margin-top: 7px;
-  color: #21152f;
-  font-size: 67px;
-  font-weight: 600;
-  letter-spacing: 0.025em;
-  line-height: 1.04;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 60px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
   text-transform: uppercase;
+  color: #1e122b;
+  margin: 0;
 }
 
 .certificate__title-rule {
-  display: grid;
-  grid-template-columns: minmax(80px, 1fr) auto minmax(80px, 1fr);
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 16px;
-  width: min(100%, 670px);
-  margin: 28px auto 13px;
-  color: #d9ba91;
+  width: min(80%, 640px);
+  margin: 10px auto 8px;
+  color: #d4af37;
 }
 
-.certificate__title-rule span {
+.certificate__title-rule .rule-line {
+  flex: 1;
   height: 1px;
   background: currentColor;
 }
 
-.certificate__title-rule i {
-  width: 9px;
-  height: 9px;
-  background: currentColor;
-  transform: rotate(45deg);
+.certificate__title-rule .rule-diamond {
+  font-size: 10px;
+  font-style: normal;
+  color: #b8860b;
 }
 
 .cert-award {
-  color: #433852;
-  font-size: 24px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 20px;
+  font-style: italic;
   font-weight: 500;
-  line-height: 1.1;
+  color: #554a66;
+  margin: 0 0 2px;
 }
 
 .cert-name {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  color: #1a0f26;
+  min-height: 72px;
   display: flex;
-  min-height: 96px;
-  max-width: 900px;
   align-items: center;
   justify-content: center;
-  margin: 2px auto;
-  overflow-wrap: anywhere;
-  color: #21152f;
-  font-size: 71px;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1;
+  margin: 0 auto;
+  max-width: 900px;
   text-align: center;
 }
 
-.cert-name.name-medium {
-  font-size: 62px;
-}
-
-.cert-name.name-long {
-  max-width: 880px;
-  font-size: 52px;
-  line-height: 1;
-}
-
-.cert-name.name-extra-long {
-  max-width: 900px;
-  font-size: 43px;
-  line-height: 1;
-}
+.cert-name.name-medium { font-size: 54px; }
+.cert-name.name-long { font-size: 44px; max-width: 900px; }
+.cert-name.name-extra-long { font-size: 36px; max-width: 920px; }
 
 .certificate__name-rule {
-  width: min(72%, 680px);
-  height: 1px;
-  margin: 36px auto 11px;
-  background: #d9ba91;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: min(75%, 620px);
+  margin: 4px auto 8px;
+  color: #c59b27;
+}
+
+.certificate__name-rule .name-line {
+  flex: 1;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #c59b27 30%, #c59b27 70%, transparent);
 }
 
 .cert-reason {
-  color: #433852;
-  font-size: 20px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 18px;
   font-weight: 500;
-  line-height: 1.1;
+  color: #4b415a;
+  margin: 0 0 2px;
 }
 
 .cert-event {
-  margin-top: 3px;
-  color: #21152f;
-  font-size: 27px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 24px;
   font-weight: 700;
-  letter-spacing: 0.055em;
-  line-height: 1.05;
+  letter-spacing: 0.06em;
+  color: #1e122b;
+  margin: 0;
 }
 
 .cert-theme {
-  margin-top: 6px;
-  color: #8b673b;
-  font-size: 26px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 21px;
   font-style: italic;
-  font-weight: 500;
-  line-height: 1.1;
+  font-weight: 600;
+  color: #7c5305;
+  max-width: 880px;
+  margin: 3px auto 4px;
+  line-height: 1.25;
 }
 
 .cert-date {
-  margin-top: 8px;
-  color: #433852;
   font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.045em;
-  line-height: 1.2;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: #554a66;
+  margin: 4px 0 0;
 }
 
-.cert-date span {
-  margin-inline: 9px;
-  color: #d9ba91;
+.cert-date .bullet {
+  color: #d4af37;
+  margin: 0 6px;
 }
 
-.certificate__footer {
+/* Signatures & 3D Gold Seal */
+.certificate__signatures {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: end;
-  gap: 24px;
-  padding-top: 17px;
-  border-top: 1px solid rgba(217, 186, 145, 0.72);
+  gap: 20px;
+  padding: 0 10px;
+  margin-top: 4px;
 }
 
-.certificate__verification,
-.certificate__location {
-  display: grid;
-  gap: 4px;
-}
-
-.certificate__verification span,
-.certificate__location span {
-  color: #746b80;
-  font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-}
-
-.cert-verify,
-.certificate__location strong {
-  color: #21152f;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.certificate__edition {
-  display: grid;
-  justify-items: center;
-  gap: 3px;
-  color: #21152f;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+.cert-sig-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
-.certificate__edition::before {
-  width: 7px;
-  height: 7px;
-  margin-bottom: 4px;
-  background: #d9ba91;
-  content: "";
-  transform: rotate(45deg);
+.cert-sig-handwriting {
+  font-family: 'Alex Brush', cursive;
+  font-size: 40px;
+  color: #1e122b;
+  line-height: 1;
+  height: 42px;
+  display: flex;
+  align-items: flex-end;
+  transform: rotate(-2deg);
+  margin-bottom: 2px;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+
+.cert-sig-line {
+  width: 210px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #b8860b 20%, #b8860b 80%, transparent);
+  margin-bottom: 5px;
+}
+
+.cert-sig-name {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1e122b;
+  letter-spacing: 0.05em;
+}
+
+.cert-sig-title {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 600;
+  color: #6b6375;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 1px;
+}
+
+/* Center Seal Column */
+.cert-seal-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: -6px;
+}
+
+.cert-seal-ribbons {
+  position: absolute;
+  top: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 52px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.seal-ribbon {
+  position: absolute;
+  top: 0;
+  width: 24px;
+  height: 48px;
+  background: linear-gradient(180deg, #2e1a40 0%, #150821 100%);
+  border: 1px solid #d4af37;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.seal-ribbon--left {
+  left: 3px;
+  transform: rotate(20deg);
+}
+
+.seal-ribbon--right {
+  right: 3px;
+  transform: rotate(-20deg);
+}
+
+.cert-seal-badge {
+  position: relative;
+  z-index: 2;
+  width: 94px;
+  height: 94px;
+  filter: drop-shadow(0 6px 14px rgba(33, 21, 47, 0.22));
+}
+
+.cert-seal-caption {
+  position: relative;
+  z-index: 3;
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #7c5305;
+  margin-top: 4px;
+  background: rgba(255, 248, 220, 0.95);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+}
+
+/* Footer Bar */
+.certificate__footer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 40px 0;
+  border-top: 1px solid rgba(217, 186, 145, 0.65);
+  margin-top: 4px;
+}
+
+.certificate__verification {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cert-verify-kicker {
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #746b80;
+  text-transform: uppercase;
+}
+
+.cert-verify {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #21152f;
+  margin: 0;
+}
+
+.certificate__qr-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(217, 186, 145, 0.5);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.cert-qr-canvas {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cert-qr-canvas img {
+  width: 34px !important;
+  height: 34px !important;
+  display: block;
+}
+
+.cert-qr-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.cert-qr-title {
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 800;
+  color: #21152f;
+  letter-spacing: 0.08em;
+}
+
+.cert-qr-sub {
+  font-family: var(--font-mono);
+  font-size: 6.5px;
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+.certificate__edition {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 2px;
+}
+
+.certificate__edition strong {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #21152f;
+  letter-spacing: 0.12em;
 }
 
 .certificate__edition span {
-  color: #746b80;
-  font-size: 7px;
+  font-family: var(--font-mono);
+  font-size: 7.5px;
   font-weight: 600;
-  letter-spacing: 0.2em;
-}
-
-.certificate__location {
-  justify-items: end;
-  text-align: right;
+  color: #746b80;
+  letter-spacing: 0.16em;
 }
 
 .cert-export-status {
