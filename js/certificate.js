@@ -175,7 +175,7 @@ const SPEAKER_PRESETS = {
   "speaker-nanda": {
     fullName: "Ananda Putra Akbarulloh",
     token: "SOGA11-SPK-NANDA",
-    eyebrow: "✦ DISTINGUISHED KEYNOTE HONORS • SOGA 11 ✦",
+    eyebrow: "DISTINGUISHED KEYNOTE HONORS • SOGA 11",
     title: "Certificate of Appreciation",
     award: "Dengan penuh rasa hormat & apresiasi tertinggi dianugerahkan kepada:",
     reason: "atas kontribusi, dedikasi, dan inspirasi luar biasa sebagai Pembicara Utama dalam membawakan materi:",
@@ -185,7 +185,7 @@ const SPEAKER_PRESETS = {
   "speaker-anin": {
     fullName: "Nina Nuraeni, S.Bns",
     token: "SOGA11-SPK-ANIN",
-    eyebrow: "✦ DISTINGUISHED KEYNOTE HONORS • SOGA 11 ✦",
+    eyebrow: "DISTINGUISHED KEYNOTE HONORS • SOGA 11",
     title: "Certificate of Appreciation",
     award: "Dengan penuh rasa hormat & apresiasi tertinggi dianugerahkan kepada:",
     reason: "atas kontribusi, dedikasi, dan inspirasi luar biasa sebagai Pembicara Utama dalam membawakan materi:",
@@ -203,10 +203,10 @@ function renderCertificateQr(token) {
     const verifyUrl = `https://soga.data-sorcerers.com/certificate.html?verify=${encodeURIComponent(token)}`;
     new window.QRCode(qrTarget, {
       text: verifyUrl,
-      width: 34,
-      height: 34,
-      colorDark: "#21152f",
-      colorLight: "#ffffff",
+      width: 28,
+      height: 28,
+      colorDark: "#171020",
+      colorLight: "#faf7f0",
       correctLevel: window.QRCode.CorrectLevel.M,
     });
   }
@@ -239,7 +239,7 @@ function setCertificateMode(mode) {
     certificateVerification.textContent = participant.qr_token;
     renderCertificateQr(participant.qr_token);
 
-    if (certEyebrow) certEyebrow.textContent = "✦ SORCERY GATHERING #11 • OFFICIAL CREDENTIAL ✦";
+    if (certEyebrow) certEyebrow.textContent = "SORCERY GATHERING #11 • OFFICIAL CREDENTIAL";
     if (certTitle) certTitle.textContent = "Certificate of Participation";
     if (certAward) certAward.textContent = "Dengan bangga dianugerahkan kepada:";
     if (certReason) certReason.textContent = "atas partisipasi aktif sebagai peserta dalam konferensi teknologi";
