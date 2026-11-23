@@ -327,40 +327,51 @@ async function waitForCertificateAssets() {
   if (document.fonts) {
     await document.fonts.ready;
     await Promise.all([
-      document.fonts.load('600 64px "Cormorant Garamond"', certificateName.textContent),
-      document.fonts.load('700 60px "Cormorant Garamond"', "Certificate of Participation"),
-      document.fonts.load('400 40px "Alex Brush"', "Faiz Abdurrachman"),
-      document.fonts.load('400 40px "Alex Brush"', "M. Rizqy Ramadhan"),
+      document.fonts.load('600 52px "Cormorant Garamond"', certificateName.textContent),
+      document.fonts.load('700 48px "Cormorant Garamond"', "Certificate of Participation"),
+      document.fonts.load('400 36px "Alex Brush"', "Faiz Abdurrachman"),
+      document.fonts.load('400 36px "Alex Brush"', "M. Rizqy Ramadhan"),
     ]);
     await document.fonts.ready;
   }
 
+  const bgPromise = new Promise((resolve, reject) => {
+    const bgImg = new Image();
+    bgImg.onload = () => resolve();
+    bgImg.onerror = () => reject(new Error("Background template failed to load."));
+    bgImg.src = "assets/certificate-template.jpg";
+    if (bgImg.complete && bgImg.naturalWidth > 0) resolve();
+  });
+
   const images = Array.from(certificateNode.querySelectorAll("img"));
-  await Promise.all(images.map((image) => {
-    if (image.complete) {
-      return image.naturalWidth > 0
-        ? Promise.resolve()
-        : Promise.reject(new Error("Certificate image failed to load."));
-    }
+  await Promise.all([
+    bgPromise,
+    ...images.map((image) => {
+      if (image.complete) {
+        return image.naturalWidth > 0
+          ? Promise.resolve()
+          : Promise.reject(new Error("Certificate image failed to load."));
+      }
 
-    return new Promise((resolve, reject) => {
-      const timeoutId = window.setTimeout(
-        () => reject(new Error("Certificate image load timed out.")),
-        8000,
-      );
-      const resolveImage = () => {
-        window.clearTimeout(timeoutId);
-        resolve();
-      };
-      const rejectImage = () => {
-        window.clearTimeout(timeoutId);
-        reject(new Error("Certificate image failed to load."));
-      };
+      return new Promise((resolve, reject) => {
+        const timeoutId = window.setTimeout(
+          () => reject(new Error("Certificate image load timed out.")),
+          8000,
+        );
+        const resolveImage = () => {
+          window.clearTimeout(timeoutId);
+          resolve();
+        };
+        const rejectImage = () => {
+          window.clearTimeout(timeoutId);
+          reject(new Error("Certificate image failed to load."));
+        };
 
-      image.addEventListener("load", resolveImage, { once: true });
-      image.addEventListener("error", rejectImage, { once: true });
-    });
-  }));
+        image.addEventListener("load", resolveImage, { once: true });
+        image.addEventListener("error", rejectImage, { once: true });
+      });
+    })
+  ]);
 }
 
 async function captureCertificateCanvas() {

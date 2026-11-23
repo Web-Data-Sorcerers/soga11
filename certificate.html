@@ -197,84 +197,16 @@
 
       <div id="certificate-preview" class="certificate-preview">
         <article id="certificate" class="certificate cert-theme--participant" aria-labelledby="cert-title">
-          <!-- Background Watermarks -->
-          <div class="certificate__bg-glow" aria-hidden="true"></div>
-
-          <!-- Celestial Astrolabe Watermark -->
-          <svg class="certificate__astrolabe" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
-            <g fill="none" stroke="currentColor" stroke-width="1.2">
-              <circle cx="300" cy="300" r="280" stroke-dasharray="4,8" opacity="0.6"/>
-              <circle cx="300" cy="300" r="240" stroke-width="1"/>
-              <circle cx="300" cy="300" r="200" stroke-dasharray="2,6"/>
-              <circle cx="300" cy="300" r="150" stroke-width="1"/>
-              <circle cx="300" cy="300" r="90" stroke-width="1"/>
-              <line x1="20" y1="300" x2="580" y2="300" stroke-dasharray="6,6"/>
-              <line x1="300" y1="20" x2="300" y2="580" stroke-dasharray="6,6"/>
-              <line x1="102" y1="102" x2="498" y2="498" stroke-dasharray="4,8"/>
-              <line x1="102" y1="498" x2="498" y2="102" stroke-dasharray="4,8"/>
-            </g>
-            <g fill="currentColor" opacity="0.7">
-              <circle cx="300" cy="60" r="4"/>
-              <circle cx="300" cy="540" r="4"/>
-              <circle cx="60" cy="300" r="4"/>
-              <circle cx="540" cy="300" r="4"/>
-              <polygon points="300,270 308,292 330,300 308,308 300,330 292,308 270,300 292,292"/>
-            </g>
-          </svg>
-
-          <!-- Prambanan / Tugu Heritage Watermark -->
-          <svg class="certificate__tugu" viewBox="0 0 150 360" aria-hidden="true" focusable="false">
-            <path d="M75 4 86 30 80 62 96 87 89 105 105 134 96 151 107 176 98 196 113 226 101 238 116 292H34l15-54-12-12 15-30-9-20 16-25-9-17 15-29-8-18 16-25-6-32Z" />
-            <path d="M23 292h104v18H23zM12 310h126v18H12zM2 328h146v27H2z" />
-          </svg>
-
-          <!-- Outer Multi-Layered Borders -->
-          <div class="certificate__frame certificate__frame--outer" aria-hidden="true"></div>
-          <div class="certificate__frame certificate__frame--guilloche" aria-hidden="true"></div>
-          <div class="certificate__frame certificate__frame--inner" aria-hidden="true"></div>
-
-          <!-- Ornate Filigree Corner Ornaments -->
-          <svg class="cert-corner-flourish cert-corner--tl" viewBox="0 0 90 90" aria-hidden="true" focusable="false">
-            <path d="M 6 6 L 50 6 C 30 6, 16 20, 16 40 L 16 84 C 16 54, 38 46, 68 46 L 84 46 M 6 6 L 6 50 C 6 30, 20 16, 40 16 L 84 16 C 54 16, 46 38, 46 68 L 46 84" fill="none" stroke="currentColor" stroke-width="2"/>
-            <circle cx="28" cy="28" r="4" fill="currentColor"/>
-            <polygon points="6,6 18,6 18,18 6,18" fill="currentColor"/>
-            <path d="M 6 6 L 40 40 M 12 6 L 40 34 M 6 12 L 34 40" stroke="currentColor" stroke-width="1" opacity="0.6"/>
-          </svg>
-
-          <svg class="cert-corner-flourish cert-corner--tr" viewBox="0 0 90 90" aria-hidden="true" focusable="false">
-            <path d="M 84 6 L 40 6 C 60 6, 74 20, 74 40 L 74 84 C 74 54, 52 46, 22 46 L 6 46 M 84 6 L 84 50 C 84 30, 70 16, 50 16 L 6 16 C 36 16, 44 38, 44 68 L 44 84" fill="none" stroke="currentColor" stroke-width="2"/>
-            <circle cx="62" cy="28" r="4" fill="currentColor"/>
-            <polygon points="84,6 72,6 72,18 84,18" fill="currentColor"/>
-            <path d="M 84 6 L 50 40 M 78 6 L 50 34 M 84 12 L 56 40" stroke="currentColor" stroke-width="1" opacity="0.6"/>
-          </svg>
-
-          <svg class="cert-corner-flourish cert-corner--bl" viewBox="0 0 90 90" aria-hidden="true" focusable="false">
-            <path d="M 6 84 L 50 84 C 30 84, 16 70, 16 50 L 16 6 C 16 36, 38 44, 68 44 L 84 44 M 6 84 L 6 40 C 6 60, 20 74, 40 74 L 84 74 C 54 74, 46 52, 46 22 L 46 6" fill="none" stroke="currentColor" stroke-width="2"/>
-            <circle cx="28" cy="62" r="4" fill="currentColor"/>
-            <polygon points="6,84 18,84 18,72 6,72" fill="currentColor"/>
-            <path d="M 6 84 L 40 50 M 12 84 L 40 56 M 6 78 L 34 50" stroke="currentColor" stroke-width="1" opacity="0.6"/>
-          </svg>
-
-          <svg class="cert-corner-flourish cert-corner--br" viewBox="0 0 90 90" aria-hidden="true" focusable="false">
-            <path d="M 84 84 L 40 84 C 60 84, 74 70, 74 50 L 74 6 C 74 36, 52 44, 22 44 L 6 44 M 84 84 L 84 40 C 84 60, 70 74, 50 74 L 6 74 C 36 74, 44 52, 44 22 L 44 6" fill="none" stroke="currentColor" stroke-width="2"/>
-            <circle cx="62" cy="62" r="4" fill="currentColor"/>
-            <polygon points="84,84 72,84 72,72 84,72" fill="currentColor"/>
-            <path d="M 84 84 L 50 50 M 78 84 L 50 56 M 84 78 L 56 50" stroke="currentColor" stroke-width="1" opacity="0.6"/>
-          </svg>
-
+          <!-- Template background is rendered via CSS (assets/certificate-template.jpg) -->
           <!-- Certificate Content Layer -->
           <div class="certificate__content">
             <header class="certificate__brand">
-              <div class="cert-brand-meta cert-brand-meta--left">
-                <strong>DATA SORCERERS</strong>
-                <span>PEOPLE • IDEAS • IMPACT</span>
-              </div>
               <div class="certificate__organizer">
                 <img src="assets/logo-web.png" alt="Data Sorcerers Indonesia" />
               </div>
-              <div class="cert-brand-meta cert-brand-meta--right">
-                <strong>EDITION 011</strong>
-                <span>YOGYAKARTA, ID</span>
+              <div class="cert-brand-meta">
+                <strong>DATA SORCERERS</strong>
+                <span>INDONESIA • EDITION 011</span>
               </div>
             </header>
 
@@ -311,6 +243,10 @@
                 <div class="cert-sig-line"></div>
                 <strong class="cert-sig-name">Faiz Abdurrachman</strong>
                 <span class="cert-sig-title">Founder & Lead, Data Sorcerers</span>
+                <div class="certificate__verification">
+                  <span class="cert-verify-kicker">VERIFICATION ID</span>
+                  <p id="cert-verify" class="cert-verify">SGN11-XXXXXX</p>
+                </div>
               </div>
 
               <!-- Center: 3D Scalloped Gold Medallion Seal -->
@@ -356,6 +292,13 @@
                   </svg>
                 </div>
                 <span id="cert-seal-caption" class="cert-seal-caption">OFFICIAL VERIFIED ATTENDEE</span>
+                <div class="certificate__qr-box">
+                  <div id="cert-qr-target" class="cert-qr-canvas"></div>
+                  <div class="cert-qr-info">
+                    <span class="cert-qr-title">SCAN TO VERIFY</span>
+                    <span class="cert-qr-sub">soga.data-sorcerers.com</span>
+                  </div>
+                </div>
               </div>
 
               <!-- Right Signature: Organizing Committee Chair -->
@@ -364,29 +307,12 @@
                 <div class="cert-sig-line"></div>
                 <strong class="cert-sig-name">M. Rizqy Ramadhan</strong>
                 <span class="cert-sig-title">Ketua Pelaksana, SOGA 11</span>
-              </div>
-            </div>
-
-            <!-- Footer: Verification ID & Scannable QR -->
-            <footer class="certificate__footer">
-              <div class="certificate__verification">
-                <span class="cert-verify-kicker">VERIFICATION ID</span>
-                <p id="cert-verify" class="cert-verify">SGN11-XXXXXX</p>
-              </div>
-
-              <div class="certificate__qr-box">
-                <div id="cert-qr-target" class="cert-qr-canvas"></div>
-                <div class="cert-qr-info">
-                  <span class="cert-qr-title">SCAN TO VERIFY</span>
-                  <span class="cert-qr-sub">soga.data-sorcerers.com</span>
+                <div class="certificate__edition" aria-label="Sorcery Gathering edisi sebelas">
+                  <strong>SOGA / 011</strong>
+                  <span>15 NOV 2026 • YOGYAKARTA</span>
                 </div>
               </div>
-
-              <div class="certificate__edition" aria-label="Sorcery Gathering edisi sebelas">
-                <strong>SOGA / 011</strong>
-                <span>15 NOV 2026 • YOGYAKARTA</span>
-              </div>
-            </footer>
+            </div>
           </div>
         </article>
       </div>

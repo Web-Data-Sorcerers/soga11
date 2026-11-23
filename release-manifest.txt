@@ -7,6 +7,7 @@ assets/apple-touch-icon.png
 assets/favicon.ico
 assets/favicon.png
 assets/logo-web.png
+assets/certificate-template.jpg
 assets/og-image.png
 assets/og-image.jpg
 assets/hero/11.png
