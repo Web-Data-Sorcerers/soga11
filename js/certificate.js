@@ -175,7 +175,7 @@ const SPEAKER_PRESETS = {
   "speaker-nanda": {
     fullName: "Ananda Putra Akbarulloh",
     token: "SOGA11-SPK-NANDA",
-    eyebrow: "DISTINGUISHED KEYNOTE HONORS • SOGA 11",
+    eyebrow: "DISTINGUISHED KEYNOTE HONORS   SOGA 11",
     title: "Certificate of Appreciation",
     award: "Dengan penuh rasa hormat & apresiasi tertinggi dianugerahkan kepada:",
     reason: "atas kontribusi, dedikasi, dan inspirasi luar biasa sebagai Pembicara Utama dalam membawakan materi:",
@@ -185,7 +185,7 @@ const SPEAKER_PRESETS = {
   "speaker-anin": {
     fullName: "Nina Nuraeni, S.Bns",
     token: "SOGA11-SPK-ANIN",
-    eyebrow: "DISTINGUISHED KEYNOTE HONORS • SOGA 11",
+    eyebrow: "DISTINGUISHED KEYNOTE HONORS   SOGA 11",
     title: "Certificate of Appreciation",
     award: "Dengan penuh rasa hormat & apresiasi tertinggi dianugerahkan kepada:",
     reason: "atas kontribusi, dedikasi, dan inspirasi luar biasa sebagai Pembicara Utama dalam membawakan materi:",
@@ -236,10 +236,10 @@ function setCertificateMode(mode) {
     };
 
     applyCertificateName(participant.full_name);
-    certificateVerification.textContent = participant.qr_token;
+    if (certificateVerification) certificateVerification.textContent = participant.qr_token;
     renderCertificateQr(participant.qr_token);
 
-    if (certEyebrow) certEyebrow.textContent = "SORCERY GATHERING #11 • OFFICIAL CREDENTIAL";
+    if (certEyebrow) certEyebrow.textContent = "SORCERY GATHERING #11   OFFICIAL CREDENTIAL";
     if (certTitle) certTitle.textContent = "Certificate of Participation";
     if (certAward) certAward.textContent = "Dengan bangga dianugerahkan kepada:";
     if (certReason) certReason.textContent = "atas partisipasi aktif sebagai peserta dalam konferensi teknologi";
@@ -251,7 +251,7 @@ function setCertificateMode(mode) {
     certificateNode.classList.add("cert-theme--speaker");
 
     applyCertificateName(spk.fullName);
-    certificateVerification.textContent = spk.token;
+    if (certificateVerification) certificateVerification.textContent = spk.token;
     renderCertificateQr(spk.token);
 
     if (certEyebrow) certEyebrow.textContent = spk.eyebrow;
@@ -327,10 +327,11 @@ async function waitForCertificateAssets() {
   if (document.fonts) {
     await document.fonts.ready;
     await Promise.all([
-      document.fonts.load('600 52px "Cormorant Garamond"', certificateName.textContent),
-      document.fonts.load('700 48px "Cormorant Garamond"', "Certificate of Participation"),
-      document.fonts.load('400 36px "Alex Brush"', "Faiz Abdurrachman"),
-      document.fonts.load('400 36px "Alex Brush"', "M. Rizqy Ramadhan"),
+      document.fonts.load('700 14px "Cinzel"', "DATA SORCERERS"),
+      document.fonts.load('700 50px "Cormorant Garamond"', certificateName.textContent),
+      document.fonts.load('700 38px "Cormorant Garamond"', "Certificate of Participation"),
+      document.fonts.load('700 12px "Plus Jakarta Sans"', "Marchel Andrian Shevchenko"),
+      document.fonts.load('700 12px "Plus Jakarta Sans"', "Daviq Nazril"),
     ]);
     await document.fonts.ready;
   }

@@ -8,6 +8,8 @@ assets/favicon.ico
 assets/favicon.png
 assets/logo-web.png
 assets/certificate-template.jpg
+assets/signature-chen.svg
+assets/signature-nazril.svg
 assets/og-image.png
 assets/og-image.jpg
 assets/hero/11.png

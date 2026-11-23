@@ -615,7 +615,7 @@
 /* Certificate Content Grid - Mapped to inner parchment canvas */
 .certificate__content {
   position: absolute;
-  inset: 104px 190px 145px;
+  inset: 106px 185px 152px;
   z-index: 5;
   display: flex;
   flex-direction: column;
@@ -629,167 +629,147 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  width: min(100%, 320px);
+  gap: 10px;
+  width: auto;
+  max-width: 270px;
   margin: 0 auto;
   padding: 0;
-  text-align: left;
 }
 
 .certificate__organizer img {
-  height: 34px;
+  height: 30px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.15));
-}
-
-.cert-brand-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
 }
 
 .cert-brand-name {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  color: #151a26;
-  line-height: 1.1;
-}
-
-.cert-brand-sub {
-  font-family: var(--font-sans);
-  font-size: 7.5px;
+  font-family: "Cinzel", "Cormorant Garamond", Georgia, serif;
+  font-size: 14.5px;
   font-weight: 700;
-  letter-spacing: 0.22em;
-  color: #8c6827;
-  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #141824;
+  line-height: 1;
 }
 
-/* Ceremony Body */
+/* Ceremony Body - Perfectly centered & balanced vertically */
 .certificate__ceremony {
   align-self: center;
   width: 100%;
   text-align: center;
-  padding: 0 20px;
-  margin: 10px 0 0;
+  padding: 0 15px;
+  margin: 28px 0 0;
 }
 
 .certificate__eyebrow {
   font-family: var(--font-sans);
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 0.24em;
   color: #8c6827;
   text-transform: uppercase;
-  margin: 0 0 6px;
+  margin: 0 0 8px;
 }
 
 .cert-title {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 34px;
+  font-size: 38px;
   font-weight: 700;
   letter-spacing: 0.08em;
   line-height: 1.15;
   text-transform: uppercase;
   color: #121724;
   margin: 0 auto;
-  max-width: 680px;
+  max-width: 720px;
 }
 
 .certificate__title-rule {
-  width: 180px;
-  height: 1px;
-  margin: 8px auto 12px;
+  width: 200px;
+  height: 1.2px;
+  margin: 10px auto 14px;
   background: linear-gradient(90deg, transparent, #c59b27 30%, #c59b27 70%, transparent);
 }
 
 .cert-award {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 16px;
+  font-size: 17.5px;
   font-style: italic;
   font-weight: 500;
   color: #484152;
-  margin: 0 0 4px;
+  margin: 0 0 6px;
 }
 
 .cert-name {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 46px;
+  font-size: 52px;
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.08;
   color: #0e1320;
-  min-height: 52px;
+  min-height: 58px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  max-width: 760px;
+  max-width: 780px;
   text-align: center;
 }
 
-.cert-name.name-medium { font-size: 38px; }
-.cert-name.name-long { font-size: 32px; max-width: 760px; }
-.cert-name.name-extra-long { font-size: 26px; max-width: 760px; }
+.cert-name.name-medium { font-size: 42px; }
+.cert-name.name-long { font-size: 34px; max-width: 780px; }
+.cert-name.name-extra-long { font-size: 28px; max-width: 780px; }
 
 .certificate__name-rule {
-  width: 260px;
+  width: 280px;
   height: 1.2px;
-  margin: 6px auto 12px;
+  margin: 8px auto 14px;
   background: linear-gradient(90deg, transparent, #b8860b 25%, #b8860b 75%, transparent);
 }
 
 .cert-reason {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
   color: #484152;
-  margin: 0 0 2px;
+  margin: 0 0 4px;
 }
 
 .cert-event {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 19px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #171322;
-  margin: 0 0 2px;
+  margin: 0 0 4px;
 }
 
 .cert-theme {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 15.5px;
+  font-size: 17px;
   font-style: italic;
   font-weight: 600;
   color: #724e0f;
-  max-width: 720px;
-  margin: 2px auto 6px;
-  line-height: 1.28;
+  max-width: 760px;
+  margin: 4px auto 10px;
+  line-height: 1.34;
 }
 
 .cert-date {
   font-family: var(--font-sans);
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #554e60;
-  margin: 4px 0 0;
+  margin: 8px 0 0;
 }
 
-.cert-date .bullet {
-  color: #c59b27;
-  margin: 0 6px;
-}
-
-/* Signatures & Verification Grid */
+/* Signatures: Clean Authentic Handwritten Vectors */
 .certificate__signatures {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 0 10px;
+  padding: 0 15px;
   margin-top: auto;
   position: relative;
 }
@@ -799,144 +779,57 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: 240px;
+  width: 260px;
 }
 
-.cert-sig-handwriting {
-  font-family: 'Alex Brush', cursive;
-  font-size: 34px;
-  color: #171020;
-  line-height: 1;
-  height: 36px;
+.cert-sig-img-wrap {
+  height: 72px;
   display: flex;
   align-items: flex-end;
-  transform: rotate(-1.5deg);
-  margin-bottom: 2px;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.cert-sig-svg {
+  height: 64px;
+  width: auto;
+  max-width: 210px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1.5px rgba(23, 16, 34, 0.15));
+}
+
+.cert-sig-svg--chen {
+  height: 70px;
+}
+
+.cert-sig-svg--nazril {
+  height: 64px;
 }
 
 .cert-sig-line {
-  width: 170px;
+  width: 210px;
   height: 1.2px;
   background: linear-gradient(90deg, transparent, #b8860b 20%, #b8860b 80%, transparent);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .cert-sig-name {
   font-family: var(--font-sans);
-  font-size: 11.5px;
+  font-size: 13px;
   font-weight: 700;
-  color: #171020;
-  letter-spacing: 0.05em;
+  color: #151022;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
 }
 
 .cert-sig-title {
   font-family: var(--font-sans);
-  font-size: 7.5px;
+  font-size: 8.5px;
   font-weight: 600;
-  color: #6a6274;
+  color: #6a6074;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   margin-top: 2px;
-  margin-bottom: 6px;
-}
-
-.certificate__verification {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(254, 252, 246, 0.92);
-  border: 1px solid rgba(197, 155, 39, 0.4);
-  padding: 4px 8px;
-  border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-}
-
-.cert-qr-canvas {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.cert-qr-canvas img {
-  width: 28px !important;
-  height: 28px !important;
-  display: block;
-}
-
-.cert-verify-meta {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  line-height: 1.15;
-}
-
-.cert-verify-kicker {
-  font-family: var(--font-sans);
-  font-size: 6px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  color: #796e85;
-  text-transform: uppercase;
-}
-
-.cert-verify {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  color: #171020;
-  margin: 1px 0;
-}
-
-.cert-verify-sub {
-  font-family: var(--font-sans);
-  font-size: 6px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: #8c6827;
-}
-
-.certificate__edition {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(254, 252, 246, 0.92);
-  border: 1px solid rgba(197, 155, 39, 0.4);
-  padding: 4px 12px;
-  border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  line-height: 1.15;
-}
-
-.cert-edition-kicker {
-  font-family: var(--font-sans);
-  font-size: 6px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  color: #796e85;
-  text-transform: uppercase;
-}
-
-.cert-edition-title {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #171020;
-  margin: 1px 0;
-}
-
-.cert-edition-sub {
-  font-family: var(--font-sans);
-  font-size: 6px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: #8c6827;
-  text-transform: uppercase;
 }
 
 .cert-export-status {
