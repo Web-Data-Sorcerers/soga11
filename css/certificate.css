@@ -765,6 +765,7 @@
   text-transform: uppercase;
   color: #554e60;
   margin: 0 0 16px;
+  white-space: nowrap;
 }
 
 /* Signatures: Clean Authentic Handwritten Vectors */
