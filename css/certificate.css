@@ -604,35 +604,14 @@
 }
 
 .certificate.cert-theme--speaker .certificate__eyebrow {
-  color: #8c6827;
-  letter-spacing: 0.22em;
-}
-
-.cert-subtitle {
-  display: none;
-}
-
-.certificate.cert-theme--speaker .cert-subtitle {
-  display: block;
-  font-family: "Cinzel", "Cormorant Garamond", Georgia, serif;
-  font-size: 14.5px;
+  color: #78500c;
   font-weight: 800;
   letter-spacing: 0.22em;
-  color: #8c6319;
-  text-transform: uppercase;
-  margin: 3px auto 0;
-  line-height: 1.2;
-  text-shadow: 0 1px 2px rgba(184, 134, 11, 0.15);
-}
-
-.certificate.cert-theme--speaker .certificate__title-rule {
-  margin: 6px auto 10px;
 }
 
 .certificate.cert-theme--speaker .cert-theme {
   color: #724e0f;
   font-weight: 600;
-  margin: 3px auto 10px;
 }
 
 .cert-speaker-highlight {
