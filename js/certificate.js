@@ -300,16 +300,31 @@ if ("ResizeObserver" in window) {
   window.addEventListener("resize", syncCertificatePreviewScale);
 }
 
-viewCertificateButton.addEventListener("click", () => {
-  if (!eligibleParticipant) return;
-
-  setCertificateMode("participant");
+function showCertificateView() {
+  setCertificateMode(currentCertMode);
   claimShell.classList.add("hidden");
   certificateArea.classList.remove("hidden");
   certificateArea.setAttribute("tabindex", "-1");
   syncCertificatePreviewScale();
   certificateArea.focus();
+}
+
+function showClaimView() {
+  certificateArea.classList.add("hidden");
+  claimShell.classList.remove("hidden");
+  claimInput.focus();
+}
+
+viewCertificateButton.addEventListener("click", () => {
+  if (!eligibleParticipant) return;
+  setCertificateMode("participant");
+  showCertificateView();
 });
+
+const backToClaimButton = document.getElementById("btn-back-to-claim");
+if (backToClaimButton) {
+  backToClaimButton.addEventListener("click", showClaimView);
+}
 
 function sanitizeFilenamePart(name) {
   const normalized = String(name || "Peserta")
@@ -480,6 +495,39 @@ async function exportCertificate(type) {
 pngButton.addEventListener("click", () => exportCertificate("png"));
 pdfButton.addEventListener("click", () => exportCertificate("pdf"));
 
+// URL Query Parameter Handling (?verify=TOKEN, ?token=TOKEN, ?mode=speaker-nanda, etc.)
+function initFromUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const mode = params.get("mode");
+  const token = params.get("verify") || params.get("token") || params.get("claim") || params.get("id");
+  const autoView = params.get("view") === "true" || params.get("auto") === "true" || Boolean(params.get("verify"));
+
+  if (mode && (mode === "speaker-nanda" || mode === "speaker-anin")) {
+    setCertificateMode(mode);
+    showCertificateView();
+    return;
+  }
+
+  if (token) {
+    claimInput.value = token;
+    claim().then(() => {
+      if (autoView && eligibleParticipant) {
+        currentCertMode = "participant";
+        showCertificateView();
+      }
+    });
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initFromUrlParams);
+} else {
+  initFromUrlParams();
+}
+
 // Expose helpers for testing & external manipulation
 window.setCertificateMode = setCertificateMode;
 window.syncCertificatePreviewScale = syncCertificatePreviewScale;
+window.showCertificateView = showCertificateView;
+window.showClaimView = showClaimView;
+
