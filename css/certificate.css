@@ -639,7 +639,7 @@
   gap: 10px;
   width: auto;
   max-width: 300px;
-  margin: 0 auto 12px;
+  margin: 0 auto 8px;
   padding: 0;
 }
 
@@ -678,7 +678,7 @@
   letter-spacing: 0.22em;
   color: #8c6827;
   text-transform: uppercase;
-  margin: 0 0 8px;
+  margin: 0 0 6px;
 }
 
 .cert-title {
@@ -686,17 +686,18 @@
   font-size: 36px;
   font-weight: 700;
   letter-spacing: 0.08em;
-  line-height: 1.15;
+  line-height: 1.2;
   text-transform: uppercase;
   color: #121724;
-  margin: 0 auto 2px;
+  margin: 0 auto 0;
+  padding-bottom: 12px;
   max-width: 720px;
 }
 
 .certificate__title-rule {
   width: 220px;
   height: 1.2px;
-  margin: 8px auto 14px;
+  margin: 12px auto 12px;
   background: linear-gradient(90deg, transparent, #c59b27 30%, #c59b27 70%, transparent);
 }
 
@@ -706,7 +707,7 @@
   font-style: italic;
   font-weight: 500;
   color: #484152;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
 }
 
 .cert-name {
@@ -714,13 +715,11 @@
   font-size: 52px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  line-height: 1.08;
+  line-height: 1.18;
   color: #0e1320;
-  min-height: 58px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 6px;
+  display: block;
+  padding-bottom: 16px;
+  margin: 0 auto 0;
   max-width: 780px;
   text-align: center;
 }
@@ -732,7 +731,7 @@
 .certificate__name-rule {
   width: 280px;
   height: 1.2px;
-  margin: 8px auto 14px;
+  margin: 18px auto 14px;
   background: linear-gradient(90deg, transparent, #b8860b 25%, #b8860b 75%, transparent);
 }
 
@@ -741,7 +740,7 @@
   font-size: 16px;
   font-weight: 500;
   color: #484152;
-  margin: 0 0 5px;
+  margin: 0 0 4px;
 }
 
 .cert-event {
@@ -750,7 +749,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #171322;
-  margin: 0 0 5px;
+  margin: 0 0 4px;
 }
 
 .cert-theme {
@@ -760,8 +759,8 @@
   font-weight: 600;
   color: #724e0f;
   max-width: 760px;
-  margin: 4px auto 12px;
-  line-height: 1.35;
+  margin: 2px auto 8px;
+  line-height: 1.3;
 }
 
 .cert-date {
@@ -771,7 +770,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #554e60;
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   white-space: nowrap;
 }
 
